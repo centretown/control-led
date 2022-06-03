@@ -1,2 +1,2 @@
 # control-led
-A simple library used to control LED strips.
+A collection of micro-controller libraries.
