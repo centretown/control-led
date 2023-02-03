@@ -87,10 +87,17 @@ namespace glow
                      static_cast<float>(byte_limit);
       f_value = static_cast<float>(value) * 100.0 /
                 static_cast<float>(byte_limit);
+      f_hue = round(f_hue);
+      f_saturation = round(f_saturation);
+      f_value = round(f_value);
     }
 
     void from_color_wheel(float f_hue, float f_saturation, float f_value)
     {
+      f_hue = round(f_hue);
+      f_saturation = round(f_saturation);
+      f_value = round(f_value);
+
       hue = static_cast<uint16_t>(f_hue / 360.0 *
                                   static_cast<float>(hue_limit));
       saturation = static_cast<uint8_t>(f_saturation / 100.0 *

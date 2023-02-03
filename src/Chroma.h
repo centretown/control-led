@@ -22,6 +22,7 @@ namespace glow
       DELTA,
       SOURCE,
       TARGET,
+      KEY_COUNT,
     };
 
     uint16_t length = 10;
@@ -78,13 +79,55 @@ namespace glow
       shift_amount *= static_cast<float>(rgb_target.blue - rgb_source.blue);
       return rgb_source.blue + static_cast<uint8_t>(shift_amount);
     }
+
+    static std::string keys[KEY_COUNT];
+
+    friend bool operator==(const Chroma &a, const Chroma &b)
+    {
+      return (a.length == b.length &&
+              a.delta == b.delta &&
+              a.hsv_source == b.hsv_source &&
+              a.hsv_target == b.hsv_target &&
+              a.rgb_source.raw_32 == b.rgb_source.raw_32 &&
+              a.rgb_target.raw_32 == b.rgb_target.raw_32 &&
+              a.gradient_amount == b.gradient_amount);
+    }
   };
 }
 
-// namespace YAML
-// {
-//   template <>
-//   struct convert<Chroma>
-//   {
-//   };
-// }
+namespace YAML
+{
+  using glow::Chroma;
+
+  template <>
+  struct convert<Chroma>
+  {
+    static Node encode(const Chroma &chroma)
+    {
+      Node node;
+      node[Chroma::keys[Chroma::LENGTH]] = chroma.length;
+      node[Chroma::keys[Chroma::DELTA]] = chroma.delta;
+      node[Chroma::keys[Chroma::SOURCE]] = chroma.hsv_source;
+      node[Chroma::keys[Chroma::TARGET]] = chroma.hsv_target;
+      return node;
+    }
+
+    static bool decode(const Node &node, Chroma &chroma)
+    {
+      if (!node.IsMap() || node.size() != 4)
+      {
+        return false;
+      }
+
+      chroma.length =
+          node[Chroma::keys[Chroma::LENGTH]].as<uint16_t>();
+      chroma.delta =
+          node[Chroma::keys[Chroma::DELTA]].as<int16_t>();
+      chroma.hsv_source =
+          node[Chroma::keys[Chroma::SOURCE]].as<HSVColor>();
+      chroma.hsv_target =
+          node[Chroma::keys[Chroma::TARGET]].as<HSVColor>();
+      return true;
+    }
+  };
+}

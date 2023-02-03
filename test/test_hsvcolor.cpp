@@ -125,7 +125,7 @@ TEST_CASE("HSVColor Basic", "[hsvcolor_basic]")
 
 TEST_CASE("HSVColor YAML", "[hsvcolor_yaml]")
 {
-  HSVColor hsv(uint16_t(255), 127, 255);
+  HSVColor hsv((float)60.0, 50.0, 100.0);
   std::string input =
       "hue: 60\n"
       "saturation: 50\n"
@@ -133,14 +133,14 @@ TEST_CASE("HSVColor YAML", "[hsvcolor_yaml]")
 
   test_yaml(hsv, input);
 
-  HSVColor hsv_2(uint16_t(255 + 127), 64, 255);
+  HSVColor hsv_2((float)90.0, 25.0, 100.0);
   input =
       "hue: 90\n"
       "saturation: 25\n"
       "value: 100\n";
   test_yaml(hsv_2, input);
 
-  HSVColor hsv_3(uint16_t(255 + 127), 64, 127);
+  HSVColor hsv_3((float)90.0, 25.0, 50.0);
   input =
       "hue: 90\n"
       "saturation: 25\n"

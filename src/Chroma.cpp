@@ -2,6 +2,13 @@
 
 namespace glow
 {
+  std::string Chroma::keys[Chroma::KEY_COUNT] = {
+      "length",
+      "delta",
+      "source",
+      "target",
+  };
+
   bool Chroma::setup(uint16_t p_length,
                      int16_t p_delta,
                      Color p_source,
