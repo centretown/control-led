@@ -1,6 +1,8 @@
 #pragma once
-
 #include <list>
+#include <yaml-cpp/yaml.h>
+
+#include "base.h"
 #include "Layer.h"
 
 namespace glow
@@ -15,9 +17,13 @@ namespace glow
       KEY_COUNT,
     };
 
-    u_int16_t length;
-    u_int32_t interval;
+    uint16_t length;
+    uint32_t interval;
     std::list<Layer> layers;
+    bool setup()
+    {
+      return true;
+    }
 
     static std::string keys[KEY_COUNT];
 
@@ -49,8 +55,9 @@ namespace YAML
 
     static bool decode(const Node &node, Frame &frame)
     {
-      if (!node.IsSequence())
+      if (!node.IsMap())
       {
+        frame.setup();
         return false;
       }
 
@@ -66,7 +73,7 @@ namespace YAML
         frame.push_back(layer.as<Layer>());
       }
 
-      return true;
+      return frame.setup();
     }
   };
 }
