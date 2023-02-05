@@ -2,7 +2,7 @@
 
 namespace glow
 {
-  std::string HSVColor::hsv_keys[3] = {
+  std::string HSVColor::keys[3] = {
       "hue",
       "saturation",
       "value",
@@ -14,10 +14,10 @@ namespace glow
       "blue",
   };
 
-  HSVColor::HSVColor(float f_hue, float f_saturation, float f_value)
-  {
-    from_color_wheel(f_hue, f_saturation, f_value);
-  }
+  // HSVColor::HSVColor(float f_hue, float f_saturation, float f_value)
+  // {
+  //   from_color_wheel(f_hue, f_saturation, f_value);
+  // }
 
   Color HSVColor::to_rgb()
   {

@@ -30,6 +30,8 @@ add_library(GlowLib
   src/Grid.cpp
   src/Layer.h
   src/Layer.cpp
+  src/Frame.h
+  src/Frame.cpp
 )
 
 add_executable(glow

@@ -40,7 +40,7 @@ namespace glow
                HSVColor p_source, HSVColor p_target);
     bool setup(uint16_t p_length, int16_t p_delta,
                Color p_source, HSVColor p_target);
-    bool setup(uint16_t p_length, int16_t p_delta);
+    bool setup();
 
     Color map(uint16_t index)
     {
@@ -81,17 +81,6 @@ namespace glow
     }
 
     static std::string keys[KEY_COUNT];
-
-    friend bool operator==(const Chroma &a, const Chroma &b)
-    {
-      return (a.length == b.length &&
-              a.delta == b.delta &&
-              a.hsv_source == b.hsv_source &&
-              a.hsv_target == b.hsv_target &&
-              a.rgb_source.raw_32 == b.rgb_source.raw_32 &&
-              a.rgb_target.raw_32 == b.rgb_target.raw_32 &&
-              a.gradient_amount == b.gradient_amount);
-    }
   };
 }
 
@@ -114,20 +103,37 @@ namespace YAML
 
     static bool decode(const Node &node, Chroma &chroma)
     {
-      if (!node.IsMap() || node.size() != 4)
+      if (!node.IsMap())
       {
+        chroma.setup();
         return false;
       }
 
-      chroma.length =
-          node[Chroma::keys[Chroma::LENGTH]].as<uint16_t>();
-      chroma.delta =
-          node[Chroma::keys[Chroma::DELTA]].as<int16_t>();
-      chroma.hsv_source =
-          node[Chroma::keys[Chroma::SOURCE]].as<HSVColor>();
-      chroma.hsv_target =
-          node[Chroma::keys[Chroma::TARGET]].as<HSVColor>();
-      return true;
+      for (auto key = 0; key < Chroma::KEY_COUNT; ++key)
+      {
+        Node item = node[Chroma::keys[key]];
+        if (!item.IsDefined())
+        {
+          continue;
+        }
+
+        switch (key)
+        {
+        case Chroma::LENGTH:
+          chroma.length = item.as<uint16_t>();
+          break;
+        case Chroma::DELTA:
+          chroma.delta = item.as<int16_t>();
+          break;
+        case Chroma::SOURCE:
+          chroma.hsv_source = item.as<HSVColor>();
+          break;
+        case Chroma::TARGET:
+          chroma.hsv_target = item.as<HSVColor>();
+          break;
+        }
+      }
+      return chroma.setup();
     }
   };
 }

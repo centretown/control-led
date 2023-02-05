@@ -24,28 +24,33 @@ namespace glow
 
     uint16_t length = 10;
     uint16_t begin = 0;
-    uint16_t end = 9;
+    uint16_t end = 10;
     Grid grid;
     Chroma chroma;
 
-    void setup(uint16_t p_length,
+    bool setup()
+    {
+      return set_range(length, begin, end);
+    }
+
+    bool setup(uint16_t p_length,
                uint16_t p_begin,
                uint16_t p_end,
                Grid &p_grid,
                Chroma &p_chroma)
     {
-      set_range(p_length, p_begin, p_end);
       grid = p_grid;
       chroma = p_chroma;
+      return set_range(p_length, p_begin, p_end);
     }
 
-    void set_range(uint16_t p_length,
+    bool set_range(uint16_t p_length,
                    uint16_t p_begin,
                    uint16_t p_end)
     {
       if (p_length == 0)
       {
-        return;
+        return false;
       }
 
       length = p_length;
@@ -56,6 +61,7 @@ namespace glow
       {
         std::swap(begin, end);
       }
+      return true;
     }
 
     template <typename LIGHT>
@@ -93,23 +99,40 @@ namespace YAML
 
     static bool decode(const Node &node, Layer &layer)
     {
-      if (!node.IsMap() || node.size() != 5)
+      if (!node.IsMap())
       {
+        layer.setup();
         return false;
       }
 
-      layer.length =
-          node[Layer::keys[Layer::LENGTH]].as<uint16_t>();
-      layer.begin =
-          node[Layer::keys[Layer::BEGIN]].as<uint16_t>();
-      layer.end =
-          node[Layer::keys[Layer::END]].as<uint16_t>();
-      layer.grid =
-          node[Layer::keys[Layer::GRID]].as<Grid>();
-      layer.chroma =
-          node[Layer::keys[Layer::CHROMA]].as<Chroma>();
+      for (auto key = 0; key < Layer::KEY_COUNT; ++key)
+      {
+        Node item = node[Layer::keys[key]];
+        if (!item.IsDefined())
+        {
+          continue;
+        }
 
-      return true;
+        switch (key)
+        {
+        case Layer::LENGTH:
+          layer.length = item.as<uint16_t>();
+          break;
+        case Layer::BEGIN:
+          layer.begin = item.as<uint16_t>();
+          break;
+        case Layer::END:
+          layer.end = item.as<uint16_t>();
+          break;
+        case Layer::GRID:
+          layer.grid = item.as<Grid>();
+          break;
+        case Layer::CHROMA:
+          layer.chroma = item.as<Chroma>();
+          break;
+        }
+      }
+      return layer.setup();
     }
   };
 }

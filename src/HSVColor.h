@@ -25,12 +25,6 @@ namespace glow
 
   enum : uint8_t
   {
-    HUE,
-    SATURATION,
-    VALUE,
-  };
-  enum : uint8_t
-  {
     RED,
     GREEN,
     BLUE,
@@ -38,6 +32,14 @@ namespace glow
 
   struct HSVColor
   {
+    enum : uint8_t
+    {
+      HUE,
+      SATURATION,
+      VALUE,
+      KEY_COUNT,
+    };
+
     union
     {
       struct
@@ -46,12 +48,13 @@ namespace glow
         uint8_t saturation;
         uint8_t value;
       };
-      uint32_t raw_32;
+
+      uint32_t raw_32 = 0;
     };
 
-    HSVColor(uint32_t raw_32 = 0) ALWAYS_INLINE : raw_32(raw_32) {}
+    HSVColor() ALWAYS_INLINE : hue(0), saturation(0), value(255) {}
 
-    HSVColor(float f_hue, float f_saturation, float f_value);
+    HSVColor(uint32_t raw_32) ALWAYS_INLINE : raw_32(raw_32) {}
 
     HSVColor(uint16_t hue, uint8_t saturation, uint8_t value) ALWAYS_INLINE
         : hue(hue),
@@ -61,6 +64,11 @@ namespace glow
     HSVColor(ESPHSVColor esph_hsv) ALWAYS_INLINE
     {
       from_esp_hsv_color(esph_hsv);
+    }
+
+    bool setup()
+    {
+      return true;
     }
 
     ESPHSVColor to_esp_hsv_color() const ALWAYS_INLINE
@@ -111,7 +119,7 @@ namespace glow
       return (a.raw_32 == b.raw_32);
     }
 
-    static std::string hsv_keys[3];
+    static std::string keys[3];
     static std::string rgb_keys[3];
   };
 
@@ -125,10 +133,7 @@ namespace YAML
 {
   using glow::BLUE;
   using glow::GREEN;
-  using glow::HUE;
   using glow::RED;
-  using glow::SATURATION;
-  using glow::VALUE;
 
   using glow::HSVColor;
 
@@ -140,21 +145,46 @@ namespace YAML
       Node node;
       float f_hue, f_saturation, f_value;
       hsv.to_color_wheel(f_hue, f_saturation, f_value);
-      node[HSVColor::hsv_keys[HUE]] = f_hue;
-      node[HSVColor::hsv_keys[SATURATION]] = f_saturation;
-      node[HSVColor::hsv_keys[VALUE]] = f_value;
+      node[HSVColor::keys[HSVColor::HUE]] = f_hue;
+      node[HSVColor::keys[HSVColor::SATURATION]] = f_saturation;
+      node[HSVColor::keys[HSVColor::VALUE]] = f_value;
       return node;
     }
 
     static bool decode(const Node &node, HSVColor &hsv)
     {
-      if (!node.IsMap() || node.size() != 3)
+      if (!node.IsMap())
       {
+        hsv.setup();
         return false;
       }
-      float f_hue = node[HSVColor::hsv_keys[HUE]].as<float>();
-      float f_saturation = node[HSVColor::hsv_keys[SATURATION]].as<float>();
-      float f_value = node[HSVColor::hsv_keys[VALUE]].as<float>();
+
+      float f_hue = 0.0;
+      float f_saturation = 0.0;
+      float f_value = 0.0;
+
+      for (auto key = 0; key < HSVColor::KEY_COUNT; ++key)
+      {
+        Node item = node[HSVColor::keys[key]];
+        if (!item.IsDefined())
+        {
+          continue;
+        }
+
+      switch (key)
+        {
+        case HSVColor::HUE:
+          f_hue = item.as<float>();
+          break;
+        case HSVColor::SATURATION:
+          f_saturation = item.as<float>();
+          break;
+        case HSVColor::VALUE:
+          f_value = item.as<float>();
+          break;
+        }
+      }
+
       hsv.from_color_wheel(f_hue, f_saturation, f_value);
       return true;
     }
@@ -174,7 +204,7 @@ namespace YAML
 
     static bool decode(const Node &node, Color &color)
     {
-      if (!node.IsMap() || node.size() != 3)
+      if (!node.IsMap())
       {
         return false;
       }

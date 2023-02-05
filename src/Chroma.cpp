@@ -14,11 +14,11 @@ namespace glow
                      Color p_source,
                      Color p_target)
   {
-    rgb_source = p_source;
-    hsv_source.from_rgb(rgb_source);
-    rgb_target = p_target;
-    hsv_target.from_rgb(rgb_target);
-    return setup(p_length, p_delta);
+    length = p_length;
+    delta = p_delta;
+    hsv_source.from_rgb(p_source);
+    hsv_target.from_rgb(p_target);
+    return setup();
   }
 
   bool Chroma::setup(uint16_t p_length,
@@ -26,11 +26,11 @@ namespace glow
                      HSVColor p_source,
                      HSVColor p_target)
   {
+    length = p_length;
+    delta = p_delta;
     hsv_source = p_source;
-    rgb_source = hsv_source.to_rgb();
     hsv_target = p_target;
-    rgb_target = hsv_target.to_rgb();
-    return setup(p_length, p_delta);
+    return setup();
   }
 
   bool Chroma::setup(uint16_t p_length,
@@ -38,22 +38,22 @@ namespace glow
                      Color p_source,
                      HSVColor p_target)
   {
-    rgb_source = p_source;
-    hsv_source.from_rgb(rgb_source);
+    length = p_length;
+    delta = p_delta;
+    hsv_source.from_rgb(p_source);
     hsv_target = p_target;
-    rgb_target = hsv_target.to_rgb();
-    return setup(p_length, p_delta);
+    return setup();
   }
 
-  bool Chroma::setup(uint16_t p_length, int16_t p_delta)
+  bool Chroma::setup()
   {
-    if (p_length == 0)
+    if (length == 0)
     {
       return false;
     }
-    length = p_length;
-    delta = p_delta;
-    gradient_amount = (255.0 / static_cast<float>(p_length)) / 255.0;
+    rgb_source = hsv_source.to_rgb();
+    rgb_target = hsv_target.to_rgb();
+    gradient_amount = (255.0 / static_cast<float>(length)) / 255.0;
     return true;
   }
 

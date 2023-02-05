@@ -2,26 +2,21 @@
 #include <iostream>
 #include <string>
 #include <catch2/catch_all.hpp>
-#include <yaml-cpp/yaml.h>
 
+#include "test_yaml.h"
 #include "../src/Grid.h"
 
 using namespace glow;
 
-void test_yaml(Grid &grid, std::string input)
+void check_detail(Grid &original, Grid &derived)
 {
-  YAML::Node node = YAML::convert<Grid>::encode(grid);
-  YAML::Emitter out;
-  out << node;
-  std::cout << out.c_str() << std::endl;
-  Grid grid_from_node;
-  YAML::convert<Grid>::decode(node, grid_from_node);
-  REQUIRE(grid == grid_from_node);
-
-  YAML::Node input_node = YAML::Load(input);
-  Grid grid_from_input;
-  YAML::convert<Grid>::decode(input_node, grid_from_input);
-  REQUIRE(grid == grid_from_input);
+  REQUIRE(original.length == derived.length);
+  REQUIRE(original.rows == derived.rows);
+  REQUIRE(original.origin == derived.origin);
+  REQUIRE(original.orientation == derived.orientation);
+  REQUIRE(original.pivot.first == derived.pivot.first);
+  REQUIRE(original.pivot.offset == derived.pivot.offset);
+  REQUIRE(original.pivot.last == derived.pivot.last);
 }
 
 TEST_CASE("Grid 2x2 TopLeft Diagonal", "[grid_2x2_topleft_diagonal]")
@@ -45,7 +40,7 @@ TEST_CASE("Grid 2x2 TopLeft Diagonal", "[grid_2x2_topleft_diagonal]")
       "rows: 2\n"
       "origin: 0\n"
       "orientation: 2\n";
-  test_yaml(grid, input);
+  test_yaml(grid, input, check_detail);
 }
 
 TEST_CASE("Grid 2x3 TopLeft Diagonal", "[grid_2x3_topleft_diagonal]")
@@ -73,7 +68,7 @@ TEST_CASE("Grid 2x3 TopLeft Diagonal", "[grid_2x3_topleft_diagonal]")
       "origin: 0\n"
       "orientation: 2\n";
 
-  test_yaml(grid, input);
+  test_yaml(grid, input, check_detail);
 }
 
 TEST_CASE("Grid 3x4 TopLeft Diagonal", "[grid_3x4_topleft_diagonal]")
@@ -95,6 +90,7 @@ TEST_CASE("Grid 3x4 TopLeft Diagonal", "[grid_3x4_topleft_diagonal]")
   REQUIRE(2 == grid.map(3));
   REQUIRE(5 == grid.map(4));
   REQUIRE(8 == grid.map(5));
+  bool setup();
   REQUIRE(3 == grid.map(6));
   REQUIRE(6 == grid.map(7));
   REQUIRE(9 == grid.map(8));
@@ -108,7 +104,7 @@ TEST_CASE("Grid 3x4 TopLeft Diagonal", "[grid_3x4_topleft_diagonal]")
       "origin: 0\n"
       "orientation: 2\n";
 
-  test_yaml(grid, input);
+  test_yaml(grid, input, check_detail);
 }
 
 TEST_CASE("Grid 4x5 TopLeft Diagonal", "[grid_4x5_topleft_diagonal]")
@@ -153,7 +149,7 @@ TEST_CASE("Grid 4x5 TopLeft Diagonal", "[grid_4x5_topleft_diagonal]")
       "origin: 0\n"
       "orientation: 2\n";
 
-  test_yaml(grid, input);
+  test_yaml(grid, input, check_detail);
 }
 
 TEST_CASE("Grid 4x9 TopLeft Diagonal", "[grid_4x9_topleft_diagonal]")
@@ -214,7 +210,7 @@ TEST_CASE("Grid 4x9 TopLeft Diagonal", "[grid_4x9_topleft_diagonal]")
       "origin: 0\n"
       "orientation: 2\n";
 
-  test_yaml(grid, input);
+  test_yaml(grid, input, check_detail);
 }
 
 TEST_CASE("Grid 4x9 TopRight Diagonal", "[grid_4x9_topright_diagonal]")
@@ -258,7 +254,7 @@ TEST_CASE("Grid 4x9 TopRight Diagonal", "[grid_4x9_topright_diagonal]")
       "origin: 1\n"
       "orientation: 2\n";
 
-  test_yaml(grid, input);
+  test_yaml(grid, input, check_detail);
 }
 
 TEST_CASE("Grid 4x9 BottomRight Diagonal", "[grid_4x9_bottomright_diagonal]")
@@ -321,5 +317,51 @@ TEST_CASE("Grid 4x9 BottomRight Diagonal", "[grid_4x9_bottomright_diagonal]")
       "origin: 3\n"
       "orientation: 2\n";
 
-  test_yaml(grid, input);
+  test_yaml(grid, input, check_detail);
+}
+
+TEST_CASE("Grid Incomplete", "[grid_incomplete]")
+{
+  Grid grid_default_length;
+  REQUIRE(grid_default_length.setup(10, 4, BottomRight, Diagonal));
+  std::string input_missing_length =
+      // "length: 36\n"
+      "rows: 4\n"
+      "origin: 3\n"
+      "orientation: 2\n";
+  test_yaml_from_input(grid_default_length,
+                       input_missing_length, check_detail);
+
+  Grid grid_default_rows;
+  REQUIRE(grid_default_rows.setup(36, 1, BottomRight, Diagonal));
+  std::string input_missing_rows =
+      "length: 36\n"
+      "origin: 3\n"
+      "orientation: 2\n";
+  test_yaml_from_input(grid_default_rows,
+                       input_missing_rows, check_detail);
+
+  Grid grid_default_origin;
+  REQUIRE(grid_default_origin.setup(36, 4, TopLeft, Diagonal));
+  std::string input_missing_origin =
+      "length: 36\n"
+      "rows: 4\n"
+      "orientation: 2\n";
+  test_yaml_from_input(grid_default_origin,
+                       input_missing_origin, check_detail);
+
+  Grid grid_default_orientation;
+  REQUIRE(grid_default_orientation.setup(36, 4, BottomRight, Horizontal));
+  std::string input_missing_orientation =
+      "length: 36\n"
+      "rows: 4\n"
+      "origin: 3\n";
+  test_yaml_from_input(grid_default_orientation,
+                       input_missing_orientation, check_detail);
+
+  Grid grid_default;
+  REQUIRE(grid_default.setup());
+  std::string input_missing;
+  test_yaml_from_input(grid_default,
+                       input_missing, check_detail);
 }

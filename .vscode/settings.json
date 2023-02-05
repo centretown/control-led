@@ -54,6 +54,7 @@
     "chrono": "cpp",
     "cstring": "cpp",
     "ctime": "cpp",
-    "thread": "cpp"
+    "thread": "cpp",
+    "forward_list": "cpp"
   }
 }

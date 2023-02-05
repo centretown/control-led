@@ -4,50 +4,65 @@
 #include <string>
 
 #include "../src/Layer.h"
+#include "test_yaml.h"
 
 using namespace glow;
 
-void test_yaml(Layer &layer, std::string input)
+void check_detail(Layer &original, Layer &derived)
 {
-  YAML::Node node = YAML::convert<Layer>::encode(layer);
-  Layer layer_from_node;
-  YAML::convert<Layer>::decode(node, layer_from_node);
-
-  YAML::Emitter out;
-  out << node;
-  std::cout << out.c_str() << std::endl
-            << std::endl;
-
-  node = YAML::convert<Layer>::encode(layer_from_node);
-  YAML::Emitter out_a;
-  out_a << node;
-  std::cout << out_a.c_str() << std::endl
-            << std::endl;
-
-  // REQUIRE(layer == layer_from_node);
-  // YAML::Node input_node = YAML::Load(input);
-  // Layer layer_from_input;
-  // YAML::convert<Layer>::decode(input_node, layer_from_input);
-
-  // YAML::Emitter out_b;
-  // out_b << input_node;
-  // std::cout << out_b.c_str() << std::endl;
-
-  // REQUIRE(layer == layer_from_input);
+  REQUIRE(original.length == derived.length);
+  REQUIRE(original.begin == derived.begin);
+  REQUIRE(original.end == derived.end);
+  REQUIRE(original.length == derived.length);
+  REQUIRE(original.length == derived.length);
+  REQUIRE(original.grid.rows == derived.grid.rows);
+  REQUIRE(original.grid.origin == derived.grid.origin);
+  REQUIRE(original.grid.orientation == derived.grid.orientation);
+  REQUIRE(original.grid.pivot.first == derived.grid.pivot.first);
+  REQUIRE(original.grid.pivot.offset == derived.grid.pivot.offset);
+  REQUIRE(original.grid.pivot.last == derived.grid.pivot.last);
+  REQUIRE(original.chroma.delta == derived.chroma.delta);
+  REQUIRE(original.chroma.hsv_source.raw_32 == derived.chroma.hsv_source.raw_32);
+  REQUIRE(original.chroma.hsv_target.raw_32 == derived.chroma.hsv_target.raw_32);
+  REQUIRE(original.chroma.rgb_source.raw_32 == derived.chroma.rgb_source.raw_32);
+  REQUIRE(original.chroma.rgb_target.raw_32 == derived.chroma.rgb_target.raw_32);
+  REQUIRE(original.chroma.gradient_amount == derived.chroma.gradient_amount);
 }
 
 TEST_CASE("Layer Basic", "layer_basic")
 {
-  std::string input = "";
+  std::string input =
+      "length: 20\n"
+      "begin: 5\n"
+      "end: 15\n"
+      "grid:\n"
+      "  length: 20\n"
+      "  rows: 4\n"
+      "  origin: 0\n"
+      "  orientation: 2\n"
+      "chroma:\n"
+      "  length: 20\n"
+      "  delta: -1\n"
+      "  source:\n"
+      "    hue: 0\n"
+      "    saturation: 100\n"
+      "    value: 100\n"
+      "  target:\n"
+      "    hue: 0\n"
+      "    saturation: 50\n"
+      "    value: 50\n";
+
+  HSVColor source;
+  source.from_color_wheel(float(0), float(100), float(100));
+  HSVColor target;
+  target.from_color_wheel(float(0), float(50), float(50));
   Chroma chroma;
-  chroma.setup(20, -1,
-               HSVColor(float(0), float(100), float(100)),
-               HSVColor(float(0), float(50), float(50)));
+  chroma.setup(20, -1, source, target);
 
   Grid grid;
   grid.setup(20, 4, TopLeft, Diagonal);
 
   Layer layer;
   layer.setup(20, 5, 15, grid, chroma);
-  test_yaml(layer, input);
+  test_yaml(layer, input, check_detail);
 }

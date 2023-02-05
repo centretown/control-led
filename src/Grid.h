@@ -92,17 +92,6 @@ namespace glow
     }
 
     static std::string keys[KEY_COUNT];
-
-    friend bool operator==(const Grid &a, const Grid &b)
-    {
-      return (a.length == b.length &&
-              a.rows == b.rows &&
-              a.origin == b.origin &&
-              a.orientation == b.orientation &&
-              a.pivot.first == b.pivot.first &&
-              a.pivot.offset == b.pivot.offset &&
-              a.pivot.last == b.pivot.last);
-    }
   };
 }
 
@@ -125,19 +114,36 @@ namespace YAML
 
     static bool decode(const Node &node, Grid &grid)
     {
-      if (!node.IsMap() || node.size() != 4)
+      if (!node.IsMap())
       {
+        grid.setup();
         return false;
       }
 
-      grid.length =
-          node[Grid::keys[Grid::LENGTH]].as<uint16_t>();
-      grid.rows =
-          node[Grid::keys[Grid::ROWS]].as<uint16_t>();
-      grid.origin =
-          node[Grid::keys[Grid::ORIGIN]].as<uint16_t>();
-      grid.orientation =
-          node[Grid::keys[Grid::ORIENTATION]].as<uint16_t>();
+      for (auto key = 0; key < Grid::KEY_COUNT; ++key)
+      {
+        Node item = node[Grid::keys[key]];
+        if (!item.IsDefined())
+        {
+          continue;
+        }
+
+        switch (key)
+        {
+        case Grid::LENGTH:
+          grid.length = item.as<uint16_t>();
+          break;
+        case Grid::ROWS:
+          grid.rows = item.as<uint16_t>();
+          break;
+        case Grid::ORIGIN:
+          grid.origin = item.as<uint16_t>();
+          break;
+        case Grid::ORIENTATION:
+          grid.orientation = item.as<uint16_t>();
+          break;
+        }
+      }
 
       return grid.setup();
     }
