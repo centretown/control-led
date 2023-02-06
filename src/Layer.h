@@ -10,8 +10,9 @@
 
 namespace glow
 {
-  struct Layer
+  class Layer
   {
+  public:
     enum : uint8_t
     {
       LENGTH,
@@ -22,40 +23,37 @@ namespace glow
       KEY_COUNT,
     };
 
-    uint16_t length = 10;
+  private:
+    uint16_t length = 0;
     uint16_t begin = 0;
     uint16_t end = 10;
     Grid grid;
     Chroma chroma;
+    friend YAML::convert<Layer>;
+
+  public:
+    uint16_t get_length() const ALWAYS_INLINE { return length; }
+    uint16_t get_begin() const ALWAYS_INLINE { return begin; }
+    uint16_t get_end() const ALWAYS_INLINE { return end; }
+    const Grid &get_grid() const ALWAYS_INLINE { return grid; }
+    const Chroma get_chroma() const ALWAYS_INLINE { return chroma; }
 
     bool setup()
     {
-      return set_range(length, begin, end);
-    }
-
-    bool setup(uint16_t p_length,
-               uint16_t p_begin,
-               uint16_t p_end,
-               Grid &p_grid,
-               Chroma &p_chroma)
-    {
-      grid = p_grid;
-      chroma = p_chroma;
-      return set_range(p_length, p_begin, p_end);
-    }
-
-    bool set_range(uint16_t p_length,
-                   uint16_t p_begin,
-                   uint16_t p_end)
-    {
-      if (p_length == 0)
+      if (length == 0)
       {
         return false;
       }
 
-      length = p_length;
-      end = p_end % length;
-      begin = p_begin % length;
+      if (grid.setup(length) == false)
+      {
+        return false;
+      }
+
+      if (chroma.setup(length) == false)
+      {
+        return false;
+      }
 
       if (end < begin)
       {
@@ -63,6 +61,49 @@ namespace glow
       }
       return true;
     }
+
+    bool setup(uint16_t p_length,
+               uint16_t p_begin,
+               uint16_t p_end,
+               const Grid &p_grid,
+               const Chroma &p_chroma)
+    {
+      length = p_length;
+      begin = p_begin;
+      end = p_end;
+      grid = p_grid;
+      chroma = p_chroma;
+      return setup();
+    }
+
+    void set_length(uint16_t a_length) ALWAYS_INLINE
+    {
+      length = a_length;
+      setup();
+    }
+    // void set_begin(uint16_t a_length) ALWAYS_INLINE
+    // {
+    //   length = a_length;
+    //   setup();
+    // }
+
+    // void set_end(uint16_t a_end) ALWAYS_INLINE
+    // {
+    //   end = a_end;
+    //   setup();
+    // }
+
+    // void set_grid(const Grid &a_grid) ALWAYS_INLINE
+    // {
+    //   grid = a_grid;
+    //   setup();
+    // }
+
+    // void set_chroma(const Chroma &a_chroma) ALWAYS_INLINE
+    // {
+    //   chroma = a_chroma;
+    //   setup();
+    // }
 
     template <typename LIGHT>
     void spin(LIGHT *light)

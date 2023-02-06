@@ -171,7 +171,7 @@ namespace YAML
           continue;
         }
 
-      switch (key)
+        switch (key)
         {
         case HSVColor::HUE:
           f_hue = item.as<float>();

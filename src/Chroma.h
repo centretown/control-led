@@ -14,33 +14,88 @@ using esphome::light::ESPHSVColor;
 
 namespace glow
 {
-  struct Chroma
+  const HSVColor source_default = {0, 255, 255};
+  const HSVColor target_default = {hue_limit, 0, 255};
+  const Color rgb_source_default = {255, 0, 0};
+  const Color rgb_target_default = {255, 255, 255};
+
+  class Chroma
   {
+  public:
     enum : uint8_t
     {
       LENGTH,
-      DELTA,
       SOURCE,
       TARGET,
+      DELTA,
       KEY_COUNT,
     };
 
-    uint16_t length = 10;
-    int16_t delta = 1;
-    HSVColor hsv_source;
-    HSVColor hsv_target;
+  private:
+    uint16_t length = 0;
+    HSVColor hsv_source = source_default;
+    HSVColor hsv_target = target_default;
+    int16_t delta = 0;
 
-    Color rgb_source;
-    Color rgb_target;
-    float gradient_amount = 1.0;
+    Color rgb_source = rgb_source_default;
+    Color rgb_target = rgb_target_default;
+    float gradient_amount = 0.0;
+    friend YAML::convert<Chroma>;
 
-    bool setup(uint16_t p_length, int16_t p_delta,
-               Color p_source, Color p_target);
-    bool setup(uint16_t p_length, int16_t p_delta,
-               HSVColor p_source, HSVColor p_target);
-    bool setup(uint16_t p_length, int16_t p_delta,
-               Color p_source, HSVColor p_target);
+  public:
+    // bool setup(uint16_t p_length, int16_t p_delta,
+    //            Color p_source, Color p_target);
+
+    bool setup(uint16_t p_length,
+               HSVColor p_source = source_default,
+               HSVColor p_target = target_default,
+               int16_t p_delta = 0);
+
+    bool setup(uint16_t p_length,
+               Color p_source,
+               HSVColor p_target = target_default,
+               int16_t p_delta = 0);
+
     bool setup();
+
+    uint16_t get_length() const ALWAYS_INLINE { return length; }
+    int16_t get_delta() const ALWAYS_INLINE { return delta; }
+    HSVColor get_hsv_source() const ALWAYS_INLINE { return hsv_source; }
+    HSVColor get_hsv_target() const ALWAYS_INLINE { return hsv_target; }
+    Color get_rgb_source() const ALWAYS_INLINE { return rgb_source; }
+    Color get_rgb_target() const ALWAYS_INLINE { return rgb_target; }
+    float get_gradient_amount() const ALWAYS_INLINE { return gradient_amount; }
+
+    // bool set_length(uint16_t a_length) ALWAYS_INLINE
+    // {
+    //   length = a_length;
+    //   return setup();
+    // }
+    // void set_delta(int16_t a_delta) ALWAYS_INLINE
+    // {
+    //   delta = a_delta;
+    //   setup();
+    // }
+    // void set_hsv_source(HSVColor a_source) ALWAYS_INLINE
+    // {
+    //   hsv_source = a_source;
+    //   setup();
+    // }
+    // void set_hsv_target(HSVColor a_target) ALWAYS_INLINE
+    // {
+    //   hsv_target = a_target;
+    //   setup();
+    // }
+    // void set_rgb_source(Color a_source) ALWAYS_INLINE
+    // {
+    //   rgb_source = a_source;
+    //   setup();
+    // }
+    // void set_rgb_target(Color a_target) ALWAYS_INLINE
+    // {
+    //   rgb_target = a_target;
+    //   setup();
+    // }
 
     Color map(uint16_t index)
     {
@@ -64,6 +119,7 @@ namespace glow
                    blue_shift(shift_amount));
     }
 
+  private:
     uint8_t red_shift(float shift_amount) ALWAYS_INLINE
     {
       shift_amount *= static_cast<float>(rgb_target.red - rgb_source.red);
@@ -80,6 +136,7 @@ namespace glow
       return rgb_source.blue + static_cast<uint8_t>(shift_amount);
     }
 
+  public:
     static std::string keys[KEY_COUNT];
   };
 }

@@ -4,27 +4,27 @@ namespace glow
 {
   std::string Chroma::keys[Chroma::KEY_COUNT] = {
       "length",
-      "delta",
       "source",
       "target",
+      "delta",
   };
 
-  bool Chroma::setup(uint16_t p_length,
-                     int16_t p_delta,
-                     Color p_source,
-                     Color p_target)
-  {
-    length = p_length;
-    delta = p_delta;
-    hsv_source.from_rgb(p_source);
-    hsv_target.from_rgb(p_target);
-    return setup();
-  }
+  // bool Chroma::setup(uint16_t p_length,
+  //                    int16_t p_delta,
+  //                    Color p_source,
+  //                    Color p_target)
+  // {
+  //   length = p_length;
+  //   delta = p_delta;
+  //   hsv_source.from_rgb(p_source);
+  //   hsv_target.from_rgb(p_target);
+  //   return setup();
+  // }
 
   bool Chroma::setup(uint16_t p_length,
-                     int16_t p_delta,
                      HSVColor p_source,
-                     HSVColor p_target)
+                     HSVColor p_target,
+                     int16_t p_delta)
   {
     length = p_length;
     delta = p_delta;
@@ -34,9 +34,9 @@ namespace glow
   }
 
   bool Chroma::setup(uint16_t p_length,
-                     int16_t p_delta,
                      Color p_source,
-                     HSVColor p_target)
+                     HSVColor p_target,
+                     int16_t p_delta)
   {
     length = p_length;
     delta = p_delta;

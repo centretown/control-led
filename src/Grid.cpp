@@ -11,9 +11,14 @@ namespace glow
 
   bool Grid::setup()
   {
-    if (length == 0 || rows == 0)
+    if (length == 0)
     {
-      return is_setup = false;
+      return false;
+    }
+
+    if (rows == 0)
+    {
+      rows = 1;
     }
 
     columns = length / rows;
@@ -31,7 +36,7 @@ namespace glow
     pivot.offset = lesser - 1;
     pivot.last = pivot.first +
                  (columns - lesser) * rows + rows - 1;
-    return is_setup = true;
+    return true;
   }
 
   bool Grid::setup(uint16_t p_length, uint16_t p_rows, uint8_t p_origin, uint8_t p_orientation)

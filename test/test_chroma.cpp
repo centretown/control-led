@@ -4,18 +4,13 @@
 #include <string>
 
 #include "test_yaml.h"
+#include "check_chroma_detail.h"
 #include "../src/Chroma.h"
 using namespace glow;
 
-void check_detail(Chroma &original, Chroma &derived)
+void check_detail(const Chroma &original, const Chroma &derived)
 {
-  REQUIRE(original.length == derived.length);
-  REQUIRE(original.delta == derived.delta);
-  REQUIRE(original.hsv_source.raw_32 == derived.hsv_source.raw_32);
-  REQUIRE(original.hsv_target.raw_32 == derived.hsv_target.raw_32);
-  REQUIRE(original.rgb_source.raw_32 == derived.rgb_source.raw_32);
-  REQUIRE(original.rgb_target.raw_32 == derived.rgb_target.raw_32);
-  REQUIRE(original.gradient_amount == derived.gradient_amount);
+  check_chroma_detail(original,derived);
 }
 
 TEST_CASE("Chroma Basic", "chroma_basic")
@@ -24,10 +19,10 @@ TEST_CASE("Chroma Basic", "chroma_basic")
   HSVColor a, b;
   a.from_color_wheel(float(0), float(100), float(100));
   b.from_color_wheel(float(0), float(50), float(50));
-  chroma.setup(20, -1, a, b);
+  REQUIRE(chroma.setup(20, a, b, -1));
   std::string input =
       "length: 20\n"
-      "delta: -1\n"
+      "delta: -1\n" // out of order
       "source:\n"
       "  hue: 0\n"
       "  saturation: 100\n"
@@ -37,4 +32,10 @@ TEST_CASE("Chroma Basic", "chroma_basic")
       "  saturation: 50\n"
       "  value: 50\n";
   test_yaml(chroma, input, check_detail);
+
+  Chroma chroma_length_only;
+  REQUIRE(chroma_length_only.setup(20));
+  std::string input_length_only =
+      "length: 20\n";
+  test_yaml(chroma_length_only, input_length_only, check_detail);
 }

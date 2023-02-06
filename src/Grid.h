@@ -36,8 +36,9 @@ namespace glow
     uint16_t column;
   };
 
-  struct Grid
+  class Grid
   {
+  public:
     enum : uint8_t
     {
       LENGTH,
@@ -47,7 +48,8 @@ namespace glow
       KEY_COUNT,
     };
 
-    uint16_t length = 10;
+  private:
+    uint16_t length = 0;
     uint16_t rows = 1;
     uint16_t origin = TopLeft;
     uint16_t orientation = Horizontal;
@@ -55,14 +57,44 @@ namespace glow
     uint16_t columns = 0;
     Pivot pivot;
     div_t point{0, 0};
-    bool is_setup = false;
 
+  public:
     bool setup(uint16_t p_length,
                uint16_t p_rows = 1,
                uint8_t p_origin = TopLeft,
                uint8_t p_orientation = Horizontal);
 
     bool setup();
+
+    uint16_t get_length() const ALWAYS_INLINE { return length; }
+    uint16_t get_rows() const ALWAYS_INLINE { return rows; }
+    uint16_t get_origin() const ALWAYS_INLINE { return origin; }
+    uint16_t get_orientation() const ALWAYS_INLINE { return orientation; }
+    uint16_t get_columns() const ALWAYS_INLINE { return columns; }
+    uint16_t get_first() const ALWAYS_INLINE { return pivot.first; }
+    uint16_t get_offset() const ALWAYS_INLINE { return pivot.offset; }
+    uint16_t get_last() const ALWAYS_INLINE { return pivot.last; }
+
+    // bool set_length(uint16_t a_length) ALWAYS_INLINE
+    // {
+    //   length = a_length;
+    //   return setup();
+    // }
+    // // void set_rows(uint16_t a_rows) ALWAYS_INLINE
+    // {
+    //   rows = a_rows;
+    //   setup();
+    // }
+    // void set_origin(uint16_t a_origin) ALWAYS_INLINE
+    // {
+    //   origin = a_origin;
+    //   setup();
+    // }
+    // void set_orientation(uint16_t a_orientation) ALWAYS_INLINE
+    // {
+    //   orientation = a_orientation;
+    //   setup();
+    // }
 
     Coordinates map_coordinates(uint16_t offset)
     {
@@ -92,6 +124,7 @@ namespace glow
     }
 
     static std::string keys[KEY_COUNT];
+    friend YAML::convert<Grid>;
   };
 }
 

@@ -5,28 +5,13 @@
 
 #include "../src/Layer.h"
 #include "test_yaml.h"
+#include "check_layer_detail.h"
 
 using namespace glow;
 
-void check_detail(Layer &original, Layer &derived)
+void check_detail(const Layer &original, const Layer &derived)
 {
-  REQUIRE(original.length == derived.length);
-  REQUIRE(original.begin == derived.begin);
-  REQUIRE(original.end == derived.end);
-  REQUIRE(original.length == derived.length);
-  REQUIRE(original.length == derived.length);
-  REQUIRE(original.grid.rows == derived.grid.rows);
-  REQUIRE(original.grid.origin == derived.grid.origin);
-  REQUIRE(original.grid.orientation == derived.grid.orientation);
-  REQUIRE(original.grid.pivot.first == derived.grid.pivot.first);
-  REQUIRE(original.grid.pivot.offset == derived.grid.pivot.offset);
-  REQUIRE(original.grid.pivot.last == derived.grid.pivot.last);
-  REQUIRE(original.chroma.delta == derived.chroma.delta);
-  REQUIRE(original.chroma.hsv_source.raw_32 == derived.chroma.hsv_source.raw_32);
-  REQUIRE(original.chroma.hsv_target.raw_32 == derived.chroma.hsv_target.raw_32);
-  REQUIRE(original.chroma.rgb_source.raw_32 == derived.chroma.rgb_source.raw_32);
-  REQUIRE(original.chroma.rgb_target.raw_32 == derived.chroma.rgb_target.raw_32);
-  REQUIRE(original.chroma.gradient_amount == derived.chroma.gradient_amount);
+  check_layer_detail(original, derived);
 }
 
 TEST_CASE("Layer Basic", "layer_basic")
@@ -57,7 +42,7 @@ TEST_CASE("Layer Basic", "layer_basic")
   HSVColor target;
   target.from_color_wheel(float(0), float(50), float(50));
   Chroma chroma;
-  chroma.setup(20, -1, source, target);
+  chroma.setup(20, source, target, -1);
 
   Grid grid;
   grid.setup(20, 4, TopLeft, Diagonal);

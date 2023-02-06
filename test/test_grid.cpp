@@ -5,30 +5,25 @@
 
 #include "test_yaml.h"
 #include "../src/Grid.h"
+#include "check_grid_detail.h"
 
 using namespace glow;
 
-void check_detail(Grid &original, Grid &derived)
+void check_detail(const Grid &original, const Grid &derived)
 {
-  REQUIRE(original.length == derived.length);
-  REQUIRE(original.rows == derived.rows);
-  REQUIRE(original.origin == derived.origin);
-  REQUIRE(original.orientation == derived.orientation);
-  REQUIRE(original.pivot.first == derived.pivot.first);
-  REQUIRE(original.pivot.offset == derived.pivot.offset);
-  REQUIRE(original.pivot.last == derived.pivot.last);
+  check_grid_detail(original, derived);
 }
 
 TEST_CASE("Grid 2x2 TopLeft Diagonal", "[grid_2x2_topleft_diagonal]")
 {
   Grid grid;
   REQUIRE(grid.setup(4, 2, TopLeft, Diagonal));
-  REQUIRE(4 == grid.length);
-  REQUIRE(2 == grid.rows);
-  REQUIRE(TopLeft == grid.origin);
-  REQUIRE(Diagonal == grid.orientation);
-  REQUIRE(1 == grid.pivot.first);
-  REQUIRE(1 == grid.pivot.offset);
+  REQUIRE(4 == grid.get_length());
+  REQUIRE(2 == grid.get_rows());
+  REQUIRE(TopLeft == grid.get_origin());
+  REQUIRE(Diagonal == grid.get_orientation());
+  REQUIRE(1 == grid.get_first());
+  REQUIRE(1 == grid.get_offset());
 
   REQUIRE(0 == grid.map(0));
   REQUIRE(1 == grid.map(1));
@@ -47,13 +42,13 @@ TEST_CASE("Grid 2x3 TopLeft Diagonal", "[grid_2x3_topleft_diagonal]")
 {
   Grid grid;
   REQUIRE(grid.setup(6, 2, TopLeft, Diagonal));
-  REQUIRE(6 == grid.length);
-  REQUIRE(2 == grid.rows);
-  REQUIRE(TopLeft == grid.origin);
-  REQUIRE(Diagonal == grid.orientation);
-  REQUIRE(1 == grid.pivot.first);
-  REQUIRE(1 == grid.pivot.offset);
-  REQUIRE(4 == grid.pivot.last);
+  REQUIRE(6 == grid.get_length());
+  REQUIRE(2 == grid.get_rows());
+  REQUIRE(TopLeft == grid.get_origin());
+  REQUIRE(Diagonal == grid.get_orientation());
+  REQUIRE(1 == grid.get_first());
+  REQUIRE(1 == grid.get_offset());
+  REQUIRE(4 == grid.get_last());
 
   REQUIRE(0 == grid.map(0));
   REQUIRE(1 == grid.map(1));
@@ -75,14 +70,14 @@ TEST_CASE("Grid 3x4 TopLeft Diagonal", "[grid_3x4_topleft_diagonal]")
 {
   Grid grid;
   REQUIRE(grid.setup(12, 3, TopLeft, Diagonal));
-  REQUIRE(12 == grid.length);
-  REQUIRE(3 == grid.rows);
-  REQUIRE(TopLeft == grid.origin);
-  REQUIRE(Diagonal == grid.orientation);
+  REQUIRE(12 == grid.get_length());
+  REQUIRE(3 == grid.get_rows());
+  REQUIRE(TopLeft == grid.get_origin());
+  REQUIRE(Diagonal == grid.get_orientation());
 
-  REQUIRE(3 == grid.pivot.first);
-  REQUIRE(2 == grid.pivot.offset);
-  REQUIRE(8 == grid.pivot.last);
+  REQUIRE(3 == grid.get_first());
+  REQUIRE(2 == grid.get_offset());
+  REQUIRE(8 == grid.get_last());
 
   REQUIRE(0 == grid.map(0));
   REQUIRE(1 == grid.map(1));
@@ -111,16 +106,16 @@ TEST_CASE("Grid 4x5 TopLeft Diagonal", "[grid_4x5_topleft_diagonal]")
 {
   Grid grid;
   REQUIRE(grid.setup(20, 4, TopLeft, Diagonal));
-  REQUIRE(20 == grid.length);
-  REQUIRE(4 == grid.rows);
-  REQUIRE(TopLeft == grid.origin);
-  REQUIRE(Diagonal == grid.orientation);
+  REQUIRE(20 == grid.get_length());
+  REQUIRE(4 == grid.get_rows());
+  REQUIRE(TopLeft == grid.get_origin());
+  REQUIRE(Diagonal == grid.get_orientation());
 
-  REQUIRE(5 == grid.columns);
+  REQUIRE(5 == grid.get_columns());
 
-  REQUIRE(6 == grid.pivot.first);
-  REQUIRE(3 == grid.pivot.offset);
-  REQUIRE(13 == grid.pivot.last);
+  REQUIRE(6 == grid.get_first());
+  REQUIRE(3 == grid.get_offset());
+  REQUIRE(13 == grid.get_last());
 
   REQUIRE(0 == grid.map(0));
   REQUIRE(1 == grid.map(1));
@@ -156,16 +151,16 @@ TEST_CASE("Grid 4x9 TopLeft Diagonal", "[grid_4x9_topleft_diagonal]")
 {
   Grid grid;
   REQUIRE(grid.setup(36, 4, TopLeft, Diagonal));
-  REQUIRE(36 == grid.length);
-  REQUIRE(4 == grid.rows);
-  REQUIRE(TopLeft == grid.origin);
-  REQUIRE(Diagonal == grid.orientation);
+  REQUIRE(36 == grid.get_length());
+  REQUIRE(4 == grid.get_rows());
+  REQUIRE(TopLeft == grid.get_origin());
+  REQUIRE(Diagonal == grid.get_orientation());
 
-  REQUIRE(9 == grid.columns);
+  REQUIRE(9 == grid.get_columns());
 
-  REQUIRE(6 == grid.pivot.first);
-  REQUIRE(3 == grid.pivot.offset);
-  REQUIRE(29 == grid.pivot.last);
+  REQUIRE(6 == grid.get_first());
+  REQUIRE(3 == grid.get_offset());
+  REQUIRE(29 == grid.get_last());
 
   REQUIRE(0 == grid.map(0));
   REQUIRE(1 == grid.map(1));
@@ -217,16 +212,16 @@ TEST_CASE("Grid 4x9 TopRight Diagonal", "[grid_4x9_topright_diagonal]")
 {
   Grid grid;
   REQUIRE(grid.setup(36, 4, TopRight, Diagonal));
-  REQUIRE(36 == grid.length);
-  REQUIRE(4 == grid.rows);
-  REQUIRE(TopRight == grid.origin);
-  REQUIRE(Diagonal == grid.orientation);
+  REQUIRE(36 == grid.get_length());
+  REQUIRE(4 == grid.get_rows());
+  REQUIRE(TopRight == grid.get_origin());
+  REQUIRE(Diagonal == grid.get_orientation());
 
-  REQUIRE(9 == grid.columns);
+  REQUIRE(9 == grid.get_columns());
 
-  REQUIRE(6 == grid.pivot.first);
-  REQUIRE(3 == grid.pivot.offset);
-  REQUIRE(29 == grid.pivot.last);
+  REQUIRE(6 == grid.get_first());
+  REQUIRE(3 == grid.get_offset());
+  REQUIRE(29 == grid.get_last());
 
   REQUIRE(8 == grid.map(0));
   REQUIRE(7 == grid.map(1));
@@ -261,16 +256,16 @@ TEST_CASE("Grid 4x9 BottomRight Diagonal", "[grid_4x9_bottomright_diagonal]")
 {
   Grid grid;
   REQUIRE(grid.setup(36, 4, BottomRight, Diagonal));
-  REQUIRE(36 == grid.length);
-  REQUIRE(4 == grid.rows);
-  REQUIRE(BottomRight == grid.origin);
-  REQUIRE(Diagonal == grid.orientation);
+  REQUIRE(36 == grid.get_length());
+  REQUIRE(4 == grid.get_rows());
+  REQUIRE(BottomRight == grid.get_origin());
+  REQUIRE(Diagonal == grid.get_orientation());
 
-  REQUIRE(9 == grid.columns);
+  REQUIRE(9 == grid.get_columns());
 
-  REQUIRE(6 == grid.pivot.first);
-  REQUIRE(3 == grid.pivot.offset);
-  REQUIRE(29 == grid.pivot.last);
+  REQUIRE(6 == grid.get_first());
+  REQUIRE(3 == grid.get_offset());
+  REQUIRE(29 == grid.get_last());
 
   REQUIRE(35 == grid.map(0));
   REQUIRE(34 == grid.map(1));
@@ -323,14 +318,12 @@ TEST_CASE("Grid 4x9 BottomRight Diagonal", "[grid_4x9_bottomright_diagonal]")
 TEST_CASE("Grid Incomplete", "[grid_incomplete]")
 {
   Grid grid_default_length;
-  REQUIRE(grid_default_length.setup(10, 4, BottomRight, Diagonal));
-  std::string input_missing_length =
-      // "length: 36\n"
-      "rows: 4\n"
-      "origin: 3\n"
-      "orientation: 2\n";
+  REQUIRE(grid_default_length.setup(10, 4));
+  std::string input_missing_half =
+      "length: 10\n"
+      "rows: 4\n";
   test_yaml_from_input(grid_default_length,
-                       input_missing_length, check_detail);
+                       input_missing_half, check_detail);
 
   Grid grid_default_rows;
   REQUIRE(grid_default_rows.setup(36, 1, BottomRight, Diagonal));
@@ -360,8 +353,9 @@ TEST_CASE("Grid Incomplete", "[grid_incomplete]")
                        input_missing_orientation, check_detail);
 
   Grid grid_default;
-  REQUIRE(grid_default.setup());
-  std::string input_missing;
+  REQUIRE(grid_default.setup(36));
+  std::string input_missing =
+      "length: 36\n";
   test_yaml_from_input(grid_default,
                        input_missing, check_detail);
 }

@@ -7,8 +7,9 @@
 
 namespace glow
 {
-  struct Frame
+  class Frame
   {
+  public:
     enum : uint8_t
     {
       LENGTH,
@@ -17,16 +18,36 @@ namespace glow
       KEY_COUNT,
     };
 
-    uint16_t length;
-    uint32_t interval;
+  private:
+    uint16_t length = 0;
+    uint32_t interval = 16;
     std::list<Layer> layers;
+    friend YAML::convert<Frame>;
+
+  public:
     bool setup()
     {
+      if (length == 0)
+      {
+        return false;
+      }
       return true;
     }
 
-    static std::string keys[KEY_COUNT];
+    bool setup(uint16_t p_length, uint32_t p_interval)
+    {
+      length = p_length;
+      interval = p_interval;
+      return setup();
+    }
 
+    uint16_t get_length() const ALWAYS_INLINE { return length; }
+    uint32_t get_interval() const ALWAYS_INLINE { return interval; }
+    size_t get_size() const ALWAYS_INLINE { return layers.size(); }
+    std::list<Layer>::const_iterator begin() const ALWAYS_INLINE { return layers.begin(); }
+    std::list<Layer>::const_iterator end() const ALWAYS_INLINE { return layers.end(); }
+
+    static std::string keys[KEY_COUNT];
     void push_back(Layer layer) ALWAYS_INLINE { layers.push_back(layer); }
   };
 } // namespace glow
