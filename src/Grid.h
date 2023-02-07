@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <string>
+#include <unordered_map>
 
 #include <yaml-cpp/yaml.h>
 #include "base.h"
@@ -14,13 +15,15 @@ namespace glow
     TopRight,
     BottomLeft,
     BottomRight,
+    ORIGIN_COUNT,
   };
 
   enum : uint16_t
   {
     Horizontal,
     Vertical,
-    Diagonal
+    Diagonal,
+    ORIENTATION_COUNT,
   };
 
   struct Pivot
@@ -66,6 +69,12 @@ namespace glow
 
     bool setup();
 
+    bool setup_length(uint16_t p_length) ALWAYS_INLINE
+    {
+      length = p_length;
+      return setup();
+    }
+
     uint16_t get_length() const ALWAYS_INLINE { return length; }
     uint16_t get_rows() const ALWAYS_INLINE { return rows; }
     uint16_t get_origin() const ALWAYS_INLINE { return origin; }
@@ -74,27 +83,6 @@ namespace glow
     uint16_t get_first() const ALWAYS_INLINE { return pivot.first; }
     uint16_t get_offset() const ALWAYS_INLINE { return pivot.offset; }
     uint16_t get_last() const ALWAYS_INLINE { return pivot.last; }
-
-    // bool set_length(uint16_t a_length) ALWAYS_INLINE
-    // {
-    //   length = a_length;
-    //   return setup();
-    // }
-    // // void set_rows(uint16_t a_rows) ALWAYS_INLINE
-    // {
-    //   rows = a_rows;
-    //   setup();
-    // }
-    // void set_origin(uint16_t a_origin) ALWAYS_INLINE
-    // {
-    //   origin = a_origin;
-    //   setup();
-    // }
-    // void set_orientation(uint16_t a_orientation) ALWAYS_INLINE
-    // {
-    //   orientation = a_orientation;
-    //   setup();
-    // }
 
     Coordinates map_coordinates(uint16_t offset)
     {
@@ -124,6 +112,34 @@ namespace glow
     }
 
     static std::string keys[KEY_COUNT];
+    static std::string origin_keys[ORIGIN_COUNT];
+    static std::string orientation_keys[ORIENTATION_COUNT];
+    static std::unordered_map<std::string, uint16_t> origin_map;
+    static std::unordered_map<std::string, uint16_t> orientation_map;
+
+    static bool match(
+        std::string key,
+        std::unordered_map<std::string, uint16_t> lookup,
+        uint16_t &matched)
+    {
+      auto iter = lookup.find(key);
+      if (iter == lookup.end())
+      {
+        return false;
+      }
+      matched = (uint16_t)iter->second;
+      return true;
+    }
+
+    static bool match_origin(std::string key, uint16_t &matched)
+    {
+      return match(key, origin_map, matched);
+    }
+    static bool match_orientation(std::string key, uint16_t &matched)
+    {
+      return match(key, orientation_map, matched);
+    }
+
     friend YAML::convert<Grid>;
   };
 }
@@ -140,8 +156,12 @@ namespace YAML
       Node node;
       node[Grid::keys[Grid::LENGTH]] = grid.length;
       node[Grid::keys[Grid::ROWS]] = grid.rows;
-      node[Grid::keys[Grid::ORIGIN]] = grid.origin;
-      node[Grid::keys[Grid::ORIENTATION]] = grid.orientation;
+      // node[Grid::keys[Grid::ORIGIN]] = grid.origin;
+      // node[Grid::keys[Grid::ORIENTATION]] = grid.orientation;
+      node[Grid::keys[Grid::ORIGIN]] =
+          Grid::origin_keys[grid.origin];
+      node[Grid::keys[Grid::ORIENTATION]] =
+          Grid::orientation_keys[grid.orientation];
       return node;
     }
 
@@ -152,6 +172,8 @@ namespace YAML
         grid.setup();
         return false;
       }
+
+      uint16_t matched;
 
       for (auto key = 0; key < Grid::KEY_COUNT; ++key)
       {
@@ -170,10 +192,16 @@ namespace YAML
           grid.rows = item.as<uint16_t>();
           break;
         case Grid::ORIGIN:
-          grid.origin = item.as<uint16_t>();
+          if (Grid::match_origin(item.as<std::string>(), matched))
+          {
+            grid.origin = matched;
+          }
           break;
         case Grid::ORIENTATION:
-          grid.orientation = item.as<uint16_t>();
+          if (Grid::match_orientation(item.as<std::string>(), matched))
+          {
+            grid.orientation = matched;
+          }
           break;
         }
       }

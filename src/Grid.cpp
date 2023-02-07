@@ -9,6 +9,32 @@ namespace glow
       "orientation",
   };
 
+  std::string Grid::origin_keys[ORIGIN_COUNT] = {
+      "top left",
+      "top right",
+      "bottom left",
+      "bottom right",
+  };
+
+  std::unordered_map<std::string, uint16_t> Grid::origin_map = {
+      {origin_keys[TopLeft], TopLeft},
+      {origin_keys[TopRight], TopRight},
+      {origin_keys[BottomLeft], BottomLeft},
+      {origin_keys[BottomRight], BottomRight},
+  };
+
+  std::string Grid::orientation_keys[ORIENTATION_COUNT] = {
+      "horizontal",
+      "vertical",
+      "diagonal",
+  };
+
+  std::unordered_map<std::string, uint16_t> Grid::orientation_map = {
+      {orientation_keys[Horizontal], Horizontal},
+      {orientation_keys[Vertical], Vertical},
+      {orientation_keys[Diagonal], Diagonal},
+  };
+
   bool Grid::setup()
   {
     if (length == 0)
