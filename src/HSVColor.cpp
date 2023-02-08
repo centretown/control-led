@@ -14,11 +14,6 @@ namespace glow
       "blue",
   };
 
-  // HSVColor::HSVColor(float f_hue, float f_saturation, float f_value)
-  // {
-  //   from_color_wheel(f_hue, f_saturation, f_value);
-  // }
-
   Color HSVColor::to_rgb()
   {
     // while (hue > hue_limit)
@@ -101,7 +96,7 @@ namespace glow
 
     const uint8_t primary = std::max(red, std::max(green, blue));
     const uint8_t color_range = primary -
-                                 std::min(red, std::min(green, blue));
+                                std::min(red, std::min(green, blue));
     hue = 0;
     if (color_range != 0)
     {
@@ -124,4 +119,6 @@ namespace glow
     saturation = static_cast<uint8_t>(sat);
     value = static_cast<uint8_t>(primary);
   }
+
+
 } // namespace name

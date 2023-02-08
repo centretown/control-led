@@ -32,6 +32,8 @@ add_library(GlowLib
   src/Layer.cpp
   src/Frame.h
   src/Frame.cpp
+  src/Crayons.h
+  src/Crayons.cpp
 )
 
 add_executable(glow

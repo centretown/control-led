@@ -1,4 +1,5 @@
 #pragma once
+#include <unordered_map>
 
 #include <yaml-cpp/yaml.h>
 
@@ -49,7 +50,7 @@ namespace glow
         uint8_t value;
       };
 
-      uint32_t raw_32 = 0;
+      uint32_t raw_32 = 0xff000000;
     };
 
     HSVColor() ALWAYS_INLINE : hue(0), saturation(0), value(255) {}

@@ -13,7 +13,7 @@ using namespace glow;
 
 void check_detail(const Frame &original, const Frame &derived)
 {
-  check_frame_detail(original,derived);
+  check_frame_detail(original, derived);
 }
 
 TEST_CASE("Frame Basic", "frame_basic")
