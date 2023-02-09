@@ -4,7 +4,11 @@ add_executable(test_hsvcolor test_hsvcolor.cpp)
 add_executable(test_chroma test_chroma.cpp)
 add_executable(test_layer test_layer.cpp)
 add_executable(test_frame test_frame.cpp)
-add_executable(test_build_crayons test_build_crayons.cpp)
+add_executable(test_build_palette
+  test_build_palette.cpp
+  ../src/palette_builder.h
+  ../src/palette_builder.cpp
+)
 
 include_directories(
   ${yaml-cpp_INCLUDE_DIRS}
@@ -41,7 +45,7 @@ target_link_libraries(test_chroma PRIVATE
   GlowLib
 )
 
-target_link_libraries(test_build_crayons PRIVATE
+target_link_libraries(test_build_palette PRIVATE
   ${yaml-cpp_LIBRARIES}
   ${catch2_LIBRARIES}
   GlowLib
@@ -54,4 +58,4 @@ add_test(NAME CHROMA COMMAND test_chroma) # Command can be a target
 add_test(NAME LAYER COMMAND test_layer) # Command can be a target
 add_test(NAME FRAME COMMAND test_frame) # Command can be a target
 add_test(NAME GRID COMMAND test_grid) # Command can be a target
-add_test(NAME CRAYONS COMMAND test_build_crayons) # Command can be a target
+add_test(NAME PALETTE COMMAND test_build_palette) # Command can be a target

@@ -1,8 +1,10 @@
 #pragma once
 
-#include <stdint.h>
 #include <string>
+
+#ifndef USE_ESPHOME
 #include <yaml-cpp/yaml.h>
+#endif
 
 #include "base.h"
 #include "Grid.h"
@@ -12,24 +14,12 @@ namespace glow
 {
   class Layer
   {
-  public:
-    enum : uint8_t
-    {
-      LENGTH,
-      BEGIN,
-      END,
-      GRID,
-      CHROMA,
-      KEY_COUNT,
-    };
-
   private:
     uint16_t length = 0;
     uint16_t begin = 0;
     uint16_t end = 10;
     Grid grid;
     Chroma chroma;
-    friend YAML::convert<Layer>;
 
   public:
     uint16_t get_length() const ALWAYS_INLINE { return length; }
@@ -116,10 +106,24 @@ namespace glow
       chroma.update_hue();
     }
 
+    enum : uint8_t
+    {
+      LENGTH,
+      BEGIN,
+      END,
+      GRID,
+      CHROMA,
+      KEY_COUNT,
+    };
+
     static std::string keys[KEY_COUNT];
+#ifndef USE_ESPHOME
+    friend YAML::convert<Layer>;
+#endif
   };
 } // namespace glow
 
+#ifndef USE_ESPHOME
 namespace YAML
 {
   using glow::Layer;
@@ -177,3 +181,4 @@ namespace YAML
     }
   };
 }
+#endif

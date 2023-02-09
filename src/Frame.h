@@ -1,6 +1,9 @@
 #pragma once
 #include <list>
+
+#ifndef USE_ESPHOME
 #include <yaml-cpp/yaml.h>
+#endif
 
 #include "base.h"
 #include "Layer.h"
@@ -9,20 +12,10 @@ namespace glow
 {
   class Frame
   {
-  public:
-    enum : uint8_t
-    {
-      LENGTH,
-      INTERVAL,
-      LAYERS,
-      KEY_COUNT,
-    };
-
   private:
     uint16_t length = 0;
     uint32_t interval = 16;
     std::list<Layer> layers;
-    friend YAML::convert<Frame>;
 
   public:
     bool setup()
@@ -43,14 +36,26 @@ namespace glow
 
     uint16_t get_length() const ALWAYS_INLINE { return length; }
     uint32_t get_interval() const ALWAYS_INLINE { return interval; }
+
     size_t get_size() const ALWAYS_INLINE { return layers.size(); }
     std::list<Layer>::const_iterator begin() const ALWAYS_INLINE { return layers.begin(); }
     std::list<Layer>::const_iterator end() const ALWAYS_INLINE { return layers.end(); }
-
-    static std::string keys[KEY_COUNT];
     void push_back(Layer layer) ALWAYS_INLINE { layers.push_back(layer); }
+
+    enum : uint8_t
+    {
+      LENGTH,
+      INTERVAL,
+      LAYERS,
+      KEY_COUNT,
+    };
+    static std::string keys[KEY_COUNT];
+#ifndef USE_ESPHOME
+    friend YAML::convert<Frame>;
+#endif
   };
 } // namespace glow
+#ifndef USE_ESPHOME
 
 namespace YAML
 {
@@ -66,10 +71,9 @@ namespace YAML
       node[Frame::keys[Frame::LENGTH]] = frame.length;
       node[Frame::keys[Frame::INTERVAL]] = frame.interval;
       Node list = node[Frame::keys[Frame::LAYERS]];
-      for (auto iter = frame.layers.begin();
-           iter != frame.layers.end(); ++iter)
+      for (auto item : frame.layers)
       {
-        list.push_back(*iter);
+        list.push_back(item);
       }
       return node;
     }
@@ -88,13 +92,13 @@ namespace YAML
           node[Frame::keys[Frame::INTERVAL]].as<uint32_t>();
 
       Node layers = node[Frame::keys[Frame::LAYERS]];
-      for (auto iter = layers.begin(); iter != layers.end(); ++iter)
+      for (auto item : layers)
       {
-        Node layer = *iter;
-        frame.push_back(layer.as<Layer>());
+        frame.push_back(item.as<Layer>());
       }
 
       return frame.setup();
     }
   };
 }
+#endif

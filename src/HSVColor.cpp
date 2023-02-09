@@ -2,7 +2,7 @@
 
 namespace glow
 {
-  std::string HSVColor::keys[3] = {
+  std::string HSVColor::keys[HSVColor::KEY_COUNT] = {
       "hue",
       "saturation",
       "value",
@@ -16,11 +16,6 @@ namespace glow
 
   Color HSVColor::to_rgb()
   {
-    // while (hue > hue_limit)
-    // {
-    //   hue -= hue_limit;
-    // }
-
     uint8_t red = 0;
     uint8_t green = 0;
     uint8_t blue = 0;
@@ -120,5 +115,4 @@ namespace glow
     value = static_cast<uint8_t>(primary);
   }
 
-
-} // namespace name
+} // namespace glow

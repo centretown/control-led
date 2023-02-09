@@ -32,12 +32,14 @@ add_library(GlowLib
   src/Layer.cpp
   src/Frame.h
   src/Frame.cpp
-  src/Crayons.h
-  src/Crayons.cpp
+  src/Palette.h
+  src/Palette.cpp
 )
 
 add_executable(glow
   src/glow.cpp
+  src/palette_builder.h
+  src/palette_builder.cpp
 )
 
 # method 1 conan.cmake generator

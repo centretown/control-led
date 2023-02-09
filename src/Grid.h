@@ -4,7 +4,10 @@
 #include <string>
 #include <unordered_map>
 
+#ifndef USE_ESPHOME
 #include <yaml-cpp/yaml.h>
+#endif
+
 #include "base.h"
 
 namespace glow
@@ -41,16 +44,6 @@ namespace glow
 
   class Grid
   {
-  public:
-    enum : uint8_t
-    {
-      LENGTH,
-      ROWS,
-      ORIGIN,
-      ORIENTATION,
-      KEY_COUNT,
-    };
-
   private:
     uint16_t length = 0;
     uint16_t rows = 1;
@@ -111,6 +104,15 @@ namespace glow
              p.rem * (columns - 1);
     }
 
+    enum : uint8_t
+    {
+      LENGTH,
+      ROWS,
+      ORIGIN,
+      ORIENTATION,
+      KEY_COUNT,
+    };
+
     static std::string keys[KEY_COUNT];
     static std::string origin_keys[ORIGIN_COUNT];
     static std::string orientation_keys[ORIENTATION_COUNT];
@@ -140,9 +142,12 @@ namespace glow
       return match(key, orientation_map, matched);
     }
 
+#ifndef USE_ESPHOME
     friend YAML::convert<Grid>;
+#endif
   };
 }
+#ifndef USE_ESPHOME
 
 namespace YAML
 {
@@ -210,3 +215,4 @@ namespace YAML
     }
   };
 }
+#endif

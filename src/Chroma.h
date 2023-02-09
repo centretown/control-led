@@ -2,7 +2,10 @@
 
 #include <stdint.h>
 #include <string>
+
+#ifndef USE_ESPHOME
 #include <yaml-cpp/yaml.h>
+#endif
 
 #include "esphome/core/color.h"
 #include "esphome/components/light/esp_hsv_color.h"
@@ -21,16 +24,6 @@ namespace glow
 
   class Chroma
   {
-  public:
-    enum : uint8_t
-    {
-      LENGTH,
-      SOURCE,
-      TARGET,
-      DELTA,
-      KEY_COUNT,
-    };
-
   private:
     uint16_t length = 0;
     HSVColor hsv_source = source_default;
@@ -40,7 +33,6 @@ namespace glow
     Color rgb_source = rgb_source_default;
     Color rgb_target = rgb_target_default;
     float gradient_amount = 0.0;
-    friend YAML::convert<Chroma>;
 
   public:
     // bool setup(uint16_t p_length, int16_t p_delta,
@@ -57,6 +49,12 @@ namespace glow
                int16_t p_delta = 0);
 
     bool setup();
+
+    bool setup_length(uint16_t p_length)
+    {
+      length = p_length;
+      return setup();
+    }
 
     uint16_t get_length() const ALWAYS_INLINE { return length; }
     int16_t get_delta() const ALWAYS_INLINE { return delta; }
@@ -137,10 +135,22 @@ namespace glow
     }
 
   public:
+    enum : uint8_t
+    {
+      LENGTH,
+      SOURCE,
+      TARGET,
+      DELTA,
+      KEY_COUNT,
+    };
+
     static std::string keys[KEY_COUNT];
+#ifndef USE_ESPHOME
+    friend YAML::convert<Chroma>;
+#endif
   };
 }
-
+#ifndef USE_ESPHOME
 namespace YAML
 {
   using glow::Chroma;
@@ -194,3 +204,4 @@ namespace YAML
     }
   };
 }
+#endif

@@ -1,7 +1,9 @@
 #pragma once
 #include <unordered_map>
 
+#ifndef USE_ESPHOME
 #include <yaml-cpp/yaml.h>
+#endif
 
 #include "base.h"
 #include "esphome/core/color.h"
@@ -90,11 +92,11 @@ namespace glow
 
     void to_color_wheel(float &f_hue, float &f_saturation, float &f_value) const
     {
-      f_hue = static_cast<float>(hue) * 360 /
+      f_hue = static_cast<float>(hue) * 360.0f /
               static_cast<float>(hue_limit);
-      f_saturation = static_cast<float>(saturation) * 100.0 /
+      f_saturation = static_cast<float>(saturation) * 100.0f /
                      static_cast<float>(byte_limit);
-      f_value = static_cast<float>(value) * 100.0 /
+      f_value = static_cast<float>(value) * 100.0f /
                 static_cast<float>(byte_limit);
       f_hue = round(f_hue);
       f_saturation = round(f_saturation);
@@ -120,16 +122,12 @@ namespace glow
       return (a.raw_32 == b.raw_32);
     }
 
-    static std::string keys[3];
+    static std::string keys[KEY_COUNT];
     static std::string rgb_keys[3];
   };
-
-  // ESPHSVColor color_to_hsv(Color color);
-  // uint32_t hsv_to_u32(ESPHSVColor hsv);
-  // ESPHSVColor u32_to_hsv(uint32_t hsv32);
-
 }
 
+#ifndef USE_ESPHOME
 namespace YAML
 {
   using glow::BLUE;
@@ -216,3 +214,4 @@ namespace YAML
     }
   };
 }
+#endif
