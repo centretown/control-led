@@ -2,19 +2,24 @@ cmake_minimum_required(VERSION 3.25)
 
 project(
   Glow
-  VERSION 0.3
+  VERSION 0.4
   LANGUAGES CXX)
 
-configure_file(GlowConfig.h.in GlowConfig.h)
+configure_file(GlowConfig.h.in ../src/GlowConfig.h)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 
+# remove yaml for micro controllers
+# add_definitions("-std=c++14 -DSTRIP_YAML")
+
+# include yaml
 add_definitions("-std=c++14")
 
 include(CTest)
 
 include_directories(src)
+
 add_library(GlowLib
   src/esphome/components/light/esp_hsv_color.cpp
   src/esphome/components/light/esp_hsv_color.h
@@ -32,8 +37,12 @@ add_library(GlowLib
   src/Layer.cpp
   src/Frame.h
   src/Frame.cpp
+  src/PaletteColor.h
+  src/PaletteColor.cpp
   src/Palette.h
   src/Palette.cpp
+  src/Filer.h
+  src/DisplayANSI.h
 )
 
 add_executable(glow

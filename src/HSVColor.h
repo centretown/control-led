@@ -1,7 +1,7 @@
 #pragma once
 #include <unordered_map>
 
-#ifndef USE_ESPHOME
+#ifndef STRIP_YAML
 #include <yaml-cpp/yaml.h>
 #endif
 
@@ -35,14 +35,6 @@ namespace glow
 
   struct HSVColor
   {
-    enum : uint8_t
-    {
-      HUE,
-      SATURATION,
-      VALUE,
-      KEY_COUNT,
-    };
-
     union
     {
       struct
@@ -54,20 +46,6 @@ namespace glow
 
       uint32_t raw_32 = 0xff000000;
     };
-
-    HSVColor() ALWAYS_INLINE : hue(0), saturation(0), value(255) {}
-
-    HSVColor(uint32_t raw_32) ALWAYS_INLINE : raw_32(raw_32) {}
-
-    HSVColor(uint16_t hue, uint8_t saturation, uint8_t value) ALWAYS_INLINE
-        : hue(hue),
-          saturation(saturation),
-          value(value) {}
-
-    HSVColor(ESPHSVColor esph_hsv) ALWAYS_INLINE
-    {
-      from_esp_hsv_color(esph_hsv);
-    }
 
     bool setup()
     {
@@ -92,15 +70,12 @@ namespace glow
 
     void to_color_wheel(float &f_hue, float &f_saturation, float &f_value) const
     {
-      f_hue = static_cast<float>(hue) * 360.0f /
-              static_cast<float>(hue_limit);
-      f_saturation = static_cast<float>(saturation) * 100.0f /
-                     static_cast<float>(byte_limit);
-      f_value = static_cast<float>(value) * 100.0f /
-                static_cast<float>(byte_limit);
-      f_hue = round(f_hue);
-      f_saturation = round(f_saturation);
-      f_value = round(f_value);
+      f_hue = round(static_cast<float>(hue) * 360.0f /
+                    static_cast<float>(hue_limit));
+      f_saturation = round(static_cast<float>(saturation) * 100.0f /
+                           static_cast<float>(byte_limit));
+      f_value = round(static_cast<float>(value) * 100.0f /
+                      static_cast<float>(byte_limit));
     }
 
     void from_color_wheel(float f_hue, float f_saturation, float f_value)
@@ -109,25 +84,28 @@ namespace glow
       f_saturation = round(f_saturation);
       f_value = round(f_value);
 
-      hue = static_cast<uint16_t>(f_hue / 360.0 *
+      hue = static_cast<uint16_t>(f_hue / 360.0f *
                                   static_cast<float>(hue_limit));
-      saturation = static_cast<uint8_t>(f_saturation / 100.0 *
+      saturation = static_cast<uint8_t>(f_saturation / 100.0f *
                                         static_cast<float>(byte_limit));
-      value = static_cast<uint8_t>(f_value / 100.0 *
+      value = static_cast<uint8_t>(f_value / 100.0f *
                                    static_cast<float>(byte_limit));
     }
 
-    friend bool operator==(const HSVColor &a, const HSVColor &b) ALWAYS_INLINE
+    enum : uint8_t
     {
-      return (a.raw_32 == b.raw_32);
-    }
+      HUE,
+      SATURATION,
+      VALUE,
+      KEY_COUNT,
+    };
 
     static std::string keys[KEY_COUNT];
     static std::string rgb_keys[3];
   };
 }
 
-#ifndef USE_ESPHOME
+#ifndef STRIP_YAML
 namespace YAML
 {
   using glow::BLUE;

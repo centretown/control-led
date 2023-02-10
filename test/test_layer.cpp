@@ -4,6 +4,7 @@
 #include <string>
 
 #include "../src/Layer.h"
+#include "../src/Filer.h"
 #include "test_yaml.h"
 #include "check_layer_detail.h"
 
@@ -50,4 +51,10 @@ TEST_CASE("Layer Basic", "layer_basic")
   Layer layer;
   layer.setup(20, 5, 15, grid, chroma);
   test_yaml(layer, input, check_detail);
+
+  std::string file_name = "layer.yaml";
+  save_yaml(file_name, layer);
+
+  // test/frame.yaml
+  test_yaml_from_file(layer, file_name, check_detail);
 }

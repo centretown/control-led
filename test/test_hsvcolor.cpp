@@ -15,7 +15,7 @@ void test_yaml(HSVColor &hsv, std::string input)
   YAML::Node node = YAML::convert<HSVColor>::encode(hsv);
   YAML::Emitter out;
   out << node;
-  std::cout << out.c_str() << std::endl;
+  std::cout << out.c_str() << '\n';
 
   HSVColor hsv_from_node;
   YAML::convert<HSVColor>::decode(node, hsv_from_node);
@@ -26,17 +26,17 @@ void test_yaml(HSVColor &hsv, std::string input)
   YAML::Emitter out_a;
   YAML::Node node_a = YAML::convert<HSVColor>::encode(hsv_from_node);
   out_a << node_a;
-  std::cout << out.c_str() << std::endl;
+  std::cout << out.c_str() << '\n';
 
    std::cout << "\tHSV: (" << hsv.hue << ", "
               << (uint16_t)hsv.saturation << ", "
               << (uint16_t)hsv.value << ")"
-              << std::endl;
+              << '\n';
 
    std::cout << "\tHSV: (" << hsv_from_node.hue << ", "
               << (uint16_t)hsv_from_node.saturation << ", "
               << (uint16_t)hsv_from_node.value << ")"
-              << std::endl;
+              << '\n';
 
   // REQUIRE((hue_diff >= -1 && hue_diff <= 1));
   // REQUIRE((sat_diff >= -1 && sat_diff <= 1));
@@ -60,7 +60,7 @@ void test_yaml(Color &color, std::string input)
   YAML::Node node = YAML::convert<Color>::encode(color);
   YAML::Emitter out;
   out << node;
-  std::cout << out.c_str() << std::endl;
+  std::cout << out.c_str() << '\n';
 
   Color color_from_node;
   YAML::convert<Color>::decode(node, color_from_node);
@@ -118,21 +118,21 @@ TEST_CASE("HSVColor Basic", "[hsvcolor_basic]")
     // Verified at RabidTables
     // https://www.rapidtables.com/convert/color/rgb-to-hsv.html
 
-    std::cout << std::endl
+    std::cout << '\n'
               << "\tRGB: (" << (uint16_t)color.red << ", "
               << (uint16_t)color.green << ", "
               << (uint16_t)color.blue << ")"
-              << std::endl;
+              << '\n';
 
     std::cout << "\trgb: (" << (uint16_t)derived.red << ", "
               << (uint16_t)derived.green << ", "
               << (uint16_t)derived.blue << ")"
-              << std::endl;
+              << '\n';
 
     std::cout << "\tHSV: (" << hsv.hue << ", "
               << (uint16_t)hsv.saturation << ", "
               << (uint16_t)hsv.value << ")"
-              << std::endl;
+              << '\n';
 
     REQUIRE(color.raw_32 == derived.raw_32);
   }

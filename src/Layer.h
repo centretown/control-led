@@ -2,7 +2,7 @@
 
 #include <string>
 
-#ifndef USE_ESPHOME
+#ifndef STRIP_YAML
 #include <yaml-cpp/yaml.h>
 #endif
 
@@ -117,13 +117,13 @@ namespace glow
     };
 
     static std::string keys[KEY_COUNT];
-#ifndef USE_ESPHOME
+#ifndef STRIP_YAML
     friend YAML::convert<Layer>;
 #endif
   };
 } // namespace glow
 
-#ifndef USE_ESPHOME
+#ifndef STRIP_YAML
 namespace YAML
 {
   using glow::Layer;

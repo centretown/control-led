@@ -2,15 +2,23 @@
 
 namespace glow
 {
-  std::string PaletteColor::keys[PaletteColor::KEY_COUNT] = {
-      "name",
-      "rgb",
-      "hsv",
-  };
 
   std::string Palette::keys[Palette::KEY_COUNT] = {
-      "name",
-      "rgb",
-      "hsv",
+      "title",
+      "notes",
+      "colors",
   };
+  
+  bool Palette::find_color(std::string color_name, PaletteColor &found)
+  {
+    auto item = colors.find(color_name);
+    if (item == colors.end())
+    {
+      return false;
+    }
+
+    found = item->second;
+    return true;
+  }
+
 }

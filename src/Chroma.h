@@ -3,14 +3,9 @@
 #include <stdint.h>
 #include <string>
 
-#ifndef USE_ESPHOME
+#ifndef STRIP_YAML
 #include <yaml-cpp/yaml.h>
 #endif
-
-#include "esphome/core/color.h"
-#include "esphome/components/light/esp_hsv_color.h"
-using esphome::Color;
-using esphome::light::ESPHSVColor;
 
 #include "base.h"
 #include "HSVColor.h"
@@ -64,37 +59,6 @@ namespace glow
     Color get_rgb_target() const ALWAYS_INLINE { return rgb_target; }
     float get_gradient_amount() const ALWAYS_INLINE { return gradient_amount; }
 
-    // bool set_length(uint16_t a_length) ALWAYS_INLINE
-    // {
-    //   length = a_length;
-    //   return setup();
-    // }
-    // void set_delta(int16_t a_delta) ALWAYS_INLINE
-    // {
-    //   delta = a_delta;
-    //   setup();
-    // }
-    // void set_hsv_source(HSVColor a_source) ALWAYS_INLINE
-    // {
-    //   hsv_source = a_source;
-    //   setup();
-    // }
-    // void set_hsv_target(HSVColor a_target) ALWAYS_INLINE
-    // {
-    //   hsv_target = a_target;
-    //   setup();
-    // }
-    // void set_rgb_source(Color a_source) ALWAYS_INLINE
-    // {
-    //   rgb_source = a_source;
-    //   setup();
-    // }
-    // void set_rgb_target(Color a_target) ALWAYS_INLINE
-    // {
-    //   rgb_target = a_target;
-    //   setup();
-    // }
-
     Color map(uint16_t index)
     {
       return step_gradient(static_cast<float>(index) * gradient_amount);
@@ -145,12 +109,12 @@ namespace glow
     };
 
     static std::string keys[KEY_COUNT];
-#ifndef USE_ESPHOME
+#ifndef STRIP_YAML
     friend YAML::convert<Chroma>;
 #endif
   };
 }
-#ifndef USE_ESPHOME
+#ifndef STRIP_YAML
 namespace YAML
 {
   using glow::Chroma;

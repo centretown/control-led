@@ -11,13 +11,13 @@ void test_yaml_from_struct(
     const GLOW_STRUCT &glow_struct,
     void (*check_detail)(const GLOW_STRUCT &a, const GLOW_STRUCT &b))
 {
-  std::cout << std::endl
-            << "YAML from struct" << std::endl;
+  std::cout << '\n'
+            << "YAML from struct" << '\n';
 
   YAML::Node node = YAML::convert<GLOW_STRUCT>::encode(glow_struct);
   YAML::Emitter out;
   out << node;
-  std::cout << out.c_str() << std::endl;
+  std::cout << out.c_str() << '\n';
 
   GLOW_STRUCT from_node;
   YAML::convert<GLOW_STRUCT>::decode(node, from_node);
@@ -30,8 +30,8 @@ void test_yaml_from_input(
     std::string input,
     void (*check_detail)(const GLOW_STRUCT &a, const GLOW_STRUCT &b))
 {
-  std::cout << std::endl
-            << "YAML from input" << std::endl;
+  std::cout << '\n'
+            << "YAML from input" << '\n';
 
   YAML::Node input_node = YAML::Load(input);
   GLOW_STRUCT from_input;
@@ -39,12 +39,12 @@ void test_yaml_from_input(
 
   YAML::Emitter out;
   out << input_node;
-  std::cout << out.c_str() << std::endl;
+  std::cout << out.c_str() << '\n';
 
   YAML::Node from_node = YAML::convert<GLOW_STRUCT>::encode(from_input);
   YAML::Emitter out_a;
   out_a << from_node;
-  std::cout << out_a.c_str() << std::endl;
+  std::cout << out_a.c_str() << '\n';
   check_detail(glow_struct, from_input);
 }
 
@@ -58,12 +58,12 @@ void test_yaml_from_file(const GLOW_STRUCT &glow_struct, std::string file_name,
 
   YAML::Emitter out;
   out << input_node;
-  std::cout << out.c_str() << std::endl;
+  std::cout << out.c_str() << '\n';
 
   YAML::Node from_node = YAML::convert<GLOW_STRUCT>::encode(from_input);
   YAML::Emitter out_a;
   out_a << from_node;
-  std::cout << out_a.c_str() << std::endl;
+  std::cout << out_a.c_str() << '\n';
   check_detail(glow_struct, from_input);
 }
 

@@ -5,6 +5,8 @@
 #include <array>
 
 #include "../src/Frame.h"
+#include "../src/Filer.h"
+
 using namespace glow;
 
 #include "test_yaml.h"
@@ -42,14 +44,17 @@ TEST_CASE("Frame Basic", "frame_basic")
       layer,
   };
 
-  Layer &layer4 = layers[4];
-  layer4.set_length(16);
+  layers[4].set_length(16);
 
   for (const auto &layer : layers)
   {
     frame.push_back(layer);
   }
   test_yaml(frame, frame_data, check_detail);
+
+  std::string file_name = "frame.yaml";
+  save_yaml(file_name, frame);
+
   // test/frame.yaml
-  test_yaml_from_file(frame, "../../test/frame.yaml", check_detail);
+  test_yaml_from_file(frame, file_name, check_detail);
 }

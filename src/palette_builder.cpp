@@ -168,19 +168,23 @@ namespace glow
       {"gray", {"", Color(0x8b8680)}},
       {"blue-gray", {"", Color(0xc8c8cd)}},
   };
-#else
-  std::map<std::string, Palette> palette;
-#endif
+  // #else
+  // std::map<std::string, Palette> palette{};
 
   std::map<std::string, PaletteColor> &
   build_palette()
   {
+    float hue{}, saturation{}, value{};
     for (auto item : palette)
     {
       item.second.name = item.first;
       item.second.hsv.from_rgb(item.second.rgb);
+      item.second.hsv.to_color_wheel(hue, saturation, value);
+      item.second.hsv.from_color_wheel(hue, saturation, value);
       palette[item.first] = item.second;
     }
     return palette;
   }
+#endif
+
 }

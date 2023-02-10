@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 
-#ifndef USE_ESPHOME
+#ifndef STRIP_YAML
 #include <yaml-cpp/yaml.h>
 #endif
 
@@ -142,12 +142,12 @@ namespace glow
       return match(key, orientation_map, matched);
     }
 
-#ifndef USE_ESPHOME
+#ifndef STRIP_YAML
     friend YAML::convert<Grid>;
 #endif
   };
 }
-#ifndef USE_ESPHOME
+#ifndef STRIP_YAML
 
 namespace YAML
 {

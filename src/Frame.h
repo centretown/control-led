@@ -1,7 +1,7 @@
 #pragma once
 #include <list>
 
-#ifndef USE_ESPHOME
+#ifndef STRIP_YAML
 #include <yaml-cpp/yaml.h>
 #endif
 
@@ -50,13 +50,13 @@ namespace glow
       KEY_COUNT,
     };
     static std::string keys[KEY_COUNT];
-#ifndef USE_ESPHOME
+#ifndef STRIP_YAML
     friend YAML::convert<Frame>;
 #endif
   };
 } // namespace glow
-#ifndef USE_ESPHOME
 
+#ifndef STRIP_YAML
 namespace YAML
 {
   using glow::Frame;
