@@ -2,12 +2,15 @@
 
 namespace glow
 {
+#ifndef STRIP_YAML
   std::string Chroma::keys[Chroma::KEY_COUNT] = {
       "length",
       "source",
       "target",
       "delta",
   };
+  Palette Chroma::palette{};
+#endif
 
   // bool Chroma::setup(uint16_t p_length,
   //                    int16_t p_delta,

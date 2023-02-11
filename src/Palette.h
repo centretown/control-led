@@ -6,12 +6,11 @@
 #include <yaml-cpp/yaml.h>
 #endif
 
-// #include "HSVColor.h"
-// #include "Chroma.h"
 #include "PaletteColor.h"
 
 namespace glow
 {
+  static HSVColor blank{};
   struct Palette
   {
     enum : uint8_t
@@ -26,8 +25,20 @@ namespace glow
     std::map<std::string, PaletteColor> colors{};
 
     bool find_color(std::string color_name, PaletteColor &found);
+
+    HSVColor lookup(std::string color_name)
+    {
+      PaletteColor found;
+      if (find_color(color_name, found))
+      {
+        return found.hsv;
+      }
+      return blank;
+    }
+
     static std::string keys[KEY_COUNT];
   };
+
 }
 
 #ifndef STRIP_YAML

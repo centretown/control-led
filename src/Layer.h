@@ -106,6 +106,7 @@ namespace glow
       chroma.update_hue();
     }
 
+#ifndef STRIP_YAML
     enum : uint8_t
     {
       LENGTH,
@@ -117,7 +118,6 @@ namespace glow
     };
 
     static std::string keys[KEY_COUNT];
-#ifndef STRIP_YAML
     friend YAML::convert<Layer>;
 #endif
   };

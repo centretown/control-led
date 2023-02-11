@@ -9,6 +9,8 @@
 
 #include "base.h"
 #include "HSVColor.h"
+#include "Palette.h"
+#include "Filer.h"
 
 namespace glow
 {
@@ -30,9 +32,6 @@ namespace glow
     float gradient_amount = 0.0;
 
   public:
-    // bool setup(uint16_t p_length, int16_t p_delta,
-    //            Color p_source, Color p_target);
-
     bool setup(uint16_t p_length,
                HSVColor p_source = source_default,
                HSVColor p_target = target_default,
@@ -98,6 +97,7 @@ namespace glow
       return rgb_source.blue + static_cast<uint8_t>(shift_amount);
     }
 
+#ifndef STRIP_YAML
   public:
     enum : uint8_t
     {
@@ -109,11 +109,18 @@ namespace glow
     };
 
     static std::string keys[KEY_COUNT];
-#ifndef STRIP_YAML
     friend YAML::convert<Chroma>;
+    static bool load_palette(std::string file_name)
+    {
+      return load_yaml(file_name, palette);
+    }
+
+  private:
+    static Palette palette;
 #endif
   };
 }
+
 #ifndef STRIP_YAML
 namespace YAML
 {
@@ -148,6 +155,7 @@ namespace YAML
           continue;
         }
 
+        std::string name{};
         switch (key)
         {
         case Chroma::LENGTH:
@@ -157,10 +165,22 @@ namespace YAML
           chroma.delta = item.as<int16_t>();
           break;
         case Chroma::SOURCE:
-          chroma.hsv_source = item.as<HSVColor>();
+          if (item.IsMap())
+          {
+            chroma.hsv_source = item.as<HSVColor>();
+            break;
+          }
+          name = item.as<std::string>();
+          chroma.hsv_source = chroma.palette.lookup(name);
           break;
         case Chroma::TARGET:
-          chroma.hsv_target = item.as<HSVColor>();
+          if (item.IsMap())
+          {
+            chroma.hsv_target = item.as<HSVColor>();
+            break;
+          }
+          name = item.as<std::string>();
+          chroma.hsv_target = chroma.palette.lookup(name);
           break;
         }
       }

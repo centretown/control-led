@@ -42,6 +42,7 @@ namespace glow
     std::list<Layer>::const_iterator end() const ALWAYS_INLINE { return layers.end(); }
     void push_back(Layer layer) ALWAYS_INLINE { layers.push_back(layer); }
 
+#ifndef STRIP_YAML
     enum : uint8_t
     {
       LENGTH,
@@ -50,7 +51,6 @@ namespace glow
       KEY_COUNT,
     };
     static std::string keys[KEY_COUNT];
-#ifndef STRIP_YAML
     friend YAML::convert<Frame>;
 #endif
   };

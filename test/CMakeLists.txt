@@ -54,8 +54,8 @@ target_link_libraries(test_build_palette PRIVATE
 enable_testing()
 
 add_test(NAME HSVCOLOR COMMAND test_hsvcolor) # Command can be a target
+add_test(NAME GRID COMMAND test_grid) # Command can be a target
+add_test(NAME PALETTE COMMAND test_build_palette) # Command can be a target
 add_test(NAME CHROMA COMMAND test_chroma) # Command can be a target
 add_test(NAME LAYER COMMAND test_layer) # Command can be a target
 add_test(NAME FRAME COMMAND test_frame) # Command can be a target
-add_test(NAME GRID COMMAND test_grid) # Command can be a target
-add_test(NAME PALETTE COMMAND test_build_palette) # Command can be a target

@@ -7,7 +7,7 @@
 #endif
 
 #include "HSVColor.h"
-#include "Chroma.h"
+
 namespace glow
 {
   struct PaletteColor

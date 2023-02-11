@@ -104,6 +104,7 @@ namespace glow
              p.rem * (columns - 1);
     }
 
+#ifndef STRIP_YAML
     enum : uint8_t
     {
       LENGTH,
@@ -142,7 +143,6 @@ namespace glow
       return match(key, orientation_map, matched);
     }
 
-#ifndef STRIP_YAML
     friend YAML::convert<Grid>;
 #endif
   };

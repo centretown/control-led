@@ -23,17 +23,17 @@ bool load_yaml(const std::string file_name, GLOW_STRUCT &glow_struct)
 template <typename GLOW_STRUCT>
 bool save_yaml(const std::string file_name, const GLOW_STRUCT &glow_struct)
 {
-  std::fstream fs;
-  fs.open(file_name, std::ios_base::out);
-  if (fs.bad())
+  std::fstream yaml_stream;
+  yaml_stream.open(file_name, std::ios_base::out);
+  if (yaml_stream.bad())
   {
     return false;
   }
 
-  YAML::Node node = YAML::convert<GLOW_STRUCT>::encode(glow_struct);
   YAML::Emitter out;
+  YAML::Node node = YAML::convert<GLOW_STRUCT>::encode(glow_struct);
   out << node;
-  fs << out.c_str();
-  fs.close();
+  yaml_stream << out.c_str();
+  yaml_stream.close();
   return true;
 }

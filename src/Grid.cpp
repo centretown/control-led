@@ -2,6 +2,7 @@
 
 namespace glow
 {
+#ifndef STRIP_YAML
   std::string Grid::keys[Grid::KEY_COUNT] = {
       "length",
       "rows",
@@ -34,6 +35,7 @@ namespace glow
       {orientation_keys[Vertical], Vertical},
       {orientation_keys[Diagonal], Diagonal},
   };
+#endif
 
   bool Grid::setup()
   {

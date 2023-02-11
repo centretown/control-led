@@ -41,7 +41,10 @@ namespace glow
 
     static void at(uint16_t row, uint16_t column) ALWAYS_INLINE
     {
-      std::cout << ansi_at << row << ';' << column << 'H' << ansi_end;
+      std::cout << ansi_at
+                << row + 1 << ';'
+                << column + 1 << 'H'
+                << ansi_end;
     }
 
     static void hide_cursor() ALWAYS_INLINE

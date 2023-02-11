@@ -42,19 +42,57 @@ TEST_CASE("Layer Basic", "layer_basic")
   source.from_color_wheel(float(0), float(100), float(100));
   HSVColor target;
   target.from_color_wheel(float(0), float(50), float(50));
+
   Chroma chroma;
-  chroma.setup(20, source, target, -1);
+  REQUIRE(chroma.setup(20, source, target, -1));
 
   Grid grid;
-  grid.setup(20, 4, TopLeft, Diagonal);
+  REQUIRE(grid.setup(20, 4, TopLeft, Diagonal));
 
   Layer layer;
-  layer.setup(20, 5, 15, grid, chroma);
+  REQUIRE(layer.setup(20, 5, 15, grid, chroma));
   test_yaml(layer, input, check_detail);
 
   std::string file_name = "layer.yaml";
-  save_yaml(file_name, layer);
+  REQUIRE(save_yaml(file_name, layer));
 
   // test/frame.yaml
   test_yaml_from_file(layer, file_name, check_detail);
+}
+
+std::string file_name = "save_palette.yaml";
+
+TEST_CASE("Layer Palette", "layer_palette")
+{
+  std::string input =
+      "length: 20\n"
+      "begin: 5\n"
+      "end: 15\n"
+      "grid:\n"
+      "  length: 20\n"
+      "  rows: 4\n"
+      "  origin: top left\n"
+      "  orientation: diagonal\n"
+      "chroma:\n"
+      "  length: 20\n"
+      "  delta: -1\n"
+      "  source: apricot\n"
+      "  target: beaver\n";
+
+  HSVColor source, target;
+  // apricot
+  source.from_color_wheel(float(28), float(30), float(99));
+  // beaver
+  target.from_color_wheel(float(22), float(38), float(57));
+
+  REQUIRE(Chroma::load_palette(file_name));
+  Chroma chroma;
+  REQUIRE(chroma.setup(20, source, target, 1));
+
+  Grid grid;
+  REQUIRE(grid.setup(20, 4, TopLeft, Diagonal));
+
+  Layer layer;
+  REQUIRE(layer.setup(20, 5, 15, grid, chroma));
+  test_yaml(layer, input, check_detail);
 }

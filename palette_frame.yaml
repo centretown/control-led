@@ -1,0 +1,68 @@
+length: 20
+interval: 48
+layers:
+  - length: 20
+    begin: 5
+    end: 15
+    grid:
+      length: 20
+      rows: 1
+      origin: top left
+      orientation: horizontal
+    chroma:
+      length: 20
+      delta: 0
+      source: aquamarine
+      target: salmon
+  - length: 20
+    begin: 5
+    end: 15
+    grid:
+      length: 20
+      rows: 1
+      origin: top left
+      orientation: horizontal
+    chroma:
+      length: 20
+      delta: 0
+      source: aquamarine
+      target: salmon
+  - length: 20
+    begin: 5
+    end: 15
+    grid:
+      length: 20
+      rows: 1
+      origin: top left
+      orientation: horizontal
+    chroma:
+      length: 20
+      delta: 0
+      source: aquamarine
+      target: salmon
+  - length: 20
+    begin: 5
+    end: 15
+    grid:
+      length: 20
+      rows: 1
+      origin: top left
+      orientation: horizontal
+    chroma:
+      length: 20
+      delta: 0
+      source: aquamarine
+      target: salmon
+  - length: 16
+    begin: 5
+    end: 15
+    grid:
+      length: 16
+      rows: 1
+      origin: top left
+      orientation: horizontal
+    chroma:
+      length: 16
+      delta: 0
+      source: aquamarine
+      target: salmon
