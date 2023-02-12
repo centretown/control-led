@@ -21,8 +21,8 @@ namespace glow
     };
 
     std::string name{};
-    Color rgb{0};
-    HSVColor hsv{0};
+    Color rgb;
+    HSVColor hsv;
     static std::string keys[KEY_COUNT];
   };
 }

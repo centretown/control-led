@@ -3,8 +3,9 @@
 #include <string>
 
 #include "base.h"
-#include "esphome/core/color.h"
-using esphome::Color;
+#include "RGBColor.h"
+// #include "esphome/core/color.h"
+// using esphome::Color;
 
 namespace glow
 {

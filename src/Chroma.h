@@ -16,8 +16,8 @@ namespace glow
 {
   const HSVColor source_default = {0, 0, 0};
   const HSVColor target_default = {0, 0, 0};
-  const Color rgb_source_default = {0, 0, 0};
-  const Color rgb_target_default = {0, 0, 0};
+  const Color rgb_source_default = {0};
+  const Color rgb_target_default = {0};
 
   class Chroma
   {
@@ -75,9 +75,9 @@ namespace glow
 
     Color step_gradient(float shift_amount) ALWAYS_INLINE
     {
-      return Color(red_shift(shift_amount),
+      return Color{red_shift(shift_amount),
                    green_shift(shift_amount),
-                   blue_shift(shift_amount));
+                   blue_shift(shift_amount)};
     }
 
   private:

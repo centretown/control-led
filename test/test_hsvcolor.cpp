@@ -134,7 +134,7 @@ TEST_CASE("HSVColor Basic", "[hsvcolor_basic]")
               << (uint16_t)hsv.value << ")"
               << '\n';
 
-    REQUIRE(color.raw_32 == derived.raw_32);
+    REQUIRE(color == derived);
   }
 }
 

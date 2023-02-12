@@ -6,11 +6,13 @@
 #endif
 
 #include "base.h"
-#include "esphome/core/color.h"
-#include "esphome/components/light/esp_hsv_color.h"
+#include "RGBColor.h"
 
-using esphome::Color;
-using esphome::light::ESPHSVColor;
+// #include "esphome/core/color.h"
+// #include "esphome/components/light/esp_hsv_color.h"
+
+// using esphome::Color;
+// using esphome::light::ESPHSVColor;
 
 namespace glow
 {
@@ -52,17 +54,17 @@ namespace glow
       return true;
     }
 
-    ESPHSVColor to_esp_hsv_color() const ALWAYS_INLINE
-    {
-      return ESPHSVColor(hue / hue_segment_count, saturation, value);
-    }
+    // ESPHSVColor to_esp_hsv_color() const ALWAYS_INLINE
+    // {
+    //   return ESPHSVColor(hue / hue_segment_count, saturation, value);
+    // }
 
-    void from_esp_hsv_color(ESPHSVColor esph_hsv)
-    {
-      hue = esph_hsv.hue * hue_segment_count;
-      saturation = esph_hsv.saturation;
-      value = esph_hsv.value;
-    }
+    // void from_esp_hsv_color(ESPHSVColor esph_hsv)
+    // {
+    //   hue = esph_hsv.hue * hue_segment_count;
+    //   saturation = esph_hsv.saturation;
+    //   value = esph_hsv.value;
+    // }
 
     Color to_rgb();
 
@@ -113,6 +115,7 @@ namespace YAML
   using glow::RED;
 
   using glow::HSVColor;
+  using glow::Color;
 
   template <>
   struct convert<HSVColor>

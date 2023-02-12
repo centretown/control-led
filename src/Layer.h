@@ -35,15 +35,15 @@ namespace glow
         return false;
       }
 
-      // if (grid.setup(length) == false)
-      // {
-      //   return false;
-      // }
+      if (grid.setup_length(length) == false)
+      {
+        return false;
+      }
 
-      // if (chroma.setup(length) == false)
-      // {
-      //   return false;
-      // }
+      if (chroma.setup_length(length) == false)
+      {
+        return false;
+      }
 
       if (end < begin)
       {
