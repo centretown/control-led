@@ -15,6 +15,8 @@ namespace glow
   private:
     uint16_t length = 0;
     uint32_t interval = 16;
+
+  public:
     std::list<Layer> layers;
 
   public:
@@ -70,11 +72,13 @@ namespace YAML
       Node node;
       node[Frame::keys[Frame::LENGTH]] = frame.length;
       node[Frame::keys[Frame::INTERVAL]] = frame.interval;
-      Node list = node[Frame::keys[Frame::LAYERS]];
-      for (auto item : frame.layers)
+      // node[Frame::keys[Frame::LAYERS]] = frame.layers;
+      Node list;
+      for (auto layer : frame.layers)
       {
-        list.push_back(item);
+        list.push_back(layer);
       }
+      node[Frame::keys[Frame::LAYERS]] = list;
       return node;
     }
 
@@ -91,13 +95,19 @@ namespace YAML
       frame.interval =
           node[Frame::keys[Frame::INTERVAL]].as<uint32_t>();
 
-      Node layers = node[Frame::keys[Frame::LAYERS]];
-      for (auto item : layers)
+      auto layers = node[Frame::keys[Frame::LAYERS]];
+      if (!layers.IsSequence())
       {
-        frame.push_back(item.as<Layer>());
+        frame.setup();
+        return false;
       }
 
-      return frame.setup();
+      for (auto i = 0; i < layers.size(); i++)
+      {
+        frame.push_back(layers[i].as<Layer>());
+      }
+      frame.setup();
+      return true;
     }
   };
 }

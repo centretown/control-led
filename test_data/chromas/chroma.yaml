@@ -1,0 +1,10 @@
+length: 20
+delta: 1
+source:
+  hue: 352
+  saturation: 77
+  value: 78
+target:
+  hue: 60
+  saturation: 40
+  value: 100

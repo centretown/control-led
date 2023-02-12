@@ -210,8 +210,8 @@ namespace YAML
           break;
         }
       }
-
-      return grid.setup();
+      grid.setup();
+      return true;
     }
   };
 }

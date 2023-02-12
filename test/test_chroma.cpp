@@ -6,6 +6,7 @@
 #include "test_yaml.h"
 #include "check_chroma_detail.h"
 #include "../src/Chroma.h"
+#include "../src/Filer.h"
 
 using namespace glow;
 
@@ -41,11 +42,9 @@ TEST_CASE("Chroma Basic", "chroma_basic")
   test_yaml(chroma_length_only, input_length_only, check_detail);
 }
 
-std::string file_name = "save_palette.yaml";
-
 TEST_CASE("Chroma Palette", "chroma_palette")
 {
-  REQUIRE(Chroma::load_palette(file_name));
+  REQUIRE(Chroma::load_palette(palette_file()));
   Chroma chroma;
   HSVColor source, target;
   // brick red
@@ -59,5 +58,12 @@ TEST_CASE("Chroma Palette", "chroma_palette")
       "source: brick red\n"
       "target: canary\n"
       "delta: 1\n";
+
   test_yaml_from_input(chroma, input, check_detail);
+
+  YAML::Node node = YAML::Load(input);
+  save_yaml(chroma_symbolic_file(), node);
+
+  save_yaml(chroma_file(), chroma);
+  test_yaml_from_file(chroma, chroma_symbolic_file(), check_detail);
 }

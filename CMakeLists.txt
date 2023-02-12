@@ -1,20 +1,20 @@
 cmake_minimum_required(VERSION 3.25)
 
 project(
-  Glow
-  VERSION 0.4
+  glow
+  VERSION 0.3
   LANGUAGES CXX)
 
-configure_file(GlowConfig.h.in ../src/GlowConfig.h)
+configure_file(src/GlowConfig.h.in src/GlowConfig.h)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 
 # remove yaml for micro controllers
-# add_definitions("-std=c++14 -DSTRIP_YAML")
+# add_definitions("-std=c++14" "-DSTRIP_YAML")
 
 # include yaml
-add_definitions("-std=c++14")
+add_definitions("-std=c++17" "-DDATA_DIR=\"/home/dave/src/glow/data\"")
 
 include(CTest)
 
@@ -42,6 +42,7 @@ add_library(GlowLib
   src/Palette.h
   src/Palette.cpp
   src/Filer.h
+  src/Filer.cpp
   src/DisplayANSI.h
 )
 
@@ -65,12 +66,12 @@ add_executable(glow
 # method 2 conan.cmake_find_package generator
 find_package(yaml-cpp)
 find_package(Catch2)
+# find_package(cxxopts)
 
-if(yaml-cpp_FOUND)
-  include_directories(${yaml-cpp_INCLUDE_DIRS})
-  target_link_libraries(glow ${yaml-cpp_LIBRARIES} GlowLib)
+include_directories(${yaml-cpp_INCLUDE_DIRS} ${cxxopts_INCLUDE_DIRS})
+# target_link_libraries(${PROJECT_NAME} ${yaml-cpp_LIBRARIES} ${cxxopts_LIBRARIES} GlowLib)
+target_link_libraries(${PROJECT_NAME} ${yaml-cpp_LIBRARIES} GlowLib)
 
-  if(Catch2_FOUND)
-    add_subdirectory(test)
-  endif()
+if(Catch2_FOUND)
+  add_subdirectory(test)
 endif()

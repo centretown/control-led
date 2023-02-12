@@ -44,7 +44,7 @@ namespace glow
         uint8_t value;
       };
 
-      uint32_t raw_32 = 0xff000000;
+      uint32_t raw_32 = 0;
     };
 
     bool setup()

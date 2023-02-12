@@ -1,0 +1,13 @@
+length: 20
+begin: 5
+end: 15
+grid:
+  length: 20
+  rows: 4
+  origin: top left
+  orientation: diagonal
+chroma:
+  length: 20
+  delta: -1
+  source: apricot
+  target: beaver

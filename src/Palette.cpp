@@ -9,7 +9,7 @@ namespace glow
       "colors",
   };
   
-  bool Palette::find_color(std::string color_name, PaletteColor &found)
+  bool Palette::find_color(std::string color_name, PaletteColor &found) 
   {
     auto item = colors.find(color_name);
     if (item == colors.end())

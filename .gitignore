@@ -2,3 +2,6 @@ build
 recreate
 esphome
 esphome.h
+cmake-build-release
+CMakeFiles
+data

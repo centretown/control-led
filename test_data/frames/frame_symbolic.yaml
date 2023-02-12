@@ -6,12 +6,12 @@ layers:
     end: 15
     grid:
       length: 20
-      rows: 1
-      origin: top left
-      orientation: horizontal
+      rows: 4
+      origin: 0
+      orientation: 2
     chroma:
       length: 20
-      delta: 0
+      delta: -1
       source: aquamarine
       target: salmon
   - length: 20
@@ -19,12 +19,12 @@ layers:
     end: 15
     grid:
       length: 20
-      rows: 1
-      origin: top left
-      orientation: horizontal
+      rows: 4
+      origin: 0
+      orientation: 2
     chroma:
       length: 20
-      delta: 0
+      delta: -1
       source: aquamarine
       target: salmon
   - length: 20
@@ -32,12 +32,12 @@ layers:
     end: 15
     grid:
       length: 20
-      rows: 1
-      origin: top left
-      orientation: horizontal
+      rows: 4
+      origin: 0
+      orientation: 2
     chroma:
       length: 20
-      delta: 0
+      delta: -1
       source: aquamarine
       target: salmon
   - length: 20
@@ -45,24 +45,24 @@ layers:
     end: 15
     grid:
       length: 20
-      rows: 1
-      origin: top left
-      orientation: horizontal
+      rows: 4
+      origin: 0
+      orientation: 2
     chroma:
       length: 20
-      delta: 0
+      delta: -1
       source: aquamarine
       target: salmon
   - length: 16
     begin: 5
     end: 15
     grid:
-      length: 16
-      rows: 1
-      origin: top left
-      orientation: horizontal
+      length: 20
+      rows: 4
+      origin: 0
+      orientation: 2
     chroma:
-      length: 16
-      delta: 0
+      length: 20
+      delta: -1
       source: aquamarine
       target: salmon

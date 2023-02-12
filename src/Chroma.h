@@ -14,10 +14,10 @@
 
 namespace glow
 {
-  const HSVColor source_default = {0, 255, 255};
-  const HSVColor target_default = {hue_limit, 0, 255};
-  const Color rgb_source_default = {255, 0, 0};
-  const Color rgb_target_default = {255, 255, 255};
+  const HSVColor source_default = {0, 0, 0};
+  const HSVColor target_default = {0, 0, 0};
+  const Color rgb_source_default = {0, 0, 0};
+  const Color rgb_target_default = {0, 0, 0};
 
   class Chroma
   {
@@ -115,7 +115,7 @@ namespace glow
       return load_yaml(file_name, palette);
     }
 
-  private:
+    // private:
     static Palette palette;
 #endif
   };
@@ -147,6 +147,9 @@ namespace YAML
         return false;
       }
 
+      std::string name{};
+      PaletteColor palette_color{};
+
       for (auto key = 0; key < Chroma::KEY_COUNT; ++key)
       {
         Node item = node[Chroma::keys[key]];
@@ -155,7 +158,6 @@ namespace YAML
           continue;
         }
 
-        std::string name{};
         switch (key)
         {
         case Chroma::LENGTH:
@@ -165,26 +167,40 @@ namespace YAML
           chroma.delta = item.as<int16_t>();
           break;
         case Chroma::SOURCE:
+
           if (item.IsMap())
           {
             chroma.hsv_source = item.as<HSVColor>();
-            break;
           }
-          name = item.as<std::string>();
-          chroma.hsv_source = chroma.palette.lookup(name);
+          else
+          {
+            chroma.hsv_source.raw_32 = 0;
+            name = item.as<std::string>();
+            if (Chroma::palette.find_color(name, palette_color))
+            {
+              chroma.hsv_source = palette_color.hsv;
+            }
+          }
           break;
         case Chroma::TARGET:
           if (item.IsMap())
           {
             chroma.hsv_target = item.as<HSVColor>();
-            break;
           }
-          name = item.as<std::string>();
-          chroma.hsv_target = chroma.palette.lookup(name);
+          else
+          {
+            chroma.hsv_target.raw_32 = 0;
+            name = item.as<std::string>();
+            if (Chroma::palette.find_color(name, palette_color))
+            {
+              chroma.hsv_target = palette_color.hsv;
+            }
+          }
           break;
         }
       }
-      return chroma.setup();
+      chroma.setup();
+      return true;
     }
   };
 }

@@ -1,0 +1,60 @@
+length: 20
+interval: 48
+layers:
+  - length: 20
+    begin: 5
+    end: 15
+    grid:
+      length: 20
+      rows: 4
+      origin: top left
+      orientation: diagonal
+    chroma:
+      length: 20
+      delta: -1
+      source:
+        hue: 28
+        saturation: 30
+        value: 99
+      target:
+        hue: 22
+        saturation: 38
+        value: 57
+  - length: 20
+    begin: 5
+    end: 15
+    grid:
+      length: 20
+      rows: 4
+      origin: top left
+      orientation: diagonal
+    chroma:
+      length: 20
+      delta: -1
+      source:
+        hue: 28
+        saturation: 30
+        value: 99
+      target:
+        hue: 22
+        saturation: 38
+        value: 57
+  - length: 20
+    begin: 5
+    end: 15
+    grid:
+      length: 20
+      rows: 4
+      origin: top left
+      orientation: diagonal
+    chroma:
+      length: 20
+      delta: -1
+      source:
+        hue: 28
+        saturation: 30
+        value: 99
+      target:
+        hue: 22
+        saturation: 38
+        value: 57

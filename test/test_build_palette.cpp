@@ -22,10 +22,9 @@ void check_detail(const Palette &original, const Palette &derived)
   check_palette_detail(original, derived);
 }
 
-const std::string test_file_name = "build_palette.yaml";
-const std::string save_file_name = "save_palette.yaml";
 
 #ifdef BUILD_PALETTE
+const std::string test_file_name = "build_palette.yaml";
 TEST_CASE("Build Palette", "[build_palette]")
 {
   Palette palette;
@@ -53,10 +52,12 @@ TEST_CASE("Build Palette", "[build_palette]")
 }
 #endif
 
+const std::string save_file_name = "save_palette.yaml";
+
 TEST_CASE("Build Palette From File", "[build_palette_from_file]")
 {
   Palette palette;
-  REQUIRE(load_yaml(test_file_name, palette));
+  REQUIRE(load_yaml(palette_file(), palette));
   DisplayANSI display;
 
   for (auto item : palette.colors)

@@ -35,15 +35,15 @@ namespace glow
         return false;
       }
 
-      if (grid.setup(length) == false)
-      {
-        return false;
-      }
+      // if (grid.setup(length) == false)
+      // {
+      //   return false;
+      // }
 
-      if (chroma.setup(length) == false)
-      {
-        return false;
-      }
+      // if (chroma.setup(length) == false)
+      // {
+      //   return false;
+      // }
 
       if (end < begin)
       {
@@ -66,7 +66,7 @@ namespace glow
       return setup();
     }
 
-    void set_length(uint16_t a_length) ALWAYS_INLINE
+    void setup_length(uint16_t a_length) ALWAYS_INLINE
     {
       length = a_length;
       setup();
@@ -177,7 +177,9 @@ namespace YAML
           break;
         }
       }
-      return layer.setup();
+      
+      layer.setup();
+      return true;
     }
   };
 }

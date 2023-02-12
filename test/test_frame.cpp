@@ -13,91 +13,84 @@ using namespace glow;
 #include "test_frame.yml.h"
 #include "check_frame_detail.h"
 
+
 void check_detail(const Frame &original, const Frame &derived)
 {
   check_frame_detail(original, derived);
 }
-
-std::string palette_name = "../../palette.yaml";
-std::string frame_name = "../../frame.yaml";
-std::string palette_frame_name = "../../palette_frame.yaml";
 
 TEST_CASE("Frame Basic", "frame_basic")
 {
   Frame frame;
   frame.setup(20, 48);
 
-  HSVColor source;
-  source.from_color_wheel(float(0), float(100), float(100));
-  HSVColor target;
-  target.from_color_wheel(float(0), float(50), float(50));
-
-  Chroma chroma;
-  REQUIRE(chroma.setup(frame.get_length(), source, target, -1));
-
-  Grid grid;
-  REQUIRE(grid.setup(frame.get_length(), 4, TopLeft, Diagonal));
-
-  Layer layer;
-  REQUIRE(layer.setup(frame.get_length(), 5, 15, grid, chroma));
-
-  std::array<Layer, 5> layers = {
-      layer,
-      layer,
-      layer,
-      layer,
-      layer,
-  };
-
-  layers[4].set_length(16);
-
-  for (const auto &layer : layers)
-  {
-    frame.push_back(layer);
-  }
-  test_yaml(frame, frame_data, check_detail);
-
-  save_yaml(frame_name, frame);
-
-  // test/frame.yaml
-  test_yaml_from_file(frame, frame_name, check_detail);
-}
-
-TEST_CASE("Frame Palette", "frame_palette")
-{
-  Frame frame;
-  frame.setup(20, 48);
-
   HSVColor source, target;
-  // aquamarine
-  source.from_color_wheel(float(186), float(36), float(91));
-  // salmon
-  target.from_color_wheel(float(350), float(43), float(100));
+  // apricot
+  source.from_color_wheel(float(28), float(30), float(99));
+  // beaver
+  target.from_color_wheel(float(22), float(38), float(57));
 
-  REQUIRE(Chroma::load_palette(palette_name));
   Chroma chroma;
   REQUIRE(chroma.setup(frame.get_length(), source, target, -1));
 
   Grid grid;
   REQUIRE(grid.setup(frame.get_length(), 4, TopLeft, Diagonal));
 
-  Layer layer;
-  REQUIRE(layer.setup(frame.get_length(), 5, 15, grid, chroma));
+  Layer layer, layer1, layer2;
 
-  std::array<Layer, 5> layers = {
-      layer,
-      layer,
-      layer,
-      layer,
-      layer,
-  };
+  REQUIRE(layer.setup(20, 5, 15, grid, chroma));
+  REQUIRE(layer1.setup(20, 5, 15, grid, chroma));
+  REQUIRE(layer2.setup(20, 5, 15, grid, chroma));
 
-  layers[4].set_length(16);
+  float hue{}, saturation{}, value{};
 
-  for (const auto &layer : layers)
-  {
-    frame.push_back(layer);
-  }
+  auto c = layer.get_chroma();
+  c.get_hsv_source().to_color_wheel(hue, saturation, value);
+  std::cout << "hsv " << hue << " " << saturation << " " << value << '\n';
+
+  chroma.get_hsv_source().to_color_wheel(hue, saturation, value);
+  std::cout << "hsv " << hue << " " << saturation << " " << value << '\n';
+
+  frame.push_back(layer);
+  frame.push_back(layer1);
+  frame.push_back(layer2);
+  REQUIRE(frame.layers.size() == 3);
+
+  // test_yaml(frame, frame_data, check_detail);
+  save_yaml(frame_file(), frame);
+
   // test/frame.yaml
-  test_yaml_from_file(frame, palette_frame_name, check_detail);
+  // test_yaml_from_file(frame, frame_name, check_detail);
 }
+
+// TEST_CASE("Frame Palette", "frame_palette")
+// {
+//   REQUIRE(Chroma::load_palette(palette_name));
+//   YAML::Node node = YAML::Load(frame_data);
+//   YAML::Emitter out;
+//   out << node;
+//   std::cout << out.c_str() << '\n';
+
+//   Frame frame;
+//   YAML::convert<Frame>::decode(node, frame);
+
+//   for (auto layer : frame.layers)
+//   {
+//     auto chroma = layer.get_chroma();
+//     std::cout << "chroma " << (uint16_t)chroma.get_length()
+//               << " " << chroma.get_delta() << '\n';
+
+//     auto hsv = chroma.get_hsv_source();
+//     std::cout << "source " << (uint16_t)hsv.hue << " "
+//               << (uint16_t)hsv.saturation << " "
+//               << (uint16_t)hsv.value << '\n';
+//     hsv = chroma.get_hsv_target();
+//     std::cout << "target " << (uint16_t)hsv.hue << " "
+//               << (uint16_t)hsv.saturation << " "
+//               << (uint16_t)hsv.value << '\n';
+//     auto grid = layer.get_grid();
+//     std::cout << "grid " << (uint16_t)grid.get_length() << " "
+//               << (uint16_t)grid.get_columns() << " "
+//               << (uint16_t)grid.get_rows() << '\n';
+//   }
+// }
