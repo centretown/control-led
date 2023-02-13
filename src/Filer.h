@@ -10,6 +10,8 @@ namespace glow
   const std::string data_path();
   const std::string set_data_path(std::string path);
   std::string data_path(std::string file_name);
+  bool file_system_exists();
+  bool make_file_system();
 
   const std::string palette_file();
   const std::string frame_file();

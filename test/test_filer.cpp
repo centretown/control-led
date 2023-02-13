@@ -22,14 +22,14 @@ TEST_CASE("Filer Basic", "filer_basic")
   std::cout << grid_symbolic_file() << '\n';
 
   REQUIRE("/home/dave/src/glow/data/palettes/palette.yaml" == palette_file());
-  REQUIRE("/home/dave/src/glow/data/frames/frame.yaml" == frame_file());
-  REQUIRE("/home/dave/src/glow/data/frames/frame_symbolic.yaml" == frame_symbolic_file());
-  REQUIRE("/home/dave/src/glow/data/layers/layer.yaml" == layer_file());
-  REQUIRE("/home/dave/src/glow/data/layers/layer_symbolic.yaml" == layer_symbolic_file());
-  REQUIRE("/home/dave/src/glow/data/chromas/chroma.yaml" == chroma_file());
-  REQUIRE("/home/dave/src/glow/data/chromas/chroma_symbolic.yaml" == chroma_symbolic_file());
-  REQUIRE("/home/dave/src/glow/data/grids/grid.yaml" == grid_file());
-  REQUIRE("/home/dave/src/glow/data/grids/grid_symbolic.yaml" == grid_symbolic_file());
+  REQUIRE("/home/dave/src/glow/data/frames/derived/frame.yaml" == frame_file());
+  REQUIRE("/home/dave/src/glow/data/frames/symbols/frame_symbolic.yaml" == frame_symbolic_file());
+  REQUIRE("/home/dave/src/glow/data/layers/derived/layer.yaml" == layer_file());
+  REQUIRE("/home/dave/src/glow/data/layers/symbols/layer_symbolic.yaml" == layer_symbolic_file());
+  REQUIRE("/home/dave/src/glow/data/chromas/derived/chroma.yaml" == chroma_file());
+  REQUIRE("/home/dave/src/glow/data/chromas/symbols/chroma_symbolic.yaml" == chroma_symbolic_file());
+  REQUIRE("/home/dave/src/glow/data/grids/derived/grid.yaml" == grid_file());
+  REQUIRE("/home/dave/src/glow/data/grids/symbols/grid_symbolic.yaml" == grid_symbolic_file());
 
   set_data_path("data");
 
@@ -44,14 +44,14 @@ TEST_CASE("Filer Basic", "filer_basic")
   std::cout << grid_symbolic_file() << '\n';
 
   REQUIRE("data/palettes/palette.yaml" == palette_file());
-  REQUIRE("data/frames/frame.yaml" == frame_file());
-  REQUIRE("data/frames/frame_symbolic.yaml" == frame_symbolic_file());
-  REQUIRE("data/layers/layer.yaml" == layer_file());
-  REQUIRE("data/layers/layer_symbolic.yaml" == layer_symbolic_file());
-  REQUIRE("data/chromas/chroma.yaml" == chroma_file());
-  REQUIRE("data/chromas/chroma_symbolic.yaml" == chroma_symbolic_file());
-  REQUIRE("data/grids/grid.yaml" == grid_file());
-  REQUIRE("data/grids/grid_symbolic.yaml" == grid_symbolic_file());
+  REQUIRE("data/frames/derived/frame.yaml" == frame_file());
+  REQUIRE("data/frames/symbols/frame_symbolic.yaml" == frame_symbolic_file());
+  REQUIRE("data/layers/derived/layer.yaml" == layer_file());
+  REQUIRE("data/layers/symbols/layer_symbolic.yaml" == layer_symbolic_file());
+  REQUIRE("data/chromas/derived/chroma.yaml" == chroma_file());
+  REQUIRE("data/chromas/symbols/chroma_symbolic.yaml" == chroma_symbolic_file());
+  REQUIRE("data/grids/derived/grid.yaml" == grid_file());
+  REQUIRE("data/grids/symbols/grid_symbolic.yaml" == grid_symbolic_file());
 
   set_data_path("data/");
 
@@ -66,12 +66,13 @@ TEST_CASE("Filer Basic", "filer_basic")
   std::cout << grid_symbolic_file() << '\n';
 
   REQUIRE("data/palettes/palette.yaml" == palette_file());
-  REQUIRE("data/frames/frame.yaml" == frame_file());
-  REQUIRE("data/frames/frame_symbolic.yaml" == frame_symbolic_file());
-  REQUIRE("data/layers/layer.yaml" == layer_file());
-  REQUIRE("data/layers/layer_symbolic.yaml" == layer_symbolic_file());
-  REQUIRE("data/chromas/chroma.yaml" == chroma_file());
-  REQUIRE("data/chromas/chroma_symbolic.yaml" == chroma_symbolic_file());
-  REQUIRE("data/grids/grid.yaml" == grid_file());
-  REQUIRE("data/grids/grid_symbolic.yaml" == grid_symbolic_file());
+  REQUIRE("data/frames/derived/frame.yaml" == frame_file());
+  REQUIRE("data/frames/symbols/frame_symbolic.yaml" == frame_symbolic_file());
+  REQUIRE("data/layers/derived/layer.yaml" == layer_file());
+  REQUIRE("data/layers/symbols/layer_symbolic.yaml" == layer_symbolic_file());
+  REQUIRE("data/chromas/derived/chroma.yaml" == chroma_file());
+  REQUIRE("data/chromas/symbols/chroma_symbolic.yaml" == chroma_symbolic_file());
+  REQUIRE("data/grids/derived/grid.yaml" == grid_file());
+  REQUIRE("data/grids/symbols/grid_symbolic.yaml" == grid_symbolic_file());
+
 }

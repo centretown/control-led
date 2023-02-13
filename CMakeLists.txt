@@ -28,6 +28,7 @@ add_library(GlowLib
   # src/esphome/core/optional.h
   src/base.h
   src/RGBColor.h
+  src/RGBColor.cpp
   src/HSVColor.h
   src/HSVColor.cpp
   src/Chroma.h

@@ -8,12 +8,6 @@ namespace glow
       "value",
   };
 
-  std::string HSVColor::rgb_keys[3] = {
-      "red",
-      "green",
-      "blue",
-  };
-
   Color HSVColor::to_rgb()
   {
     uint8_t red = 0;

@@ -1,5 +1,4 @@
 #pragma once
-#include <unordered_map>
 
 #ifndef STRIP_YAML
 #include <yaml-cpp/yaml.h>
@@ -28,14 +27,7 @@ namespace glow
   constexpr uint16_t hue_blue = hue_limit * 4 / hue_segment_count;
   constexpr uint16_t hue_magenta = hue_limit * 5 / hue_segment_count;
 
-  enum : uint8_t
-  {
-    RED,
-    GREEN,
-    BLUE,
-  };
-
-  struct HSVColor
+    struct HSVColor
   {
     union
     {
@@ -103,19 +95,13 @@ namespace glow
     };
 
     static std::string keys[KEY_COUNT];
-    static std::string rgb_keys[3];
   };
 }
 
 #ifndef STRIP_YAML
 namespace YAML
 {
-  using glow::BLUE;
-  using glow::GREEN;
-  using glow::RED;
-
   using glow::HSVColor;
-  using glow::Color;
 
   template <>
   struct convert<HSVColor>
@@ -166,31 +152,6 @@ namespace YAML
       }
 
       hsv.from_color_wheel(f_hue, f_saturation, f_value);
-      return true;
-    }
-  };
-
-  template <>
-  struct convert<Color>
-  {
-    static Node encode(const Color &color)
-    {
-      Node node;
-      node[HSVColor::rgb_keys[RED]] = static_cast<uint16_t>(color.red);
-      node[HSVColor::rgb_keys[GREEN]] = static_cast<uint16_t>(color.green);
-      node[HSVColor::rgb_keys[BLUE]] = static_cast<uint16_t>(color.blue);
-      return node;
-    }
-
-    static bool decode(const Node &node, Color &color)
-    {
-      if (!node.IsMap())
-      {
-        return false;
-      }
-      color.red = node[HSVColor::rgb_keys[RED]].as<uint8_t>();
-      color.green = node[HSVColor::rgb_keys[GREEN]].as<uint8_t>();
-      color.blue = node[HSVColor::rgb_keys[BLUE]].as<uint8_t>();
       return true;
     }
   };

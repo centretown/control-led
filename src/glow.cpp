@@ -36,6 +36,15 @@ void process_args(int argc, char **argv)
   std::cout << "data_path: " << data_path() << '\n';
   std::cout << "Palette: " << palette_file() << '\n';
   std::cout << "Frame: " << frame_file() << '\n';
+
+  if (!file_system_exists())
+  {
+    if (!make_file_system())
+    {
+      std::cout << "Failed to create file system";
+      exit(1);
+    }
+  }
 }
 
 void load_palette()

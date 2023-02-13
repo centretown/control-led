@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef STRIP_YAML
+#include <yaml-cpp/yaml.h>
+#endif
+
 #include "base.h"
 #include "stdint.h"
 
@@ -26,5 +30,46 @@ namespace glow
               green == color.green &&
               blue == color.blue);
     }
+    enum : uint8_t
+    {
+      RED,
+      GREEN,
+      BLUE,
+      KEY_COUNT,
+    };
+
+    static std::string keys[KEY_COUNT];
   };
+
 } // namespace glow
+
+#ifndef STRIP_YAML
+namespace YAML
+{
+  using glow::Color;
+  template <>
+  struct convert<Color>
+  {
+    static Node encode(const Color &color)
+    {
+      Node node;
+      node[Color::keys[Color::RED]] = static_cast<uint16_t>(color.red);
+      node[Color::keys[Color::GREEN]] = static_cast<uint16_t>(color.green);
+      node[Color::keys[Color::BLUE]] = static_cast<uint16_t>(color.blue);
+      return node;
+    }
+
+    static bool decode(const Node &node, Color &color)
+    {
+      if (!node.IsMap())
+      {
+        return false;
+      }
+      color.red = node[Color::keys[Color::RED]].as<uint8_t>();
+      color.green = node[Color::keys[Color::GREEN]].as<uint8_t>();
+      color.blue = node[Color::keys[Color::BLUE]].as<uint8_t>();
+      return true;
+    }
+  };
+}
+#endif
