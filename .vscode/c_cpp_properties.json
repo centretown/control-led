@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/home/dave/.conan/data/yaml-cpp/0.7.0/**",
-                "/home/dave/.conan/data/catch2/3.3.0/**"
+                "/home/dave/.conan/data/catch2/3.3.0/**",
+                "/home/dave/.conan/data/nlohmann_json/3.11.2/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

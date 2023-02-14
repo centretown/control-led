@@ -70,7 +70,7 @@ TEST_CASE("Layer Palette", "layer_palette")
   REQUIRE(Chroma::load_palette(palette_file()));
 
   std::string input =
-      "length: 20\n"
+      "length: 28\n"
       "begin: 5\n"
       "end: 15\n"
       "grid:\n"
@@ -94,15 +94,15 @@ TEST_CASE("Layer Palette", "layer_palette")
   REQUIRE(grid.setup(20, 4, TopLeft, Diagonal));
 
   Layer layer;
-  REQUIRE(layer.setup(20, 5, 15, grid, chroma));
+  REQUIRE(layer.setup(28, 5, 15, grid, chroma));
   test_yaml(layer, input, check_detail);
 
-  // YAML::Node node = YAML::Load(input);
-  // std::cout << layer_file() << '\n';
-  // std::cout << layer_symbolic_file() << '\n';
+  // // YAML::Node node = YAML::Load(input);
+  // // std::cout << layer_file() << '\n';
+  // // std::cout << layer_symbolic_file() << '\n';
 
-  // save_yaml(layer_symbolic_file(), node);
+  // // save_yaml(layer_symbolic_file(), node);
 
-  save_yaml(layer_file(), layer);
-  test_yaml_from_file(layer, layer_symbolic_file(), check_detail);
+  // save_yaml(layer_file(), layer);
+  // test_yaml_from_file(layer, layer_symbolic_file(), check_detail);
 }

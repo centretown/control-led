@@ -21,6 +21,7 @@ include(CTest)
 include_directories(src)
 
 add_library(GlowLib
+
   # src/esphome/components/light/esp_hsv_color.cpp
   # src/esphome/components/light/esp_hsv_color.h
   # src/esphome/core/color.h
@@ -68,11 +69,16 @@ add_executable(glow
 # method 2 conan.cmake_find_package generator
 find_package(yaml-cpp)
 find_package(Catch2)
-# find_package(cxxopts)
+find_package(nlohmann_json)
 
-include_directories(${yaml-cpp_INCLUDE_DIRS} ${cxxopts_INCLUDE_DIRS})
+# find_package(cxxopts)
+include_directories(
+  ${yaml-cpp_INCLUDE_DIRS}
+  ${nlohmann_json_INCLUDE_DIRS}
+)
+
 # target_link_libraries(${PROJECT_NAME} ${yaml-cpp_LIBRARIES} ${cxxopts_LIBRARIES} GlowLib)
-target_link_libraries(${PROJECT_NAME} ${yaml-cpp_LIBRARIES} GlowLib)
+target_link_libraries(${PROJECT_NAME} ${yaml-cpp_LIBRARIES} nlohmann_json::nlohmann_json GlowLib)
 
 if(Catch2_FOUND)
   add_subdirectory(test)

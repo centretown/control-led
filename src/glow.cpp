@@ -2,6 +2,7 @@
 #include <array>
 
 #include <yaml-cpp/yaml.h>
+#include <nlohmann/json.hpp>
 
 #include "GlowConfig.h"
 
