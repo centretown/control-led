@@ -13,7 +13,7 @@
 
 using namespace glow;
 
-const std::string frame_name = "frame.yaml";
+const std::string frame_name = "frame";
 
 std::array<std::string, 6> search_colors = {
     "sunset orange",

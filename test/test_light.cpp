@@ -33,22 +33,19 @@ TEST_CASE("Lights Basic", "layer_basic")
 TEST_CASE("Layer Lights", "layer_lights")
 {
   REQUIRE(Chroma::load_palette(palette_file()));
-  // const uint16_t length = 100;
-  // const uint16_t rows = 5;
   Layer layer;
-  std::string strawberry = "strawberry.yaml";
-  std::string fname = custom_layer(strawberry);
-  REQUIRE(load_yaml(fname, layer));
-  // layer.setup_length(length);
-  // REQUIRE(layer.get_length() == length);
-  // REQUIRE(layer.get_grid().get_length() == length);
-  // REQUIRE(layer.get_grid().get_rows() == rows);
+  std::string strawberry = "strawberry";
+  REQUIRE(load_yaml(custom_layer(strawberry), layer));
+  REQUIRE(save_yaml(derived_layer(strawberry), layer));
+
   DisplayANSI::at(0, 0);
   DisplayANSI::clear_from_cursor();
   DisplayANSI::hide_cursor();
+
   HostLight light(layer.get_length(), layer.get_grid().get_rows());
   layer.spin(&light);
-  DisplayANSI::at(layer.get_grid().get_rows() + 2, 0);
+
+  DisplayANSI::at(layer.get_grid().get_rows() + 1, 0);
   DisplayANSI::show_cursor();
 
   YAML::Node node = YAML::convert<Layer>::encode(layer);
@@ -56,5 +53,6 @@ TEST_CASE("Layer Lights", "layer_lights")
   out << node;
   std::cout << '\n'
             << out.c_str() << '\n';
-  std::cout << fname << std::endl;
+  std::cout << custom_layer(strawberry) << std::endl;
+  std::cout << derived_layer(strawberry) << std::endl;
 }

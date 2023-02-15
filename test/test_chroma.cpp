@@ -10,7 +10,7 @@
 
 using namespace glow;
 
-const std::string chroma_name = "chroma.yaml";
+const std::string chroma_name = "chroma";
 
 void check_detail(const Chroma &original, const Chroma &derived)
 {

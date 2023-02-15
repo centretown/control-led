@@ -145,6 +145,22 @@ namespace YAML
   template <>
   struct convert<Chroma>
   {
+    static void lookup(Node item, HSVColor &color)
+    {
+      if (item.IsMap())
+      {
+        color = item.as<HSVColor>();
+        return;
+      }
+
+      PaletteColor palette_color;
+      std::string name = item.as<std::string>();
+      if (Chroma::palette.find_color(name, palette_color))
+      {
+        color = palette_color.hsv;
+      }
+    }
+
     static Node encode(const Chroma &chroma)
     {
       Node node;
@@ -163,9 +179,6 @@ namespace YAML
         return false;
       }
 
-      std::string name{};
-      PaletteColor palette_color{};
-
       for (auto key = 0; key < Chroma::KEY_COUNT; ++key)
       {
         Node item = node[Chroma::keys[key]];
@@ -183,35 +196,10 @@ namespace YAML
           chroma.delta = item.as<int16_t>();
           break;
         case Chroma::SOURCE:
-
-          if (item.IsMap())
-          {
-            chroma.hsv_source = item.as<HSVColor>();
-          }
-          else
-          {
-            chroma.hsv_source.raw_32 = 0;
-            name = item.as<std::string>();
-            if (Chroma::palette.find_color(name, palette_color))
-            {
-              chroma.hsv_source = palette_color.hsv;
-            }
-          }
+          lookup(item, chroma.hsv_source);
           break;
         case Chroma::TARGET:
-          if (item.IsMap())
-          {
-            chroma.hsv_target = item.as<HSVColor>();
-          }
-          else
-          {
-            chroma.hsv_target.raw_32 = 0;
-            name = item.as<std::string>();
-            if (Chroma::palette.find_color(name, palette_color))
-            {
-              chroma.hsv_target = palette_color.hsv;
-            }
-          }
+          lookup(item, chroma.hsv_target);
           break;
         }
       }

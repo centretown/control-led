@@ -12,7 +12,7 @@
 
 using namespace glow;
 
-const std::string layer_name = "layer.yaml";
+const std::string layer_name = "layer";
 
 void check_detail(const Layer &original, const Layer &derived)
 {

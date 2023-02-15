@@ -1,0 +1,79 @@
+length: 20
+interval: 48
+layers:
+  - length: 20
+    begin: 0
+    end: 0
+    grid:
+      length: 20
+      rows: 4
+      origin: top left
+      orientation: vertical
+    chroma:
+      length: 20
+      delta: -1
+      source:
+        hue: 186
+        saturation: 36
+        value: 91
+      target:
+        hue: 350
+        saturation: 43
+        value: 100
+  - length: 540
+    begin: 0
+    end: 0
+    grid:
+      length: 540
+      rows: 9
+      origin: top left
+      orientation: vertical
+    chroma:
+      length: 540
+      delta: -1
+      source:
+        hue: 330
+        saturation: 80
+        value: 100
+      target:
+        hue: 190
+        saturation: 49
+        value: 92
+  - length: 20
+    begin: 0
+    end: 0
+    grid:
+      length: 20
+      rows: 4
+      origin: top left
+      orientation: vertical
+    chroma:
+      length: 20
+      delta: -1
+      source:
+        hue: 186
+        saturation: 36
+        value: 91
+      target:
+        hue: 350
+        saturation: 43
+        value: 100
+  - length: 540
+    begin: 0
+    end: 0
+    grid:
+      length: 540
+      rows: 9
+      origin: top left
+      orientation: vertical
+    chroma:
+      length: 540
+      delta: -1
+      source:
+        hue: 330
+        saturation: 80
+        value: 100
+      target:
+        hue: 190
+        saturation: 49
+        value: 92

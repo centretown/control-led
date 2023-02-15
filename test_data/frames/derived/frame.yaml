@@ -8,18 +8,18 @@ layers:
       length: 20
       rows: 4
       origin: top left
-      orientation: diagonal
+      orientation: vertical
     chroma:
       length: 20
       delta: -1
       source:
-        hue: 28
-        saturation: 30
-        value: 99
+        hue: 186
+        saturation: 36
+        value: 91
       target:
-        hue: 22
-        saturation: 38
-        value: 57
+        hue: 350
+        saturation: 43
+        value: 100
   - length: 20
     begin: 5
     end: 15
@@ -27,34 +27,15 @@ layers:
       length: 20
       rows: 4
       origin: top left
-      orientation: diagonal
+      orientation: vertical
     chroma:
       length: 20
       delta: -1
       source:
-        hue: 28
-        saturation: 30
-        value: 99
+        hue: 330
+        saturation: 80
+        value: 100
       target:
-        hue: 22
-        saturation: 38
-        value: 57
-  - length: 20
-    begin: 5
-    end: 15
-    grid:
-      length: 20
-      rows: 4
-      origin: top left
-      orientation: diagonal
-    chroma:
-      length: 20
-      delta: -1
-      source:
-        hue: 28
-        saturation: 30
-        value: 99
-      target:
-        hue: 22
-        saturation: 38
-        value: 57
+        hue: 190
+        saturation: 49
+        value: 92

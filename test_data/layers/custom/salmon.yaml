@@ -1,11 +1,13 @@
-length: 540
+length: 20
 begin: 0
 end: 0
 grid:
-  rows: 9
+  length: 20
+  rows: 4
   origin: top left
   orientation: vertical
 chroma:
+  length: 20
   delta: -1
-  source: wild strawberry
-  target: sky blue
+  source: aquamarine
+  target: salmon

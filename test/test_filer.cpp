@@ -6,10 +6,10 @@
 
 using namespace glow;
 
-const std::string frame_name = "frame.yaml";
-const std::string layer_name = "layer.yaml";
-const std::string chroma_name = "chroma.yaml";
-const std::string grid_name = "grid.yaml";
+const std::string frame_name = "frame";
+const std::string layer_name = "layer";
+const std::string chroma_name = "chroma";
+const std::string grid_name = "grid";
 
 TEST_CASE("Filer Basic", "filer_basic")
 {

@@ -24,7 +24,7 @@ void check_detail(const Palette &original, const Palette &derived)
 
 
 #ifdef BUILD_PALETTE
-const std::string test_file_name = "build_palette.yaml";
+const std::string test_file_name = "build_palette";
 TEST_CASE("Build Palette", "[build_palette]")
 {
   Palette palette;
@@ -52,7 +52,7 @@ TEST_CASE("Build Palette", "[build_palette]")
 }
 #endif
 
-const std::string save_file_name = "save_palette.yaml";
+const std::string save_file_name = "save_palette";
 
 TEST_CASE("Build Palette From File", "[build_palette_from_file]")
 {

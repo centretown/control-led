@@ -18,56 +18,63 @@ namespace glow
   const std::string custom = "custom";
   const std::string derived = "derived";
 
-  const std::string palette_name = "palette.yaml";
-  
-  const std::string palette_file()
+  const std::string extension = ".yaml";
+
+  const std::string palette_name = "palette";
+
+  const std::string extend(const std::string name)
   {
-    return data_directory / palettes / palette_name;
+    return name + extension;
   }
 
-  const std::string palette_file(const std::string palette_name)
+  const std::string palette_file()
   {
-    return data_directory / palettes / palette_name;
+    return data_directory / palettes / extend(palette_name);
+  }
+
+  const std::string palette_file(const std::string name)
+  {
+    return data_directory / palettes / extend(name);
   }
 
   const std::string derived_frame(const std::string name)
   {
-    return data_directory / frames / derived / name;
+    return data_directory / frames / derived / extend(name);
   }
 
   const std::string custom_frame(const std::string name)
   {
-    return data_directory / frames / custom / name;
+    return data_directory / frames / custom / extend(name);
   }
 
   const std::string derived_layer(const std::string name)
   {
-    return data_directory / layers / derived / name;
+    return data_directory / layers / derived / extend(name);
   }
 
   const std::string custom_layer(const std::string name)
   {
-    return data_directory / layers / custom / name;
+    return data_directory / layers / custom / extend(name);
   }
 
   const std::string derived_chroma(const std::string name)
   {
-    return data_directory / chromas / derived / name;
+    return data_directory / chromas / derived / extend(name);
   }
 
   const std::string custom_chroma(const std::string name)
   {
-    return data_directory / chromas / custom / name;
+    return data_directory / chromas / custom / extend(name);
   }
 
   const std::string derived_grid(const std::string name)
   {
-    return data_directory / grids / derived / name;
+    return data_directory / grids / derived / extend(name);
   }
 
   const std::string custom_grid(const std::string name)
   {
-    return data_directory / grids / custom / name;
+    return data_directory / grids / custom / extend(name);
   }
 
   const std::string data_path()

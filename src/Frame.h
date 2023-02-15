@@ -61,18 +61,32 @@ namespace glow
 #ifndef STRIP_YAML
 namespace YAML
 {
-  using glow::Frame;
-  using glow::Layer;
+  using namespace glow;
 
   template <>
   struct convert<Frame>
   {
+    static void lookup(Node item, Layer &layer)
+    {
+      if (item.IsMap())
+      {
+        layer = item.as<Layer>();
+        return;
+      }
+
+      std::string name = item.as<std::string>();
+      if (load_yaml(custom_layer(name), layer))
+      {
+        return;
+      }
+      return;
+    }
+
     static Node encode(const Frame &frame)
     {
       Node node;
       node[Frame::keys[Frame::LENGTH]] = frame.length;
       node[Frame::keys[Frame::INTERVAL]] = frame.interval;
-      // node[Frame::keys[Frame::LAYERS]] = frame.layers;
       Node list;
       for (auto layer : frame.layers)
       {
@@ -95,16 +109,18 @@ namespace YAML
       frame.interval =
           node[Frame::keys[Frame::INTERVAL]].as<uint32_t>();
 
-      auto layers = node[Frame::keys[Frame::LAYERS]];
-      if (!layers.IsSequence())
+      auto layer_nodes = node[Frame::keys[Frame::LAYERS]];
+      if (!layer_nodes.IsSequence())
       {
         frame.setup();
         return false;
       }
 
-      for (auto i = 0; i < layers.size(); i++)
+      Layer layer;
+      for (auto node : layer_nodes)
       {
-        frame.push_back(layers[i].as<Layer>());
+        lookup(node, layer);
+        frame.push_back(layer);
       }
       frame.setup();
       return true;

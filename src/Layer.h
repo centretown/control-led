@@ -9,6 +9,7 @@
 #include "base.h"
 #include "Grid.h"
 #include "Chroma.h"
+#include "Filer.h"
 
 namespace glow
 {
@@ -110,11 +111,43 @@ namespace glow
 #ifndef STRIP_YAML
 namespace YAML
 {
-  using glow::Layer;
+  using namespace glow;
 
   template <>
   struct convert<Layer>
   {
+    static void lookup(Node item, Chroma &chroma)
+    {
+      if (item.IsMap())
+      {
+        chroma = item.as<Chroma>();
+        return;
+      }
+
+      std::string name = item.as<std::string>();
+      if (load_yaml(custom_chroma(name), chroma))
+      {
+        return;
+      }
+      return;
+    }
+
+    static void lookup(Node item, Grid &grid)
+    {
+      if (item.IsMap())
+      {
+        grid = item.as<Grid>();
+        return;
+      }
+
+      std::string name = item.as<std::string>();
+      if (load_yaml(custom_grid(name), grid))
+      {
+        return;
+      }
+      return;
+    }
+
     static Node encode(const Layer &layer)
     {
       Node node;
@@ -154,10 +187,10 @@ namespace YAML
           layer.end = item.as<uint16_t>();
           break;
         case Layer::GRID:
-          layer.grid = item.as<Grid>();
+          lookup(item, layer.grid);
           break;
         case Layer::CHROMA:
-          layer.chroma = item.as<Chroma>();
+          lookup(item, layer.chroma);
           break;
         }
       }
