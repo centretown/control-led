@@ -67,9 +67,25 @@ namespace glow
     {
       if (delta == 0)
         return;
-      hsv_source.hue += delta;
+      auto update = [](HSVColor &c, int16_t d)
+      {
+        if (c.hue + d < 0)
+        {
+          c.hue = hue_limit;
+        }
+        else if (c.hue + d > hue_limit)
+        {
+          c.hue = 0;
+        }
+        else
+        {
+          c.hue += d;
+        }
+      };
+
+      update(hsv_source, delta);
       rgb_source = hsv_source.to_rgb();
-      hsv_target.hue += delta;
+      update(hsv_target, delta);
       rgb_target = hsv_target.to_rgb();
     }
 

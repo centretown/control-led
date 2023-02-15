@@ -2,17 +2,31 @@
 An led strip application.
 
 ---
-### Building
+## Building
 ---
-#### Prerequisites:
-- Conan version 1.58.0
-- cmake version 3.25.2
-- c++ build environment
-gcc (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0
+### Prerequisites:
+#### C++ build environment
+https://linuxhint.com/install-build-essential-ubuntu/
+```sh
+# gcc 9.4.0: (Ubuntu 9.4.0-1ubuntu1~20.04.1)
+sudo apt install build-essential
+gcc --version
+```
+#### cmake version 3.25.2 
+https://cmake.org/download/
+```sh
+cmake --version
+```
+#### Conan package manager version 1.58.0
+https://conan.io/downloads.html
+```sh
+conan --version
+```
 
 #### Install:
 ```sh
-git clone https://github.com/centretown/glow.git`
+git clone https://github.com/centretown/glow.git
+cd glow
 mkdir build
 cd build
 conan install ..

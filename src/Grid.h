@@ -48,7 +48,7 @@ namespace glow
     uint16_t length = 0;
     uint16_t rows = 1;
     uint16_t origin = TopLeft;
-    uint16_t orientation = Horizontal;
+    uint16_t orientation = Horizontal ;
 
     uint16_t columns = 0;
     Pivot pivot;

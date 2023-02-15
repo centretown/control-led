@@ -1,6 +1,6 @@
 length: 20
-begin: 5
-end: 15
+begin: 0
+end: 0
 grid:
   length: 20
   rows: 4
@@ -10,4 +10,7 @@ chroma:
   length: 20
   delta: -1
   source: apricot
-  target: beaver
+  target:
+    hue: 0
+    saturation: 0
+    value: 100

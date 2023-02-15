@@ -83,9 +83,9 @@ namespace glow
     const uint8_t green = color.green;
     const uint8_t blue = color.blue;
 
-    const uint8_t primary = std::max(red, std::max(green, blue));
+    const uint8_t primary = std::max({red, green, blue});
     const uint8_t color_range = primary -
-                                std::min(red, std::min(green, blue));
+                                std::min({red, green, blue});
     hue = 0;
     if (color_range != 0)
     {

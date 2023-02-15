@@ -11,6 +11,7 @@ add_executable(test_build_palette
 )
 add_executable(test_filer test_filer.cpp)
 add_executable(test_json test_json.cpp)
+add_executable(test_light test_light.cpp)
 
 include_directories(
   ${yaml-cpp_INCLUDE_DIRS}
@@ -63,15 +64,23 @@ target_link_libraries(test_json PRIVATE
   ${yaml-cpp_LIBRARIES}
   ${catch2_LIBRARIES}
   nlohmann_json::nlohmann_json
-  GlowLib)
+  GlowLib
+)
+
+target_link_libraries(test_light PRIVATE
+  ${yaml-cpp_LIBRARIES}
+  ${catch2_LIBRARIES}
+  GlowLib
+)
 
 enable_testing()
 
-add_test(NAME FILER COMMAND test_filer) # Command can be a target
-add_test(NAME HSVCOLOR COMMAND test_hsvcolor) # Command can be a target
-add_test(NAME PALETTE COMMAND test_build_palette) # Command can be a target
-add_test(NAME FRAME COMMAND test_frame) # Command can be a target
-add_test(NAME GRID COMMAND test_grid) # Command can be a target
-add_test(NAME CHROMA COMMAND test_chroma) # Command can be a target
-add_test(NAME LAYER COMMAND test_layer) # Command can be a target
-add_test(NAME JSON COMMAND test_json) # Command can be a target
+add_test(NAME FILER COMMAND test_filer)
+add_test(NAME HSVCOLOR COMMAND test_hsvcolor)
+add_test(NAME PALETTE COMMAND test_build_palette)
+add_test(NAME FRAME COMMAND test_frame)
+add_test(NAME GRID COMMAND test_grid)
+add_test(NAME CHROMA COMMAND test_chroma)
+add_test(NAME JSON COMMAND test_json)
+add_test(NAME LAYER COMMAND test_layer)
+add_test(NAME LIGHT COMMAND test_light)

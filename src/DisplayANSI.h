@@ -66,6 +66,22 @@ namespace glow
       // printf("\x1b[0J\x1b[0m");
     }
 
+    static void put_light(uint16_t row, uint16_t column, Color color)
+    {
+      at(row, 2 * column);
+      set_color(color);
+      std::cout << bullet << ' ' << ansi_end;
+
+      //  std::cout << "\x1b[38;2;" << color.red
+      //             << ";" << color.green
+      //             << ";" << color.blue << "m"
+      //             << bullet << " \x1b[0m";
+      //   printf("\x1b[38;2;%d;%d;%dm%s \x1b[0m",
+      //          color.r, color.g, color.b, element);
+      // set_color(color);
+      // std::cout << bullet << ansi_end;
+    }
+
   public:
     // void present(uint16_t row, uint16_t column, Color color) ALWAYS_INLINE
     // {

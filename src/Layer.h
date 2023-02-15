@@ -14,10 +14,17 @@ namespace glow
 {
   class Layer
   {
+  public:
+    enum : uint16_t
+    {
+      Relative = 0x8000, // horizontal
+      Bounds = Relative,
+    };
+
   private:
     uint16_t length = 0;
     uint16_t begin = 0;
-    uint16_t end = 10;
+    uint16_t end = 0;
     Grid grid;
     Chroma chroma;
 
@@ -66,42 +73,19 @@ namespace glow
       return setup();
     }
 
-    void setup_length(uint16_t a_length) ALWAYS_INLINE
+    bool setup_length(uint16_t a_length) ALWAYS_INLINE
     {
       length = a_length;
-      setup();
+      return setup();
     }
-    // void set_begin(uint16_t a_length) ALWAYS_INLINE
-    // {
-    //   length = a_length;
-    //   setup();
-    // }
-
-    // void set_end(uint16_t a_end) ALWAYS_INLINE
-    // {
-    //   end = a_end;
-    //   setup();
-    // }
-
-    // void set_grid(const Grid &a_grid) ALWAYS_INLINE
-    // {
-    //   grid = a_grid;
-    //   setup();
-    // }
-
-    // void set_chroma(const Chroma &a_chroma) ALWAYS_INLINE
-    // {
-    //   chroma = a_chroma;
-    //   setup();
-    // }
 
     template <typename LIGHT>
     void spin(LIGHT *light)
     {
-      for (uint16_t i = begin; i < end; ++i)
+      for (uint16_t i = begin; i < length - end; ++i)
       {
-        uint16_t offset = grid.map(i);
-        light->get(offset) = chroma.map(i);
+        light->put(grid.map(i), chroma.map(i));
+        // light->get(grid.map(i)) = chroma.map(i);
       }
       chroma.update_hue();
     }
@@ -177,7 +161,7 @@ namespace YAML
           break;
         }
       }
-      
+
       layer.setup();
       return true;
     }

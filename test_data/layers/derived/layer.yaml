@@ -1,19 +1,19 @@
-length: 20
-begin: 5
-end: 15
+length: 28
+begin: 0
+end: 0
 grid:
-  length: 20
+  length: 28
   rows: 4
   origin: top left
   orientation: diagonal
 chroma:
-  length: 20
+  length: 28
   delta: -1
   source:
     hue: 28
     saturation: 30
     value: 99
   target:
-    hue: 22
-    saturation: 38
-    value: 57
+    hue: 0
+    saturation: 0
+    value: 100

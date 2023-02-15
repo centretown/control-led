@@ -2,20 +2,25 @@
 #include <list>
 #include <map>
 #include <iostream>
+#include <fstream>
 #include <catch2/catch_all.hpp>
 #include <nlohmann/json.hpp>
 
 #include "Filer.h"
 #include "../src/RGBColor.h"
+#include "../src/PaletteColor.h"
 #include "../src/Palette.h"
 
 using namespace glow;
 
-void set_color(nlohmann::json &rgb_json, Color rgb)
+void set_color(nlohmann::json &color_json, std::string name, PaletteColor &palette_color)
 {
-  rgb_json[rgb.keys[Color::RED]] = rgb.red;
-  rgb_json[rgb.keys[Color::GREEN]] = rgb.green;
-  rgb_json[rgb.keys[Color::BLUE]] = rgb.blue;
+  Color rgb = palette_color.rgb;
+  nlohmann::json rgb_json;
+  rgb_json[Color::keys[Color::RED]] = rgb.red;
+  rgb_json[Color::keys[Color::GREEN]] = rgb.green;
+  rgb_json[Color::keys[Color::BLUE]] = rgb.blue;
+  color_json[name] = rgb_json;
 }
 
 TEST_CASE("JSON Basic", "json_basic")
@@ -39,14 +44,24 @@ TEST_CASE("JSON Palette", "json_palette")
   Palette palette;
   REQUIRE(load_yaml(palette_file(), palette));
 
-  nlohmann::json palette_json;
+  nlohmann::json palette_json, colors;
+  palette_json[palette.keys[Palette::TITLE]] = palette.title;
+  palette_json[palette.keys[Palette::NOTES]] = palette.notes;
 
   for (auto palette_color : palette.colors)
   {
-    nlohmann::json rgb_json;
-    set_color(rgb_json, palette_color.second.rgb);
-    std::cout << rgb_json.dump(2) << '\n';
-    palette_json[palette_color.first] = palette_json.parse(rgb_json.dump());
+    nlohmann::json palette_color_json;
+    set_color(palette_color_json,
+              palette_color.first, palette_color.second);
+    colors.push_back(palette_color_json);
   }
-  std::cout << palette_json.dump(2) << "\n";
+
+  palette_json[palette.keys[Palette::COLORS]] = colors;
+  // std::cout << palette_json.dump(2) << "\n";
+  std::fstream json_stream;
+
+  json_stream.open("palette.json",std::ios_base::out);
+  REQUIRE(json_stream.good());
+  json_stream << palette_json.dump(2) << '\n';
+  json_stream.close();
 }

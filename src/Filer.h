@@ -17,11 +17,30 @@ namespace glow
   const std::string frame_file();
   const std::string frame_symbolic_file();
   const std::string layer_file();
+  const std::string layer_symbolic_file(std::string name);
   const std::string layer_symbolic_file();
   const std::string chroma_file();
   const std::string chroma_symbolic_file();
   const std::string grid_file();
   const std::string grid_symbolic_file();
+
+  // extern std::filesystem::path data_directory;
+  // extern const std::string palettes;
+  // extern const std::string frames;
+  // extern const std::string layers;
+  // extern const std::string chromas;
+  // extern const std::string grids;
+  // extern const std::string symbols;
+  // extern const std::string derived;
+  // extern const std::string palette_name;
+  // extern const std::string frame_name;
+  // extern const std::string frame_symbolic;
+  // extern const std::string layer_name;
+  // extern const std::string layer_symbolic;
+  // extern const std::string grid_name;
+  // extern const std::string grid_symbolic;
+  // extern const std::string chroma_name;
+  // extern const std::string chroma_symbolic;
 
   template <typename GLOW_STRUCT>
   bool load_yaml(const std::string file_name, GLOW_STRUCT &glow_struct)

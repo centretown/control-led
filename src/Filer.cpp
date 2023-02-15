@@ -51,6 +51,11 @@ namespace glow
     return data_directory / layers / symbols / layer_symbolic;
   }
 
+  const std::string layer_symbolic_file(std::string name)
+  {
+    return data_directory / layers / symbols / name;
+  }
+
   const std::string chroma_file()
   {
     return data_directory / chromas / derived / chroma_name;

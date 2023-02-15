@@ -1,0 +1,14 @@
+length: 210
+begin: 0
+end: 0
+grid:
+  rows: 5
+  origin: top left
+  orientation: vertical
+chroma:
+  delta: -1
+  source: wild strawberry
+  target:
+    hue: 240
+    saturation: 75
+    value: 30

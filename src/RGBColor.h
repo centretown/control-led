@@ -24,12 +24,22 @@ namespace glow
       white = 0;
     }
 
+    inline Color &operator=(const Color &color)
+    {
+      red = color.red;
+      green = color.green;
+      blue = color.blue;
+      white = color.white;
+      return *this;
+    }
+
     inline bool operator==(const Color &color)
     {
       return (red == color.red &&
               green == color.green &&
               blue == color.blue);
     }
+
     enum : uint8_t
     {
       RED,

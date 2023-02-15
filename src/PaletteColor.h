@@ -14,13 +14,11 @@ namespace glow
   {
     enum : uint8_t
     {
-      NAME,
       RGB,
       HSV,
       KEY_COUNT,
     };
 
-    std::string name{};
     Color rgb;
     HSVColor hsv;
     static std::string keys[KEY_COUNT];
@@ -38,7 +36,6 @@ namespace YAML
     static Node encode(const PaletteColor &palette)
     {
       Node node, rgb, hsv;
-      // node[PaletteColor::keys[PaletteColor::NAME]] = palette.name;
       node[PaletteColor::keys[PaletteColor::RGB]] = palette.rgb;
       node[PaletteColor::keys[PaletteColor::HSV]] = palette.hsv;
       return node;
@@ -50,7 +47,6 @@ namespace YAML
       {
         return false;
       }
-      // palette.name = node[PaletteColor::keys[PaletteColor::NAME]].as<std::string>();
       palette.hsv = node[PaletteColor::keys[PaletteColor::HSV]].as<HSVColor>();
       palette.rgb = node[PaletteColor::keys[PaletteColor::RGB]].as<Color>();
       return true;

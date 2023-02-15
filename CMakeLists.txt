@@ -47,6 +47,7 @@ add_library(GlowLib
   src/Filer.h
   src/Filer.cpp
   src/DisplayANSI.h
+  src/HostLight.h
 )
 
 add_executable(glow
