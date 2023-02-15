@@ -13,6 +13,8 @@
 
 using namespace glow;
 
+const std::string frame_name = "frame.yaml";
+
 std::array<std::string, 6> search_colors = {
     "sunset orange",
     "salmon",
@@ -36,7 +38,7 @@ void process_args(int argc, char **argv)
 
   std::cout << "data_path: " << data_path() << '\n';
   std::cout << "Palette: " << palette_file() << '\n';
-  std::cout << "Frame: " << frame_file() << '\n';
+  std::cout << "Frame: " << derived_frame(frame_name) << '\n';
 
   if (!file_system_exists())
   {
@@ -59,9 +61,9 @@ void load_palette()
 
 void load_frame(Frame &frame)
 {
-  if (load_yaml(frame_symbolic_file(), frame) == false)
+  if (load_yaml(custom_frame(frame_name), frame) == false)
   {
-    std::cout << "Unable to load " << frame_symbolic_file() << " !" << '\n';
+    std::cout << "Unable to load " << custom_frame(frame_name) << " !" << '\n';
     exit(1);
   }
 }

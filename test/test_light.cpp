@@ -37,7 +37,7 @@ TEST_CASE("Layer Lights", "layer_lights")
   // const uint16_t rows = 5;
   Layer layer;
   std::string strawberry = "strawberry.yaml";
-  std::string fname = layer_symbolic_file(strawberry);
+  std::string fname = custom_layer(strawberry);
   REQUIRE(load_yaml(fname, layer));
   // layer.setup_length(length);
   // REQUIRE(layer.get_length() == length);

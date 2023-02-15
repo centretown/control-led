@@ -14,66 +14,60 @@ namespace glow
   const std::string chromas = "chromas";
   const std::string grids = "grids";
 
-  const std::string symbols = "symbols";
+  const std::string base = "base";
+  const std::string custom = "custom";
   const std::string derived = "derived";
 
   const std::string palette_name = "palette.yaml";
-  const std::string frame_name = "frame.yaml";
-  const std::string frame_symbolic = "frame_symbolic.yaml";
-  const std::string layer_name = "layer.yaml";
-  const std::string layer_symbolic = "layer_symbolic.yaml";
-  const std::string grid_name = "grid.yaml";
-  const std::string grid_symbolic = "grid_symbolic.yaml";
-  const std::string chroma_name = "chroma.yaml";
-  const std::string chroma_symbolic = "chroma_symbolic.yaml";
-
+  
   const std::string palette_file()
   {
     return data_directory / palettes / palette_name;
   }
 
-  const std::string frame_file()
+  const std::string palette_file(const std::string palette_name)
   {
-    return data_directory / frames / derived / frame_name;
-  }
-  const std::string frame_symbolic_file()
-  {
-    return data_directory / frames / symbols / frame_symbolic;
+    return data_directory / palettes / palette_name;
   }
 
-  const std::string layer_file()
+  const std::string derived_frame(const std::string name)
   {
-    return data_directory / layers / derived / layer_name;
+    return data_directory / frames / derived / name;
   }
 
-  const std::string layer_symbolic_file()
+  const std::string custom_frame(const std::string name)
   {
-    return data_directory / layers / symbols / layer_symbolic;
+    return data_directory / frames / custom / name;
   }
 
-  const std::string layer_symbolic_file(std::string name)
+  const std::string derived_layer(const std::string name)
   {
-    return data_directory / layers / symbols / name;
+    return data_directory / layers / derived / name;
   }
 
-  const std::string chroma_file()
+  const std::string custom_layer(const std::string name)
   {
-    return data_directory / chromas / derived / chroma_name;
+    return data_directory / layers / custom / name;
   }
 
-  const std::string chroma_symbolic_file()
+  const std::string derived_chroma(const std::string name)
   {
-    return data_directory / chromas / symbols / chroma_symbolic;
+    return data_directory / chromas / derived / name;
   }
 
-  const std::string grid_file()
+  const std::string custom_chroma(const std::string name)
   {
-    return data_directory / grids / derived / grid_name;
+    return data_directory / chromas / custom / name;
   }
 
-  const std::string grid_symbolic_file()
+  const std::string derived_grid(const std::string name)
   {
-    return data_directory / grids / symbols / grid_symbolic;
+    return data_directory / grids / derived / name;
+  }
+
+  const std::string custom_grid(const std::string name)
+  {
+    return data_directory / grids / custom / name;
   }
 
   const std::string data_path()
@@ -112,7 +106,7 @@ namespace glow
     {
       return false;
     }
-    if (!create_directory(data_directory / frames / symbols))
+    if (!create_directory(data_directory / frames / custom))
     {
       return false;
     }
@@ -125,7 +119,7 @@ namespace glow
     {
       return false;
     }
-    if (!create_directory(data_directory / layers / symbols))
+    if (!create_directory(data_directory / layers / custom))
     {
       return false;
     }
@@ -138,7 +132,7 @@ namespace glow
     {
       return false;
     }
-    if (!create_directory(data_directory / grids / symbols))
+    if (!create_directory(data_directory / grids / custom))
     {
       return false;
     }
@@ -151,7 +145,7 @@ namespace glow
     {
       return false;
     }
-    if (!create_directory(data_directory / chromas / symbols))
+    if (!create_directory(data_directory / chromas / custom))
     {
       return false;
     }

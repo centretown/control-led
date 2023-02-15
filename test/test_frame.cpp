@@ -14,6 +14,8 @@ using namespace glow;
 #include "check_frame_detail.h"
 
 
+const std::string frame_name = "frame.yaml";
+
 void check_detail(const Frame &original, const Frame &derived)
 {
   check_frame_detail(original, derived);
@@ -57,7 +59,7 @@ TEST_CASE("Frame Basic", "frame_basic")
   REQUIRE(frame.layers.size() == 3);
 
   // test_yaml(frame, frame_data, check_detail);
-  save_yaml(frame_file(), frame);
+  save_yaml(derived_frame(frame_name), frame);
 
   // test/frame.yaml
   // test_yaml_from_file(frame, frame_name, check_detail);

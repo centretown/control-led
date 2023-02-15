@@ -10,6 +10,8 @@
 
 using namespace glow;
 
+const std::string chroma_name = "chroma.yaml";
+
 void check_detail(const Chroma &original, const Chroma &derived)
 {
   check_chroma_detail(original, derived);
@@ -62,8 +64,8 @@ TEST_CASE("Chroma Palette", "chroma_palette")
   test_yaml_from_input(chroma, input, check_detail);
 
   YAML::Node node = YAML::Load(input);
-  save_yaml(chroma_symbolic_file(), node);
+  save_yaml(custom_chroma(chroma_name), node);
 
-  save_yaml(chroma_file(), chroma);
-  test_yaml_from_file(chroma, chroma_symbolic_file(), check_detail);
+  save_yaml(derived_chroma(chroma_name), chroma);
+  test_yaml_from_file(chroma, custom_chroma(chroma_name), check_detail);
 }

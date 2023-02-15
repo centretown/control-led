@@ -12,6 +12,8 @@
 
 using namespace glow;
 
+const std::string layer_name = "layer.yaml";
+
 void check_detail(const Layer &original, const Layer &derived)
 {
   check_layer_detail(original, derived);
@@ -62,9 +64,9 @@ TEST_CASE("Layer Basic", "layer_basic")
   // save_yaml(layer_file(), layer);
   test_yaml(layer, input, check_detail);
 
-  REQUIRE(save_yaml(layer_file(), layer));
+  REQUIRE(save_yaml(derived_layer(layer_name), layer));
 
-  test_yaml_from_file(layer, layer_file(), check_detail);
+  test_yaml_from_file(layer, derived_layer(layer_name), check_detail);
 }
 
 TEST_CASE("Layer Palette", "layer_palette")
@@ -101,11 +103,11 @@ TEST_CASE("Layer Palette", "layer_palette")
   Layer layer;
   REQUIRE(layer.setup(28, 0, 0, grid, chroma));
   test_yaml(layer, input, check_detail);
-  REQUIRE(save_yaml(layer_file(), layer));
+  REQUIRE(save_yaml(derived_layer(layer_name), layer));
 
-  Layer layer_symbolic;
-  REQUIRE(load_yaml(layer_symbolic_file(), layer_symbolic));
+  Layer layer_custom;
+  REQUIRE(load_yaml(custom_layer(layer_name), layer_custom));
   REQUIRE(layer.setup_length(100));
-  REQUIRE(layer_symbolic.setup_length(100));
-  check_detail(layer, layer_symbolic);
+  REQUIRE(layer_custom.setup_length(100));
+  check_detail(layer, layer_custom);
 }

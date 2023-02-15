@@ -315,7 +315,7 @@ TEST_CASE("Grid 4x9 BottomRight Diagonal", "[grid_4x9_bottomright_diagonal]")
   test_yaml(grid, input, check_detail);
 }
 
-TEST_CASE("Grid Symbolic", "[grid_symbolic]")
+TEST_CASE("Grid Symbolic", "[grid_custom]")
 {
   Grid grid_default_rows;
   REQUIRE(grid_default_rows.setup(36, 1, BottomRight, Diagonal));

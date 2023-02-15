@@ -6,73 +6,77 @@
 
 using namespace glow;
 
+const std::string frame_name = "frame.yaml";
+const std::string layer_name = "layer.yaml";
+const std::string chroma_name = "chroma.yaml";
+const std::string grid_name = "grid.yaml";
+
 TEST_CASE("Filer Basic", "filer_basic")
 {
   set_data_path("/home/dave/src/glow/data");
   REQUIRE("/home/dave/src/glow/data/" == data_path());
 
   std::cout << palette_file() << '\n';
-  std::cout << frame_file() << '\n';
-  std::cout << frame_symbolic_file() << '\n';
-  std::cout << layer_file() << '\n';
-  std::cout << layer_symbolic_file() << '\n';
-  std::cout << chroma_file() << '\n';
-  std::cout << chroma_symbolic_file() << '\n';
-  std::cout << grid_file() << '\n';
-  std::cout << grid_symbolic_file() << '\n';
+  std::cout << derived_frame(frame_name) << '\n';
+  std::cout << custom_frame(frame_name) << '\n';
+  std::cout << derived_layer(layer_name) << '\n';
+  std::cout << custom_layer(layer_name) << '\n';
+  std::cout << derived_chroma(chroma_name) << '\n';
+  std::cout << custom_chroma(chroma_name) << '\n';
+  std::cout << derived_grid(grid_name) << '\n';
+  std::cout << custom_grid(grid_name) << '\n';
 
   REQUIRE("/home/dave/src/glow/data/palettes/palette.yaml" == palette_file());
-  REQUIRE("/home/dave/src/glow/data/frames/derived/frame.yaml" == frame_file());
-  REQUIRE("/home/dave/src/glow/data/frames/symbols/frame_symbolic.yaml" == frame_symbolic_file());
-  REQUIRE("/home/dave/src/glow/data/layers/derived/layer.yaml" == layer_file());
-  REQUIRE("/home/dave/src/glow/data/layers/symbols/layer_symbolic.yaml" == layer_symbolic_file());
-  REQUIRE("/home/dave/src/glow/data/chromas/derived/chroma.yaml" == chroma_file());
-  REQUIRE("/home/dave/src/glow/data/chromas/symbols/chroma_symbolic.yaml" == chroma_symbolic_file());
-  REQUIRE("/home/dave/src/glow/data/grids/derived/grid.yaml" == grid_file());
-  REQUIRE("/home/dave/src/glow/data/grids/symbols/grid_symbolic.yaml" == grid_symbolic_file());
+  REQUIRE("/home/dave/src/glow/data/frames/derived/frame.yaml" == derived_frame(frame_name));
+  REQUIRE("/home/dave/src/glow/data/frames/custom/frame.yaml" == custom_frame(frame_name));
+  REQUIRE("/home/dave/src/glow/data/layers/derived/layer.yaml" == derived_layer(layer_name));
+  REQUIRE("/home/dave/src/glow/data/layers/custom/layer.yaml" == custom_layer(layer_name));
+  REQUIRE("/home/dave/src/glow/data/chromas/derived/chroma.yaml" == derived_chroma(chroma_name));
+  REQUIRE("/home/dave/src/glow/data/chromas/custom/chroma.yaml" == custom_chroma(chroma_name));
+  REQUIRE("/home/dave/src/glow/data/grids/derived/grid.yaml" == derived_grid(grid_name));
+  REQUIRE("/home/dave/src/glow/data/grids/custom/grid.yaml" == custom_grid(grid_name));
 
   set_data_path("data");
 
   std::cout << palette_file() << '\n';
-  std::cout << frame_file() << '\n';
-  std::cout << frame_symbolic_file() << '\n';
-  std::cout << layer_file() << '\n';
-  std::cout << layer_symbolic_file() << '\n';
-  std::cout << chroma_file() << '\n';
-  std::cout << chroma_symbolic_file() << '\n';
-  std::cout << grid_file() << '\n';
-  std::cout << grid_symbolic_file() << '\n';
+  std::cout << derived_frame(frame_name) << '\n';
+  std::cout << custom_frame(frame_name) << '\n';
+  std::cout << derived_layer(layer_name) << '\n';
+  std::cout << custom_layer(layer_name) << '\n';
+  std::cout << derived_chroma(chroma_name) << '\n';
+  std::cout << custom_chroma(chroma_name) << '\n';
+  std::cout << derived_grid(grid_name) << '\n';
+  std::cout << custom_grid(grid_name) << '\n';
 
   REQUIRE("data/palettes/palette.yaml" == palette_file());
-  REQUIRE("data/frames/derived/frame.yaml" == frame_file());
-  REQUIRE("data/frames/symbols/frame_symbolic.yaml" == frame_symbolic_file());
-  REQUIRE("data/layers/derived/layer.yaml" == layer_file());
-  REQUIRE("data/layers/symbols/layer_symbolic.yaml" == layer_symbolic_file());
-  REQUIRE("data/chromas/derived/chroma.yaml" == chroma_file());
-  REQUIRE("data/chromas/symbols/chroma_symbolic.yaml" == chroma_symbolic_file());
-  REQUIRE("data/grids/derived/grid.yaml" == grid_file());
-  REQUIRE("data/grids/symbols/grid_symbolic.yaml" == grid_symbolic_file());
+  REQUIRE("data/frames/derived/frame.yaml" == derived_frame(frame_name));
+  REQUIRE("data/frames/custom/frame.yaml" == custom_frame(frame_name));
+  REQUIRE("data/layers/derived/layer.yaml" == derived_layer(layer_name));
+  REQUIRE("data/layers/custom/layer.yaml" == custom_layer(layer_name));
+  REQUIRE("data/chromas/derived/chroma.yaml" == derived_chroma(chroma_name));
+  REQUIRE("data/chromas/custom/chroma.yaml" == custom_chroma(chroma_name));
+  REQUIRE("data/grids/derived/grid.yaml" == derived_grid(grid_name));
+  REQUIRE("data/grids/custom/grid.yaml" == custom_grid(grid_name));
 
   set_data_path("data/");
 
   std::cout << palette_file() << '\n';
-  std::cout << frame_file() << '\n';
-  std::cout << frame_symbolic_file() << '\n';
-  std::cout << layer_file() << '\n';
-  std::cout << layer_symbolic_file() << '\n';
-  std::cout << chroma_file() << '\n';
-  std::cout << chroma_symbolic_file() << '\n';
-  std::cout << grid_file() << '\n';
-  std::cout << grid_symbolic_file() << '\n';
+  std::cout << derived_frame(frame_name) << '\n';
+  std::cout << custom_frame(frame_name) << '\n';
+  std::cout << derived_layer(layer_name) << '\n';
+  std::cout << custom_layer(layer_name) << '\n';
+  std::cout << derived_chroma(chroma_name) << '\n';
+  std::cout << custom_chroma(chroma_name) << '\n';
+  std::cout << derived_grid(grid_name) << '\n';
+  std::cout << custom_grid(grid_name) << '\n';
 
   REQUIRE("data/palettes/palette.yaml" == palette_file());
-  REQUIRE("data/frames/derived/frame.yaml" == frame_file());
-  REQUIRE("data/frames/symbols/frame_symbolic.yaml" == frame_symbolic_file());
-  REQUIRE("data/layers/derived/layer.yaml" == layer_file());
-  REQUIRE("data/layers/symbols/layer_symbolic.yaml" == layer_symbolic_file());
-  REQUIRE("data/chromas/derived/chroma.yaml" == chroma_file());
-  REQUIRE("data/chromas/symbols/chroma_symbolic.yaml" == chroma_symbolic_file());
-  REQUIRE("data/grids/derived/grid.yaml" == grid_file());
-  REQUIRE("data/grids/symbols/grid_symbolic.yaml" == grid_symbolic_file());
-
+  REQUIRE("data/frames/derived/frame.yaml" == derived_frame(frame_name));
+  REQUIRE("data/frames/custom/frame.yaml" == custom_frame(frame_name));
+  REQUIRE("data/layers/derived/layer.yaml" == derived_layer(layer_name));
+  REQUIRE("data/layers/custom/layer.yaml" == custom_layer(layer_name));
+  REQUIRE("data/chromas/derived/chroma.yaml" == derived_chroma(chroma_name));
+  REQUIRE("data/chromas/custom/chroma.yaml" == custom_chroma(chroma_name));
+  REQUIRE("data/grids/derived/grid.yaml" == derived_grid(grid_name));
+  REQUIRE("data/grids/custom/grid.yaml" == custom_grid(grid_name));
 }

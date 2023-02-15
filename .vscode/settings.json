@@ -59,6 +59,8 @@
     "variant": "cpp",
     "filesystem": "cpp",
     "codecvt": "cpp",
-    "iomanip": "cpp"
+    "iomanip": "cpp",
+    "any": "cpp",
+    "valarray": "cpp"
   }
 }
