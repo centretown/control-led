@@ -24,6 +24,8 @@ namespace glow
   const std::string derived_grid(std::string name);
   const std::string custom_grid(std::string name);
 
+  
+
   template <typename GLOW_STRUCT>
   bool load_yaml(const std::string file_name, GLOW_STRUCT &glow_struct)
   {

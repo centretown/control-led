@@ -1,6 +1,7 @@
 #include <iostream>
 #include <array>
 #include <string>
+#include <signal.h>
 
 #include <yaml-cpp/yaml.h>
 #include <nlohmann/json.hpp>
@@ -16,7 +17,7 @@ using namespace glow;
 
 // const std::string frame_name = "frame";
 
-std::array<std::string, 6> search_colors = {
+const std::array<std::string, 6> search_colors = {
     "sunset orange",
     "salmon",
     "antique brass",
@@ -37,17 +38,19 @@ void process_args(int argc, char **argv)
   //           << Glow_VERSION_MAJOR << '.'
   //           << Glow_VERSION_MINOR << '\n';
 
-  std::cout << "data_path: " << data_path() << '\n';
-  std::cout << "Palette: " << palette_file() << '\n';
+  // std::cout << "data_path: " << data_path() << '\n';
+  // std::cout << "Palette: " << palette_file() << '\n';
   // std::cout << "Frame: " << derived_frame(frame_name) << '\n';
 
   if (!file_system_exists())
   {
     if (!make_file_system())
     {
-      std::cout << "Failed to create file system";
+      std::cout << "Failed to create file system" << '\n';
       exit(1);
     }
+    std::cout << "File system " << data_path() << '\n';
+    exit(0);
   }
 }
 
@@ -101,20 +104,33 @@ void display_selected_colors()
   }
 }
 
+Frame frame;
+
+void display_summary()
+{
+  YAML::Node node_out = YAML::convert<Frame>::encode(frame);
+  YAML::Emitter out;
+  out << node_out;
+  std::cout << out.c_str() << '\n';
+}
+
+void sigintHandler(int sig_num)
+{
+  display_summary();
+  exit(0);
+};
+
 int main(int argc, char **argv)
 {
+
+  signal(SIGINT, sigintHandler);
+
   process_args(argc, argv);
 
   load_palette();
   display_selected_colors();
 
-  Frame frame;
   load_frame("salmon-strawberry", frame);
-
-  YAML::Node node_out = YAML::convert<Frame>::encode(frame);
-  YAML::Emitter out;
-  out << node_out;
-  std::cout << out.c_str() << '\n';
-
+  display_summary();
   exit(0);
 }

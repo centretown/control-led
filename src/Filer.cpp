@@ -115,22 +115,20 @@ namespace glow
     create(data_directory / grids / derived);
     create(data_directory / chromas / custom);
     create(data_directory / chromas / derived);
+
     return true;
   }
 
   bool file_system_exists()
   {
-    if (!std::filesystem::exists(data_directory))
-    {
-      return false;
-    }
-    return true;
+    return std::filesystem::exists(data_directory);
   }
 
   const std::string set_data_path(std::string path)
   {
+    std::error_code err;
+    data_directory = std::filesystem::weakly_canonical(path, err);
 
-    data_directory = path;
     return data_path();
   }
 }
