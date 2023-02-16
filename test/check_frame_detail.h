@@ -12,6 +12,7 @@ using namespace glow;
 void check_frame_detail(const Frame &original, const Frame &derived)
 {
   REQUIRE(original.get_length() == derived.get_length());
+  REQUIRE(original.get_rows() == derived.get_rows());
   REQUIRE(original.get_interval() == derived.get_interval());
   REQUIRE(original.get_size() == derived.get_size());
 

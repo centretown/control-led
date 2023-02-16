@@ -32,6 +32,7 @@ namespace glow
 
   public:
     uint16_t get_length() const ALWAYS_INLINE { return length; }
+    uint16_t get_rows() const ALWAYS_INLINE { return rows; }
     uint16_t get_begin() const ALWAYS_INLINE { return begin; }
     uint16_t get_end() const ALWAYS_INLINE { return end; }
     const Grid &get_grid() const ALWAYS_INLINE { return grid; }
@@ -40,6 +41,11 @@ namespace glow
     bool setup()
     {
       if (length == 0)
+      {
+        return false;
+      }
+
+      if (rows == 0)
       {
         return false;
       }
@@ -54,20 +60,18 @@ namespace glow
         return false;
       }
 
-      if (end < begin)
-      {
-        std::swap(begin, end);
-      }
       return true;
     }
 
     bool setup(uint16_t p_length,
+               uint16_t p_rows,
                uint16_t p_begin,
                uint16_t p_end,
                const Grid &p_grid,
                const Chroma &p_chroma)
     {
       length = p_length;
+      rows = p_rows;
       begin = p_begin;
       end = p_end;
       grid = p_grid;

@@ -15,6 +15,7 @@ void check_layer_detail(const Layer &original, const Layer &derived)
 {
 
   REQUIRE(original.get_length() == derived.get_length());
+  REQUIRE(original.get_rows() == derived.get_rows());
   REQUIRE(original.get_begin() == derived.get_begin());
   REQUIRE(original.get_end() == derived.get_end());
 

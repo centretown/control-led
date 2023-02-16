@@ -27,6 +27,10 @@ namespace glow
       {
         return false;
       }
+      if (rows == 0)
+      {
+        return false;
+      }
 
       for (auto &layer : layers)
       {
@@ -36,14 +40,16 @@ namespace glow
       return true;
     }
 
-    bool setup(uint16_t p_length, uint32_t p_interval)
+    bool setup(uint16_t p_length, uint16_t p_rows, uint32_t p_interval)
     {
       length = p_length;
+      rows = p_rows;
       interval = p_interval;
       return setup();
     }
 
     uint16_t get_length() const ALWAYS_INLINE { return length; }
+    uint16_t get_rows() const ALWAYS_INLINE { return rows; }
     uint32_t get_interval() const ALWAYS_INLINE { return interval; }
 
     size_t get_size() const ALWAYS_INLINE { return layers.size(); }
@@ -113,26 +119,39 @@ namespace YAML
         return false;
       }
 
-      frame.length =
-          node[Frame::keys[Frame::LENGTH]].as<uint16_t>();
-      frame.rows =
-          node[Frame::keys[Frame::ROWS]].as<uint16_t>();
-      frame.interval =
-          node[Frame::keys[Frame::INTERVAL]].as<uint32_t>();
-
-      auto layer_nodes = node[Frame::keys[Frame::LAYERS]];
-      if (!layer_nodes.IsSequence())
+      for (auto key = 0; key < Frame::KEY_COUNT; ++key)
       {
-        frame.setup();
-        return false;
+        Node item = node[Frame::keys[key]];
+        if (!item.IsDefined())
+        {
+          continue;
+        }
+
+        switch (key)
+        {
+        case Frame::LENGTH:
+          frame.length = item.as<uint16_t>();
+          break;
+        case Frame::ROWS:
+          frame.rows = item.as<uint16_t>();
+          break;
+        case Frame::INTERVAL:
+          frame.interval = item.as<uint32_t>();
+          break;
+        case Frame::LAYERS:
+          if (item.IsSequence())
+          {
+            Layer layer;
+            for (auto layer_node : item)
+            {
+              lookup(layer_node, layer);
+              frame.push_back(layer);
+            }
+          }
+          break;
+        }
       }
 
-      Layer layer;
-      for (auto node : layer_nodes)
-      {
-        lookup(node, layer);
-        frame.push_back(layer);
-      }
       frame.setup();
       return true;
     }

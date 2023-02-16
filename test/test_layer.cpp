@@ -31,6 +31,7 @@ TEST_CASE("Layer Basic", "layer_basic")
 {
   std::string input =
       "length: 20\n"
+      "rows: 4\n"
       "begin: 0\n"
       "end: 0\n"
       "grid:\n"
@@ -60,7 +61,7 @@ TEST_CASE("Layer Basic", "layer_basic")
   REQUIRE(grid.setup(20, 4, TopLeft, Diagonal));
 
   Layer layer;
-  REQUIRE(layer.setup(20, 0, 0, grid, chroma));
+  REQUIRE(layer.setup(20, 4, 0, 0, grid, chroma));
   // save_yaml(layer_file(), layer);
   test_yaml(layer, input, check_detail);
 
@@ -75,6 +76,7 @@ TEST_CASE("Layer Palette", "layer_palette")
 
   std::string input =
       "length: 28\n"
+      "rows: 4\n"
       "begin: 0\n"
       "end: 0\n"
       "grid:\n"
@@ -101,7 +103,7 @@ TEST_CASE("Layer Palette", "layer_palette")
   REQUIRE(grid.setup(20, 4, TopLeft, Diagonal));
 
   Layer layer;
-  REQUIRE(layer.setup(28, 0, 0, grid, chroma));
+  REQUIRE(layer.setup(28, 4, 0, 0, grid, chroma));
   test_yaml(layer, input, check_detail);
   REQUIRE(save_yaml(derived_layer(layer_name), layer));
 

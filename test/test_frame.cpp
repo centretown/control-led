@@ -23,7 +23,7 @@ void check_detail(const Frame &original, const Frame &derived)
 TEST_CASE("Frame Basic", "frame_basic")
 {
   Frame frame;
-  frame.setup(20, 48);
+  frame.setup(20, 4, 48);
 
   HSVColor source, target;
   // apricot
@@ -39,9 +39,9 @@ TEST_CASE("Frame Basic", "frame_basic")
 
   Layer layer, layer1, layer2;
 
-  REQUIRE(layer.setup(20, 0, 0, grid, chroma));
-  REQUIRE(layer1.setup(20, 0, 0, grid, chroma));
-  REQUIRE(layer2.setup(20, 0, 0, grid, chroma));
+  REQUIRE(layer.setup(20, 4, 0, 0, grid, chroma));
+  REQUIRE(layer1.setup(20, 4, 0, 0, grid, chroma));
+  REQUIRE(layer2.setup(20, 4, 0, 0, grid, chroma));
 
   float hue{}, saturation{}, value{};
 
@@ -56,6 +56,7 @@ TEST_CASE("Frame Basic", "frame_basic")
   frame.push_back(layer1);
   frame.push_back(layer2);
   REQUIRE(frame.layers.size() == 3);
+  frame.setup();
 
   save_yaml(derived_frame(frame_name), frame);
   test_yaml_from_file(frame, derived_frame(frame_name), check_detail);
