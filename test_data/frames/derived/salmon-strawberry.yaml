@@ -1,16 +1,18 @@
-length: 20
+length: 400
+rows: 10
 interval: 48
 layers:
-  - length: 20
+  - length: 400
+    rows: 10
     begin: 0
     end: 0
     grid:
-      length: 20
-      rows: 4
+      length: 400
+      rows: 10
       origin: top left
       orientation: vertical
     chroma:
-      length: 20
+      length: 400
       delta: -1
       source:
         hue: 186
@@ -20,16 +22,17 @@ layers:
         hue: 350
         saturation: 43
         value: 100
-  - length: 540
+  - length: 400
+    rows: 10
     begin: 0
     end: 0
     grid:
-      length: 540
-      rows: 9
+      length: 400
+      rows: 10
       origin: top left
       orientation: vertical
     chroma:
-      length: 540
+      length: 400
       delta: -1
       source:
         hue: 330
@@ -39,16 +42,17 @@ layers:
         hue: 190
         saturation: 49
         value: 92
-  - length: 20
+  - length: 400
+    rows: 10
     begin: 0
     end: 0
     grid:
-      length: 20
-      rows: 4
+      length: 400
+      rows: 10
       origin: top left
       orientation: vertical
     chroma:
-      length: 20
+      length: 400
       delta: -1
       source:
         hue: 186
@@ -58,16 +62,17 @@ layers:
         hue: 350
         saturation: 43
         value: 100
-  - length: 540
+  - length: 400
+    rows: 10
     begin: 0
     end: 0
     grid:
-      length: 540
-      rows: 9
+      length: 400
+      rows: 10
       origin: top left
       orientation: vertical
     chroma:
-      length: 540
+      length: 400
       delta: -1
       source:
         hue: 330

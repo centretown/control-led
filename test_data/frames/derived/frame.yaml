@@ -1,7 +1,9 @@
 length: 20
+rows: 4
 interval: 48
 layers:
   - length: 20
+    rows: 4
     begin: 5
     end: 15
     grid:
@@ -21,6 +23,7 @@ layers:
         saturation: 43
         value: 100
   - length: 20
+    rows: 4
     begin: 5
     end: 15
     grid:

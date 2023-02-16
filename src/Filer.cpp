@@ -13,13 +13,10 @@ namespace glow
   const std::string layers = "layers";
   const std::string chromas = "chromas";
   const std::string grids = "grids";
-
   const std::string base = "base";
   const std::string custom = "custom";
   const std::string derived = "derived";
-
   const std::string extension = ".yaml";
-
   const std::string palette_name = "palette";
 
   const std::string extend(const std::string name)
@@ -98,69 +95,26 @@ namespace glow
 
   bool make_file_system()
   {
+    std::error_code err;
+    auto create = [&](std::string name)
+    {
+      if (std::filesystem::create_directories(name, err) == false)
+      {
+        std::cout << "Filer::Unable to create_directory "
+                  << name << '\n'
+                  << err.message() << '\n';
+      }
+    };
 
-    if (!create_directory(data_directory))
-    {
-      return false;
-    }
-
-    if (!create_directory(data_directory / palettes))
-    {
-      return false;
-    }
-
-    if (!create_directory(data_directory / frames))
-    {
-      return false;
-    }
-    if (!create_directory(data_directory / frames / custom))
-    {
-      return false;
-    }
-    if (!create_directory(data_directory / frames / derived))
-    {
-      return false;
-    }
-
-    if (!create_directory(data_directory / layers))
-    {
-      return false;
-    }
-    if (!create_directory(data_directory / layers / custom))
-    {
-      return false;
-    }
-    if (!create_directory(data_directory / layers / derived))
-    {
-      return false;
-    }
-
-    if (!create_directory(data_directory / grids))
-    {
-      return false;
-    }
-    if (!create_directory(data_directory / grids / custom))
-    {
-      return false;
-    }
-    if (!create_directory(data_directory / grids / derived))
-    {
-      return false;
-    }
-
-    if (!create_directory(data_directory / chromas))
-    {
-      return false;
-    }
-    if (!create_directory(data_directory / chromas / custom))
-    {
-      return false;
-    }
-    if (!create_directory(data_directory / chromas / derived))
-    {
-      return false;
-    }
-
+    create(data_directory / palettes);
+    create(data_directory / frames / custom);
+    create(data_directory / frames / derived);
+    create(data_directory / layers / custom);
+    create(data_directory / layers / derived);
+    create(data_directory / grids / custom);
+    create(data_directory / grids / derived);
+    create(data_directory / chromas / custom);
+    create(data_directory / chromas / derived);
     return true;
   }
 

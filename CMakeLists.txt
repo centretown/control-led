@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.25)
 
 project(
-  glow
+  Glow
   VERSION 0.3
   LANGUAGES CXX)
 
-configure_file(src/GlowConfig.h.in src/GlowConfig.h)
+configure_file(GlowConfig.h.in GlowConfig.h)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
@@ -79,7 +79,7 @@ include_directories(
 )
 
 # target_link_libraries(${PROJECT_NAME} ${yaml-cpp_LIBRARIES} ${cxxopts_LIBRARIES} GlowLib)
-target_link_libraries(${PROJECT_NAME} ${yaml-cpp_LIBRARIES} nlohmann_json::nlohmann_json GlowLib)
+target_link_libraries(glow ${yaml-cpp_LIBRARIES} nlohmann_json::nlohmann_json GlowLib)
 
 if(Catch2_FOUND)
   add_subdirectory(test)

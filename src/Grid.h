@@ -48,7 +48,7 @@ namespace glow
     uint16_t length = 0;
     uint16_t rows = 1;
     uint16_t origin = TopLeft;
-    uint16_t orientation = Horizontal ;
+    uint16_t orientation = Horizontal;
 
     uint16_t columns = 0;
     Pivot pivot;
@@ -62,9 +62,10 @@ namespace glow
 
     bool setup();
 
-    bool setup_length(uint16_t p_length) ALWAYS_INLINE
+    bool setup_length(uint16_t p_length, uint16_t p_rows = 1) ALWAYS_INLINE
     {
       length = p_length;
+      rows = p_rows;
       return setup();
     }
 

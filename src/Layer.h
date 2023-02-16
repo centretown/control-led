@@ -24,6 +24,7 @@ namespace glow
 
   private:
     uint16_t length = 0;
+    uint16_t rows = 0;
     uint16_t begin = 0;
     uint16_t end = 0;
     Grid grid;
@@ -43,7 +44,7 @@ namespace glow
         return false;
       }
 
-      if (grid.setup_length(length) == false)
+      if (grid.setup_length(length, rows) == false)
       {
         return false;
       }
@@ -74,9 +75,10 @@ namespace glow
       return setup();
     }
 
-    bool setup_length(uint16_t a_length) ALWAYS_INLINE
+    bool setup_length(uint16_t a_length, uint16_t a_rows = 1) ALWAYS_INLINE
     {
       length = a_length;
+      rows = a_rows;
       return setup();
     }
 
@@ -95,6 +97,7 @@ namespace glow
     enum : uint8_t
     {
       LENGTH,
+      ROWS,
       BEGIN,
       END,
       GRID,
@@ -152,6 +155,7 @@ namespace YAML
     {
       Node node;
       node[Layer::keys[Layer::LENGTH]] = layer.length;
+      node[Layer::keys[Layer::ROWS]] = layer.rows;
       node[Layer::keys[Layer::BEGIN]] = layer.begin;
       node[Layer::keys[Layer::END]] = layer.end;
       node[Layer::keys[Layer::GRID]] = layer.grid;
@@ -179,6 +183,9 @@ namespace YAML
         {
         case Layer::LENGTH:
           layer.length = item.as<uint16_t>();
+          break;
+        case Layer::ROWS:
+          layer.rows = item.as<uint16_t>();
           break;
         case Layer::BEGIN:
           layer.begin = item.as<uint16_t>();

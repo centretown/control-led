@@ -14,6 +14,7 @@ namespace glow
   {
   private:
     uint16_t length = 0;
+    uint16_t rows = 0;
     uint32_t interval = 16;
 
   public:
@@ -26,6 +27,12 @@ namespace glow
       {
         return false;
       }
+
+      for (auto &layer : layers)
+      {
+        layer.setup_length(length, rows);
+      }
+
       return true;
     }
 
@@ -48,6 +55,7 @@ namespace glow
     enum : uint8_t
     {
       LENGTH,
+      ROWS,
       INTERVAL,
       LAYERS,
       KEY_COUNT,
@@ -86,6 +94,7 @@ namespace YAML
     {
       Node node;
       node[Frame::keys[Frame::LENGTH]] = frame.length;
+      node[Layer::keys[Frame::ROWS]] = frame.rows;
       node[Frame::keys[Frame::INTERVAL]] = frame.interval;
       Node list;
       for (auto layer : frame.layers)
@@ -106,6 +115,8 @@ namespace YAML
 
       frame.length =
           node[Frame::keys[Frame::LENGTH]].as<uint16_t>();
+      frame.rows =
+          node[Frame::keys[Frame::ROWS]].as<uint16_t>();
       frame.interval =
           node[Frame::keys[Frame::INTERVAL]].as<uint32_t>();
 

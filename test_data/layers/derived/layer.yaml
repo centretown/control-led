@@ -1,9 +1,10 @@
 length: 28
+rows: 0
 begin: 0
 end: 0
 grid:
   length: 28
-  rows: 4
+  rows: 1
   origin: top left
   orientation: diagonal
 chroma:

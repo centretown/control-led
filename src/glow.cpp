@@ -1,5 +1,6 @@
 #include <iostream>
 #include <array>
+#include <string>
 
 #include <yaml-cpp/yaml.h>
 #include <nlohmann/json.hpp>
@@ -13,7 +14,7 @@
 
 using namespace glow;
 
-const std::string frame_name = "frame";
+// const std::string frame_name = "frame";
 
 std::array<std::string, 6> search_colors = {
     "sunset orange",
@@ -38,7 +39,7 @@ void process_args(int argc, char **argv)
 
   std::cout << "data_path: " << data_path() << '\n';
   std::cout << "Palette: " << palette_file() << '\n';
-  std::cout << "Frame: " << derived_frame(frame_name) << '\n';
+  // std::cout << "Frame: " << derived_frame(frame_name) << '\n';
 
   if (!file_system_exists())
   {
@@ -59,7 +60,7 @@ void load_palette()
   }
 }
 
-void load_frame(Frame &frame)
+void load_frame(std::string frame_name, Frame &frame)
 {
   if (load_yaml(custom_frame(frame_name), frame) == false)
   {
@@ -108,7 +109,7 @@ int main(int argc, char **argv)
   display_selected_colors();
 
   Frame frame;
-  load_frame(frame);
+  load_frame("salmon-strawberry", frame);
 
   YAML::Node node_out = YAML::convert<Frame>::encode(frame);
   YAML::Emitter out;
