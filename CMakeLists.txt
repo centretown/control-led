@@ -5,7 +5,7 @@ project(
   VERSION 0.3
   LANGUAGES CXX)
 
-configure_file(GlowConfig.h.in GlowConfig.h)
+configure_file(GlowConfig.h.in ${PROJECT_SOURCE_DIR}/src/GlowConfig.h)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
@@ -14,7 +14,7 @@ list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 # add_definitions("-std=c++14" "-DSTRIP_YAML")
 
 # include yaml
-add_definitions("-std=c++17" "-DDATA_DIR=\"/home/dave/src/glow/test_data\"")
+add_definitions("-std=c++17" "-DDATA_DIR=\"${PROJECT_SOURCE_DIR}/test_data\"")
 
 include(CTest)
 
@@ -48,6 +48,8 @@ add_library(GlowLib
   src/Filer.cpp
   src/DisplayANSI.h
   src/HostLight.h
+  src/Library.h
+  src/Library.cpp
 )
 
 add_executable(glow
@@ -71,15 +73,22 @@ add_executable(glow
 find_package(yaml-cpp)
 find_package(Catch2)
 find_package(nlohmann_json)
+find_package(cxxopts)
 
 # find_package(cxxopts)
 include_directories(
   ${yaml-cpp_INCLUDE_DIRS}
   ${nlohmann_json_INCLUDE_DIRS}
+  ${cxxopts_INCLUDE_DIRS}
 )
 
 # target_link_libraries(${PROJECT_NAME} ${yaml-cpp_LIBRARIES} ${cxxopts_LIBRARIES} GlowLib)
-target_link_libraries(glow ${yaml-cpp_LIBRARIES} nlohmann_json::nlohmann_json GlowLib)
+target_link_libraries(glow
+  ${yaml-cpp_LIBRARIES}
+  nlohmann_json::nlohmann_json
+  cxxopts::cxxopts
+  GlowLib
+)
 
 if(Catch2_FOUND)
   add_subdirectory(test)

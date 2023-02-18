@@ -5,3 +5,5 @@ esphome.h
 cmake-build-release
 CMakeFiles
 data
+base_data
+abc

@@ -2,6 +2,7 @@
 
 #ifndef STRIP_YAML
 #include <yaml-cpp/yaml.h>
+#include <sstream>
 #endif
 
 #include "base.h"
@@ -27,7 +28,7 @@ namespace glow
   constexpr uint16_t hue_blue = hue_limit * 4 / hue_segment_count;
   constexpr uint16_t hue_magenta = hue_limit * 5 / hue_segment_count;
 
-    struct HSVColor
+  struct HSVColor
   {
     union
     {
@@ -40,6 +41,11 @@ namespace glow
 
       uint32_t raw_32 = 0;
     };
+
+    HSVColor() = default;
+
+    HSVColor(u_int16_t hue, uint8_t saturation, uint8_t value)
+        : hue(hue), saturation(saturation), value(value) {}
 
     bool setup()
     {
@@ -95,6 +101,7 @@ namespace glow
     };
 
     static std::string keys[KEY_COUNT];
+    std::string make_code(std::string name);
   };
 }
 

@@ -6,12 +6,15 @@
 
 #ifndef STRIP_YAML
 #include <yaml-cpp/yaml.h>
+#include <sstream>
 #endif
 
 #include "base.h"
 
 namespace glow
 {
+  struct Library;
+
   enum : uint16_t
   {
     TopLeft,
@@ -55,6 +58,16 @@ namespace glow
     div_t point{0, 0};
 
   public:
+    Grid() = default;
+
+    Grid(uint16_t p_length,
+         uint16_t p_rows = 1,
+         uint8_t p_origin = TopLeft,
+         uint8_t p_orientation = Horizontal)
+    {
+      setup(p_length, p_rows, p_origin, p_orientation);
+    }
+
     bool setup(uint16_t p_length,
                uint16_t p_rows = 1,
                uint8_t p_origin = TopLeft,
@@ -106,6 +119,7 @@ namespace glow
     }
 
 #ifndef STRIP_YAML
+
     enum : uint8_t
     {
       LENGTH,
@@ -145,6 +159,8 @@ namespace glow
     }
 
     friend YAML::convert<Grid>;
+    std::string make_code(std::string name);
+
 #endif
   };
 }

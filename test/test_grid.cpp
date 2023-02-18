@@ -389,3 +389,18 @@ TEST_CASE("Grid Incomplete", "[grid_incomplete]")
   test_yaml_from_input(grid_default,
                        input_missing, check_detail);
 }
+
+TEST_CASE("Grid Code", "[grid_make_code]")
+{
+  Grid grid;
+  REQUIRE(grid.setup(36, 1, BottomRight, Diagonal));
+  std::cout << grid.make_code("mygrid1");
+  REQUIRE(grid.setup(36, 4, TopRight, Horizontal));
+  std::cout << grid.make_code("mygrid2");
+  REQUIRE(grid.setup(33, 1, BottomLeft, Vertical));
+  std::cout << grid.make_code("mygrid3");
+  REQUIRE(grid.setup(44, 3, TopLeft, Diagonal));
+  std::cout << grid.make_code("mygrid4");
+  REQUIRE(grid.setup(66, 1, BottomRight, Diagonal));
+  std::cout << grid.make_code("mygrid5");
+}

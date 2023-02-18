@@ -3,6 +3,18 @@
 namespace glow
 {
 #ifndef STRIP_YAML
+
+  std::string Grid::make_code(std::string name)
+  {
+    std::stringstream s;
+    s << "Grid " << name << ";\n"
+      << name << ".setup(" << length << ","
+      << rows << ","
+      << origin << ","
+      << orientation << ");\n";
+    return s.str();
+  }
+
   std::string Grid::keys[Grid::KEY_COUNT] = {
       "length",
       "rows",
@@ -35,6 +47,7 @@ namespace glow
       {orientation_keys[Vertical], Vertical},
       {orientation_keys[Diagonal], Diagonal},
   };
+
 #endif
 
   bool Grid::setup()

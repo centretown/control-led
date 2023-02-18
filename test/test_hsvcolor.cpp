@@ -164,3 +164,15 @@ TEST_CASE("HSVColor YAML", "[hsvcolor_yaml]")
       "value: 50\n";
   test_yaml(hsv, input);
 }
+
+
+TEST_CASE("HSVColor Code", "[hsvcolor_make_code]")
+{
+  HSVColor hsv;
+  hsv.from_color_wheel(90.0, 25.0, 50.0);
+  std::cout << hsv.make_code("hsv_source");
+  hsv.from_color_wheel(90.0, 25.0, 100.0);
+  std::cout << hsv.make_code("hsv_target");
+  hsv.from_color_wheel(60.0, 50.0, 100.0);
+  std::cout << hsv.make_code("myhsv");
+}

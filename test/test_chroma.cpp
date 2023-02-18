@@ -16,6 +16,29 @@ void check_detail(const Chroma &original, const Chroma &derived)
 {
   check_chroma_detail(original, derived);
 }
+void show_chroma(Chroma &chroma)
+{
+  auto hsv_source = chroma.get_hsv_source();
+  auto hsv_target = chroma.get_hsv_target();
+  auto rgb_source = chroma.get_rgb_source();
+  auto rgb_target = chroma.get_rgb_target();
+  std::cout
+      << "SOURCE: (" << hsv_source.hue << ", "
+      << (uint16_t)hsv_source.saturation << ", "
+      << (uint16_t)hsv_source.value << ")"
+      << "(" << (uint16_t)rgb_source.red << ", "
+      << (uint16_t)rgb_source.green << ", "
+      << (uint16_t)rgb_source.blue << ")"
+      << '\n';
+  std::cout
+      << "TARGET: (" << hsv_target.hue << ", "
+      << (uint16_t)hsv_target.saturation << ", "
+      << (uint16_t)hsv_target.value << ")"
+      << "(" << (uint16_t)rgb_target.red << ", "
+      << (uint16_t)rgb_target.green << ", "
+      << (uint16_t)rgb_target.blue << ")"
+      << '\n';
+}
 
 TEST_CASE("Chroma Basic", "chroma_basic")
 {
@@ -53,13 +76,13 @@ TEST_CASE("Chroma Palette", "chroma_palette")
   source.from_color_wheel(float(352), float(77), float(78));
   // canary
   target.from_color_wheel(float(60), float(40), float(100));
-  REQUIRE(chroma.setup(20, source, target, 1));
+  REQUIRE(chroma.setup(20, source, target, 5));
 
   std::string input =
       "length: 20\n"
       "source: brick red\n"
       "target: canary\n"
-      "delta: 1\n";
+      "delta: 5\n";
 
   test_yaml_from_input(chroma, input, check_detail);
 
@@ -68,4 +91,26 @@ TEST_CASE("Chroma Palette", "chroma_palette")
 
   save_yaml(derived_chroma(chroma_name), chroma);
   test_yaml_from_file(chroma, custom_chroma(chroma_name), check_detail);
+}
+
+TEST_CASE("Chroma Operations", "chroma_operations")
+{
+  REQUIRE(Chroma::load_palette(palette_file()));
+  Chroma chroma;
+  REQUIRE(load_yaml(custom_chroma(chroma_name), chroma));
+
+  chroma.set_delta(1);
+  show_chroma(chroma);
+  Chroma backup = chroma;
+
+  for (auto i = 0; i < 10; i++)
+  {
+    chroma.update();
+    show_chroma(chroma);
+    // show_chroma(backup);
+    // REQUIRE(chroma.get_hsv_source().hue ==
+    //         backup.get_hsv_source().hue + i);
+    // REQUIRE(chroma.get_hsv_target().hue ==
+    //         backup.get_hsv_target().hue + i);
+  }
 }

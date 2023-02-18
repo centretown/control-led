@@ -2,12 +2,12 @@
 
 namespace glow
 {
+  std::error_code err;
 #ifdef DATA_DIR
-  std::filesystem::path data_directory(DATA_DIR);
+  std::filesystem::path data_directory = std::filesystem::weakly_canonical(DATA_DIR, err);
 #else
-  std::filesystem::path data_directory;
+  std::filesystem::path data_directory = std::filesystem::weakly_canonical("", err);
 #endif
-
   const std::string palettes = "palettes";
   const std::string frames = "frames";
   const std::string layers = "layers";
@@ -74,17 +74,12 @@ namespace glow
     return data_directory / grids / custom / extend(name);
   }
 
-  const std::string data_path()
-  {
-    return data_directory / "";
-  }
-
   bool create_directory(std::string directory_name)
   {
-    if (!std::filesystem::exists(data_directory))
+    if (!std::filesystem::exists(data_path()))
     {
       std::error_code err;
-      bool status = std::filesystem::create_directory(data_directory, err);
+      bool status = std::filesystem::create_directory(data_path(), err);
       if (status == false)
       {
         return false;
@@ -121,14 +116,18 @@ namespace glow
 
   bool file_system_exists()
   {
-    return std::filesystem::exists(data_directory);
+    return std::filesystem::exists(data_path());
+  }
+
+  const std::string data_path()
+  {
+    return data_directory / "";
   }
 
   const std::string set_data_path(std::string path)
   {
     std::error_code err;
     data_directory = std::filesystem::weakly_canonical(path, err);
-
     return data_path();
   }
 }

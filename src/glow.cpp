@@ -2,9 +2,11 @@
 #include <array>
 #include <string>
 #include <signal.h>
+#include <thread>
 
 #include <yaml-cpp/yaml.h>
 #include <nlohmann/json.hpp>
+#include <cxxopts.hpp>
 
 #include "GlowConfig.h"
 
@@ -12,10 +14,9 @@
 #include "Frame.h"
 #include "Filer.h"
 #include "DisplayANSI.h"
+#include "HostLight.h"
 
 using namespace glow;
-
-// const std::string frame_name = "frame";
 
 const std::array<std::string, 6> search_colors = {
     "sunset orange",
@@ -26,30 +27,63 @@ const std::array<std::string, 6> search_colors = {
     "brick red",
 };
 
+void process_args(int argc, char **argv);
+void load_palette();
+void load_frame(std::string frame_name, Frame &frame);
+void display_selected_colors();
+void display_summary();
+void sigintHandler(int sig_num);
+void show_lights();
+
+std::string frame_name;
+Frame frame;
+
+int main(int argc, char **argv)
+{
+  signal(SIGINT, sigintHandler);
+
+  process_args(argc, argv);
+
+  load_palette();
+  display_selected_colors();
+
+  load_frame(frame_name, frame);
+  show_lights();
+  exit(0);
+}
+
 void process_args(int argc, char **argv)
 {
-  if (argc > 1)
+#ifdef DATA_DIR
+  set_data_path(DATA_DIR);
+#endif
+
+  cxxopts::Options options("glow", "Glow: light pattern designer");
+
+  options.add_options()                                                                               //
+      ("p,path", "Path to data", cxxopts::value<std::string>()->default_value(data_path()))           //
+      ("f,frame", "Frame to show", cxxopts::value<std::string>()->default_value("salmon-strawberry")) //
+      ("h,help", "Print usage");                                                                      //
+
+  auto selected = options.parse(argc, argv);
+
+  if (selected.count("help"))
   {
-    set_data_path(argv[1]);
+    std::cout << options.help() << std::endl;
+    exit(0);
   }
 
-  // std::cout << data_path() << '\n'
-  //           << argv[0] << " Version: "
-  //           << Glow_VERSION_MAJOR << '.'
-  //           << Glow_VERSION_MINOR << '\n';
-
-  // std::cout << "data_path: " << data_path() << '\n';
-  // std::cout << "Palette: " << palette_file() << '\n';
-  // std::cout << "Frame: " << derived_frame(frame_name) << '\n';
+  set_data_path(selected["path"].as<std::string>());
+  frame_name = selected["frame"].as<std::string>();
 
   if (!file_system_exists())
   {
     if (!make_file_system())
     {
-      std::cout << "Failed to create file system" << '\n';
+      std::cout << "Failed to create file system at " << '"' << data_path() << '"' << ".\n";
       exit(1);
     }
-    std::cout << "File system " << data_path() << '\n';
+    std::cout << "File system created at " << '"' << data_path() << '"' << ".\n";
     exit(0);
   }
 }
@@ -104,8 +138,6 @@ void display_selected_colors()
   }
 }
 
-Frame frame;
-
 void display_summary()
 {
   YAML::Node node_out = YAML::convert<Frame>::encode(frame);
@@ -116,21 +148,29 @@ void display_summary()
 
 void sigintHandler(int sig_num)
 {
+  DisplayANSI::at(12, 0);
+  DisplayANSI::show_cursor();
   display_summary();
   exit(0);
 };
 
-int main(int argc, char **argv)
+void show_lights()
 {
+  DisplayANSI::at(0, 0);
+  DisplayANSI::clear_from_cursor();
+  DisplayANSI::hide_cursor();
 
-  signal(SIGINT, sigintHandler);
+  HostLight light;
+  if (light.setup(frame.get_length(), frame.get_rows()) == false)
+  {
+    std::cout << "Unable setup light. length: " << frame.get_length()
+              << " ,rows: " << frame.get_rows() << '\n';
+    exit(1);
+  }
 
-  process_args(argc, argv);
-
-  load_palette();
-  display_selected_colors();
-
-  load_frame("salmon-strawberry", frame);
-  display_summary();
-  exit(0);
+  for (;;)
+  {
+    frame.spin(&light);
+    std::this_thread::sleep_for(std::chrono::milliseconds(frame.get_interval()));
+  }
 }

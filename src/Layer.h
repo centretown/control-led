@@ -29,14 +29,30 @@ namespace glow
     uint16_t end = 0;
     Grid grid;
     Chroma chroma;
+    uint16_t scan = 0;
+    uint16_t position = 0;
 
   public:
+    Layer() = default;
+
+    Layer(uint16_t p_length,
+          uint16_t p_rows,
+          uint16_t p_begin,
+          uint16_t p_end,
+          const Grid &p_grid,
+          const Chroma &p_chroma,
+          uint16_t p_scan = 0)
+    {
+      setup(p_length, p_rows, p_begin, p_end, p_grid, p_chroma, p_scan);
+    }
+
     uint16_t get_length() const ALWAYS_INLINE { return length; }
     uint16_t get_rows() const ALWAYS_INLINE { return rows; }
     uint16_t get_begin() const ALWAYS_INLINE { return begin; }
     uint16_t get_end() const ALWAYS_INLINE { return end; }
     const Grid &get_grid() const ALWAYS_INLINE { return grid; }
     const Chroma get_chroma() const ALWAYS_INLINE { return chroma; }
+    uint16_t get_scan() const ALWAYS_INLINE { return scan; }
 
     bool setup()
     {
@@ -68,7 +84,8 @@ namespace glow
                uint16_t p_begin,
                uint16_t p_end,
                const Grid &p_grid,
-               const Chroma &p_chroma)
+               const Chroma &p_chroma,
+               uint16_t p_scan = 0)
     {
       length = p_length;
       rows = p_rows;
@@ -76,6 +93,7 @@ namespace glow
       end = p_end;
       grid = p_grid;
       chroma = p_chroma;
+      scan = p_scan;
       return setup();
     }
 
@@ -86,16 +104,39 @@ namespace glow
       return setup();
     }
 
+    void get_position(uint16_t &first, uint16_t &last) ALWAYS_INLINE
+    {
+      if (scan > 0)
+      {
+        first = position;
+        last = position + scan;
+
+        position++;
+        if (position >= length)
+        {
+          position = 0;
+        }
+        return;
+      }
+
+      first = begin;
+      last = length - end;
+    }
+
     template <typename LIGHT>
     void spin(LIGHT *light)
     {
-      for (uint16_t i = begin; i < length - end; ++i)
+      uint16_t first, last;
+      get_position(first, last);
+
+      for (uint16_t i = first; i < last; ++i)
       {
         light->put(grid.map(i), chroma.map(i));
         // light->get(grid.map(i)) = chroma.map(i);
       }
-      chroma.update_hue();
+      chroma.update();
     }
+    // friend Library;
 
 #ifndef STRIP_YAML
     enum : uint8_t
@@ -106,6 +147,7 @@ namespace glow
       END,
       GRID,
       CHROMA,
+      SCAN,
       KEY_COUNT,
     };
 
@@ -164,6 +206,7 @@ namespace YAML
       node[Layer::keys[Layer::END]] = layer.end;
       node[Layer::keys[Layer::GRID]] = layer.grid;
       node[Layer::keys[Layer::CHROMA]] = layer.chroma;
+      node[Layer::keys[Layer::SCAN]] = layer.scan;
       return node;
     }
 
@@ -202,6 +245,9 @@ namespace YAML
           break;
         case Layer::CHROMA:
           lookup(item, layer.chroma);
+          break;
+        case Layer::SCAN:
+          layer.scan = item.as<uint16_t>();
           break;
         }
       }

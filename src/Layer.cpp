@@ -10,6 +10,7 @@ namespace glow
       "end",
       "grid",
       "chroma",
+      "scan",
   };
 #endif
 }

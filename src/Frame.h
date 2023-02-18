@@ -16,6 +16,7 @@ namespace glow
     uint16_t length = 0;
     uint16_t rows = 0;
     uint32_t interval = 16;
+    // friend Library;
 
   public:
     std::list<Layer> layers;
@@ -46,6 +47,16 @@ namespace glow
       rows = p_rows;
       interval = p_interval;
       return setup();
+    }
+
+    template <typename LIGHT>
+    void spin(LIGHT *light)
+    {
+      for (auto &layer : layers)
+      {
+        layer.spin(light);
+      }
+      light->update();
     }
 
     uint16_t get_length() const ALWAYS_INLINE { return length; }

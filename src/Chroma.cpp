@@ -56,8 +56,28 @@ namespace glow
     }
     rgb_source = hsv_source.to_rgb();
     rgb_target = hsv_target.to_rgb();
-    gradient_amount = (255.0 / static_cast<float>(length)) / 255.0;
+    gradient_amount = (static_cast<float>(byte_limit) /
+                       static_cast<float>(length)) /
+                      static_cast<float>(byte_limit);
     return true;
+  }
+  void Chroma::update()
+  {
+    if (delta == 0)
+      return;
+
+    auto update_hue = [&](HSVColor &hsv, Color &rgb)
+    {
+      hsv.hue += delta;
+      if (hsv.hue > hue_limit)
+      {
+        hsv.hue = (delta < 0) ? hue_limit : 0;
+      }
+      rgb = hsv.to_rgb();
+    };
+
+    update_hue(hsv_source, rgb_source);
+    update_hue(hsv_target, rgb_target);
   }
 
 }

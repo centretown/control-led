@@ -32,6 +32,16 @@ namespace glow
     float gradient_amount = 0.0;
 
   public:
+    Chroma() = default;
+
+    Chroma(uint16_t p_length,
+           HSVColor p_source = source_default,
+           HSVColor p_target = target_default,
+           int16_t p_delta = 0)
+    {
+      setup(p_length, p_source, p_target, p_delta);
+    }
+
     bool setup(uint16_t p_length,
                HSVColor p_source = source_default,
                HSVColor p_target = target_default,
@@ -58,36 +68,17 @@ namespace glow
     Color get_rgb_target() const ALWAYS_INLINE { return rgb_target; }
     float get_gradient_amount() const ALWAYS_INLINE { return gradient_amount; }
 
+    void set_delta(int16_t a_delta)
+    {
+      delta = a_delta;
+    }
+
     Color map(uint16_t index)
     {
       return step_gradient(static_cast<float>(index) * gradient_amount);
     }
 
-    void update_hue() ALWAYS_INLINE
-    {
-      if (delta == 0)
-        return;
-      auto update = [](HSVColor &c, int16_t d)
-      {
-        if (c.hue + d < 0)
-        {
-          c.hue = hue_limit;
-        }
-        else if (c.hue + d > hue_limit)
-        {
-          c.hue = 0;
-        }
-        else
-        {
-          c.hue += d;
-        }
-      };
-
-      update(hsv_source, delta);
-      rgb_source = hsv_source.to_rgb();
-      update(hsv_target, delta);
-      rgb_target = hsv_target.to_rgb();
-    }
+    void update();
 
     Color step_gradient(float shift_amount) ALWAYS_INLINE
     {

@@ -2,11 +2,22 @@
 
 namespace glow
 {
+#ifndef STRIP_YAML
   std::string HSVColor::keys[HSVColor::KEY_COUNT] = {
       "hue",
       "saturation",
       "value",
   };
+  std::string HSVColor::make_code(std::string name)
+  {
+    std::stringstream s;
+    s << "HSVColor " << name << ";\n"
+      << name << ".hue=" << hue << ";\n"
+      << name<< ".saturation=" << (uint16_t)saturation << ";\n"
+      << name<< ".value=" << (uint16_t)value << ";\n";
+    return s.str();
+  }
+#endif
 
   Color HSVColor::to_rgb()
   {

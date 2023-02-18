@@ -13,7 +13,8 @@
 
 TEST_CASE("Lights Basic", "layer_basic")
 {
-  HostLight light(40, 4);
+  HostLight light;
+  REQUIRE(light.setup(40, 4));
   REQUIRE(light.length == 40);
   REQUIRE(light.rows == 4);
   REQUIRE(light.columns == 10);
@@ -42,7 +43,8 @@ TEST_CASE("Layer Lights", "layer_lights")
   DisplayANSI::clear_from_cursor();
   DisplayANSI::hide_cursor();
 
-  HostLight light(layer.get_length(), layer.get_grid().get_rows());
+  HostLight light;
+  light.setup(layer.get_length(), layer.get_grid().get_rows());
   layer.spin(&light);
 
   DisplayANSI::at(layer.get_grid().get_rows() + 1, 0);
