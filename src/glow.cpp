@@ -30,7 +30,7 @@ const std::array<std::string, 6> search_colors = {
 void process_args(int argc, char **argv);
 void load_palette();
 void load_frame(std::string frame_name, Frame &frame);
-void display_selected_colors();
+void display_colors();
 void display_summary();
 void sigintHandler(int sig_num);
 void show_lights();
@@ -45,7 +45,7 @@ int main(int argc, char **argv)
   process_args(argc, argv);
 
   load_palette();
-  display_selected_colors();
+  display_colors();
 
   load_frame(frame_name, frame);
   show_lights();
@@ -54,16 +54,14 @@ int main(int argc, char **argv)
 
 void process_args(int argc, char **argv)
 {
-#ifdef DATA_DIR
-  set_data_path(DATA_DIR);
-#endif
-
   cxxopts::Options options("glow", "Glow: light pattern designer");
 
-  options.add_options()                                                                               //
-      ("p,path", "Path to data", cxxopts::value<std::string>()->default_value(data_path()))           //
-      ("f,frame", "Frame to show", cxxopts::value<std::string>()->default_value("salmon-strawberry")) //
-      ("h,help", "Print usage");                                                                      //
+  options.add_options()                                                   //
+      ("p,path", "Path to data",                                          //
+       cxxopts::value<std::string>()->default_value(data_path()))         //
+      ("f,frame", "Frame to show",                                        //
+       cxxopts::value<std::string>()->default_value("glow")) //
+      ("h,help", "Print usage");                                          //
 
   auto selected = options.parse(argc, argv);
 
@@ -106,35 +104,11 @@ void load_frame(std::string frame_name, Frame &frame)
   }
 }
 
-void display_selected_colors()
+void display_colors()
 {
-  PaletteColor palette_color;
-
-  for (auto color_name : search_colors)
+  for (auto item : Chroma::palette.colors)
   {
-    if (Chroma::palette.find_color(color_name, palette_color) == false)
-    {
-      std::cout << color_name << " not found!" << '\n';
-      continue;
-    }
-
-    HSVColor hsv_target = Chroma::palette.lookup(color_name);
-    std::cout << "hsv" << (uint16_t)hsv_target.hue << ", "
-              << (uint16_t)hsv_target.saturation << ", "
-              << (uint16_t)hsv_target.value << '\n';
-
-    float hue{}, saturation{}, value{};
-    hsv_target.to_color_wheel(hue, saturation, value);
-    std::cout << "hsv" << hue << ", "
-              << saturation << ", "
-              << value << '\n';
-
-    YAML::Node node = YAML::convert<PaletteColor>::encode(palette_color);
-    YAML::Emitter out;
-    out << node;
-
-    DisplayANSI::print_line(color_name, palette_color.rgb);
-    DisplayANSI::print_line(out.c_str(), palette_color.rgb);
+    DisplayANSI::print_line(item.first, item.second.rgb);
   }
 }
 
@@ -144,6 +118,7 @@ void display_summary()
   YAML::Emitter out;
   out << node_out;
   std::cout << out.c_str() << '\n';
+  display_colors();
 }
 
 void sigintHandler(int sig_num)

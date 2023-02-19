@@ -11,7 +11,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 
 # remove yaml for micro controllers
-# add_definitions("-std=c++14" "-DSTRIP_YAML")
+# add_definitions("-std=c++14" "-DMICRO_CONTROLLER")
 
 # include yaml
 add_definitions("-std=c++17" "-DDATA_DIR=\"${PROJECT_SOURCE_DIR}/test_data\"")

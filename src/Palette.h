@@ -2,7 +2,7 @@
 
 #include <map>
 
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
 #include <yaml-cpp/yaml.h>
 #endif
 
@@ -41,7 +41,7 @@ namespace glow
 
 }
 
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
 namespace YAML
 {
   using glow::Palette;
@@ -83,4 +83,4 @@ namespace YAML
     }
   };
 }
-#endif // STRIP_YAML
+#endif // MICRO_CONTROLLER

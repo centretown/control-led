@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
 #include <yaml-cpp/yaml.h>
 #include <sstream>
 #endif
@@ -118,7 +118,7 @@ namespace glow
              p.rem * (columns - 1);
     }
 
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
 
     enum : uint8_t
     {
@@ -159,12 +159,12 @@ namespace glow
     }
 
     friend YAML::convert<Grid>;
-    std::string make_code(std::string name);
+    std::string make_code();
 
 #endif
   };
 }
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
 
 namespace YAML
 {

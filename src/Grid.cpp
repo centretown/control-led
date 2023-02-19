@@ -2,16 +2,15 @@
 
 namespace glow
 {
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
 
-  std::string Grid::make_code(std::string name)
+  std::string Grid::make_code()
   {
     std::stringstream s;
-    s << "Grid " << name << ";\n"
-      << name << ".setup(" << length << ","
+    s << "{" << length << ","
       << rows << ","
       << origin << ","
-      << orientation << ");\n";
+      << orientation << "}";
     return s.str();
   }
 

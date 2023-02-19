@@ -394,13 +394,13 @@ TEST_CASE("Grid Code", "[grid_make_code]")
 {
   Grid grid;
   REQUIRE(grid.setup(36, 1, BottomRight, Diagonal));
-  std::cout << grid.make_code("mygrid1");
+  std::cout << grid.make_code() << '\n';
   REQUIRE(grid.setup(36, 4, TopRight, Horizontal));
-  std::cout << grid.make_code("mygrid2");
+  std::cout << grid.make_code() << '\n';
   REQUIRE(grid.setup(33, 1, BottomLeft, Vertical));
-  std::cout << grid.make_code("mygrid3");
+  std::cout << grid.make_code() << '\n';
   REQUIRE(grid.setup(44, 3, TopLeft, Diagonal));
-  std::cout << grid.make_code("mygrid4");
+  std::cout << grid.make_code() << '\n';
   REQUIRE(grid.setup(66, 1, BottomRight, Diagonal));
-  std::cout << grid.make_code("mygrid5");
+  std::cout << grid.make_code() << '\n';
 }

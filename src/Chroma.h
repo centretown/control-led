@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <string>
 
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
 #include <yaml-cpp/yaml.h>
 #endif
 
@@ -104,7 +104,7 @@ namespace glow
       return rgb_source.blue + static_cast<uint8_t>(shift_amount);
     }
 
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
   public:
     enum : uint8_t
     {
@@ -121,6 +121,8 @@ namespace glow
     {
       return load_yaml(file_name, palette);
     }
+    
+    std::string make_code();
 
     // private:
     static Palette palette;
@@ -128,7 +130,7 @@ namespace glow
   };
 }
 
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
 namespace YAML
 {
   using glow::Chroma;

@@ -2,7 +2,17 @@
 
 namespace glow
 {
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
+  std::string Chroma::make_code()
+  {
+    std::stringstream s;
+    s << "{" << length << ","
+      << hsv_source.make_code() << ","
+      << hsv_target.make_code() << ","
+      << delta << "}";
+    return s.str();
+  }
+
   std::string Chroma::keys[Chroma::KEY_COUNT] = {
       "length",
       "source",
@@ -61,6 +71,7 @@ namespace glow
                       static_cast<float>(byte_limit);
     return true;
   }
+  
   void Chroma::update()
   {
     if (delta == 0)

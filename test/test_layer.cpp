@@ -113,3 +113,15 @@ TEST_CASE("Layer Palette", "layer_palette")
   REQUIRE(layer_custom.setup_length(100));
   check_detail(layer, layer_custom);
 }
+
+TEST_CASE("Layer Code", "[layer_make_code]")
+{
+  REQUIRE(Chroma::load_palette(palette_file()));
+
+  Layer layer;
+  REQUIRE(load_yaml(custom_layer(layer_name), layer));
+  std::cout << layer.make_code() << '\n';
+
+  Layer layer_generated = {20, 4, 0, 0, {20, 4, 0, 2}, {20, {119, 76, 252}, {0, 0, 255}, -1}, 0};
+  check_detail(layer, layer_generated);
+}

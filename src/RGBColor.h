@@ -1,6 +1,6 @@
 #pragma once
 
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
 #include <yaml-cpp/yaml.h>
 #endif
 
@@ -53,7 +53,7 @@ namespace glow
 
 } // namespace glow
 
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
 namespace YAML
 {
   using glow::Color;

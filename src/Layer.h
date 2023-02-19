@@ -2,7 +2,7 @@
 
 #include <string>
 
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
 #include <yaml-cpp/yaml.h>
 #endif
 
@@ -138,7 +138,7 @@ namespace glow
     }
     // friend Library;
 
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
     enum : uint8_t
     {
       LENGTH,
@@ -153,11 +153,12 @@ namespace glow
 
     static std::string keys[KEY_COUNT];
     friend YAML::convert<Layer>;
+    std::string make_code();
 #endif
   };
 } // namespace glow
 
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
 namespace YAML
 {
   using namespace glow;

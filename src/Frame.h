@@ -1,7 +1,7 @@
 #pragma once
 #include <list>
 
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
 #include <yaml-cpp/yaml.h>
 #endif
 
@@ -22,6 +22,19 @@ namespace glow
     std::list<Layer> layers;
 
   public:
+    Frame() = default;
+
+    Frame(uint16_t p_length,
+          uint16_t p_rows,
+          uint32_t p_interval,
+          std::initializer_list<Layer> p_layers)
+    {
+      length = p_length;
+      rows = p_rows;
+      interval = p_interval;
+      layers = p_layers;
+    }
+
     bool setup()
     {
       if (length == 0)
@@ -68,7 +81,7 @@ namespace glow
     std::list<Layer>::const_iterator end() const ALWAYS_INLINE { return layers.end(); }
     void push_back(Layer layer) ALWAYS_INLINE { layers.push_back(layer); }
 
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
     enum : uint8_t
     {
       LENGTH,
@@ -79,11 +92,12 @@ namespace glow
     };
     static std::string keys[KEY_COUNT];
     friend YAML::convert<Frame>;
+    std::string make_code();
 #endif
   };
 } // namespace glow
 
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
 namespace YAML
 {
   using namespace glow;

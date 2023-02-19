@@ -2,19 +2,19 @@
 
 namespace glow
 {
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
   std::string HSVColor::keys[HSVColor::KEY_COUNT] = {
       "hue",
       "saturation",
       "value",
   };
-  std::string HSVColor::make_code(std::string name)
+
+  std::string HSVColor::make_code()
   {
     std::stringstream s;
-    s << "HSVColor " << name << ";\n"
-      << name << ".hue=" << hue << ";\n"
-      << name<< ".saturation=" << (uint16_t)saturation << ";\n"
-      << name<< ".value=" << (uint16_t)value << ";\n";
+    s << "{" << hue << ","
+      << (uint16_t)saturation << ","
+      << (uint16_t)value << "}";
     return s.str();
   }
 #endif

@@ -114,3 +114,16 @@ TEST_CASE("Chroma Operations", "chroma_operations")
     //         backup.get_hsv_target().hue + i);
   }
 }
+
+TEST_CASE("Chroma Code", "[chroma_make_code]")
+{
+  Chroma chroma;
+  HSVColor source, target;
+  // brick red
+  source.from_color_wheel(float(352), float(77), float(78));
+  // canary
+  target.from_color_wheel(float(60), float(40), float(100));
+  REQUIRE(chroma.setup(20, source, target, 5));
+
+  std::cout << chroma.make_code() << '\n';
+}

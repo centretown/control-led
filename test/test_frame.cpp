@@ -89,3 +89,33 @@ TEST_CASE("Frame Salmon-Strawberry", "frame_salmon_strawberry")
   REQUIRE(load_yaml(derived_frame(salmon_name), derived));
   check_detail(custom, derived);
 }
+
+TEST_CASE("Frame Code", "[frame_make_code]")
+{
+  REQUIRE(Chroma::load_palette(palette_file()));
+  Frame frame;
+  REQUIRE(load_yaml(custom_frame(frame_name), frame));
+  std::cout << frame.make_code() << '\n';
+
+  Frame frame_generated = //
+      {20, 4, 48,         //
+       {
+           {20, 4, 5, 15, {20, 4, 0, 1}, {20, {790, 91, 232}, {1487, 109, 255}, -1}, 0},
+           {20, 4, 5, 15, {20, 4, 0, 1}, {20, {1402, 204, 255}, {807, 124, 234}, -1}, 5},
+       }};
+
+  check_detail(frame, frame_generated);
+
+  Frame frame_list[] = {
+      {20, 4, 48, //
+       {
+           {20, 4, 5, 15, {20, 4, 0, 1}, {20, {790, 91, 232}, {1487, 109, 255}, -1}, 0},
+           {20, 4, 5, 15, {20, 4, 0, 1}, {20, {1402, 204, 255}, {807, 124, 234}, -1}, 5},
+       }},
+      {20, 4, 48, //
+       {
+           {20, 4, 5, 15, {20, 4, 0, 1}, {20, {790, 91, 232}, {1487, 109, 255}, -1}, 0},
+           {20, 4, 5, 15, {20, 4, 0, 1}, {20, {1402, 204, 255}, {807, 124, 234}, -1}, 5},
+       }},
+  };
+}

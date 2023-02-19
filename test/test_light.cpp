@@ -3,8 +3,8 @@
 #include <iostream>
 #include <string>
 
-#include "../src/Layer.h"
-#include "../src/Filer.h"
+#include "Layer.h"
+#include "Filer.h"
 #include "test_yaml.h"
 #include "check_layer_detail.h"
 

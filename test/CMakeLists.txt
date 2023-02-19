@@ -12,10 +12,28 @@ add_executable(test_build_palette
 add_executable(test_filer test_filer.cpp)
 add_executable(test_json test_json.cpp)
 add_executable(test_light test_light.cpp)
+add_executable(test_library test_library.cpp)
+add_executable(test_generated_library
+  test_generated_library.cpp
+  library.h
+  library.cpp
+)
 
 include_directories(
   ${yaml-cpp_INCLUDE_DIRS}
   ${catch2_INCLUDE_DIRS}
+)
+
+target_link_libraries(test_library PRIVATE
+  ${yaml-cpp_LIBRARIES}
+  ${catch2_LIBRARIES}
+  GlowLib
+)
+
+target_link_libraries(test_generated_library PRIVATE
+  ${yaml-cpp_LIBRARIES}
+  ${catch2_LIBRARIES}
+  GlowLib
 )
 
 target_link_libraries(test_filer PRIVATE
@@ -79,8 +97,10 @@ add_test(NAME FILER COMMAND test_filer)
 add_test(NAME HSVCOLOR COMMAND test_hsvcolor)
 add_test(NAME PALETTE COMMAND test_build_palette)
 add_test(NAME JSON COMMAND test_json)
-add_test(NAME LAYER COMMAND test_layer)
 add_test(NAME LIGHT COMMAND test_light)
-add_test(NAME FRAME COMMAND test_frame)
 add_test(NAME CHROMA COMMAND test_chroma)
 add_test(NAME GRID COMMAND test_grid)
+add_test(NAME LAYER COMMAND test_layer)
+add_test(NAME FRAME COMMAND test_frame)
+add_test(NAME LIBRARY COMMAND test_library)
+add_test(NAME GENERATED_LIBRARY COMMAND test_generated_library)

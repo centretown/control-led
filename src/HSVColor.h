@@ -1,6 +1,6 @@
 #pragma once
 
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
 #include <yaml-cpp/yaml.h>
 #include <sstream>
 #endif
@@ -101,11 +101,11 @@ namespace glow
     };
 
     static std::string keys[KEY_COUNT];
-    std::string make_code(std::string name);
+    std::string make_code();
   };
 }
 
-#ifndef STRIP_YAML
+#ifndef MICRO_CONTROLLER
 namespace YAML
 {
   using glow::HSVColor;
