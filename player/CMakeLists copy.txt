@@ -1,26 +1,18 @@
 cmake_minimum_required(VERSION 3.25)
 
 project(
-  Glow
+  Player
   VERSION 0.3
   LANGUAGES CXX)
 
-configure_file(GlowConfig.h.in ${PROJECT_SOURCE_DIR}/src/GlowConfig.h)
-
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 
 # remove yaml for micro controllers
-# add_definitions("-std=c++14" "-DMICRO_CONTROLLER")
 
 # include yaml
-add_definitions("-std=c++17" "-DDATA_DIR=\"${PROJECT_SOURCE_DIR}/test_data\"")
+# add_definitions("-std=c++17" "-DDATA_DIR=\"${PROJECT_SOURCE_DIR}/test_data\"")
+add_definitions("-std=c++14" "-DMICRO_CONTROLLER")
 
-include(CTest)
-
-include_directories(src)
-
-add_library(GlowLib
+add_library(PlayerLib
 
   # src/esphome/components/light/esp_hsv_color.cpp
   # src/esphome/components/light/esp_hsv_color.h
@@ -48,8 +40,6 @@ add_library(GlowLib
   src/Filer.cpp
   src/DisplayANSI.h
   src/HostLight.h
-  src/Library.h
-  src/Library.cpp
 )
 
 add_executable(glow
@@ -91,4 +81,3 @@ target_link_libraries(glow
 )
 
 add_subdirectory(test)
-add_subdirectory(player)

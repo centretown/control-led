@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #ifndef MICRO_CONTROLLER
 #include <yaml-cpp/yaml.h>
 #endif

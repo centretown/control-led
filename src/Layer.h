@@ -4,12 +4,12 @@
 
 #ifndef MICRO_CONTROLLER
 #include <yaml-cpp/yaml.h>
+#include "Filer.h"
 #endif
 
 #include "base.h"
 #include "Grid.h"
 #include "Chroma.h"
-#include "Filer.h"
 
 namespace glow
 {

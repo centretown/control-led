@@ -16,7 +16,6 @@ namespace glow
     uint16_t length = 0;
     uint16_t rows = 0;
     uint32_t interval = 16;
-    // friend Library;
 
   public:
     std::list<Layer> layers;

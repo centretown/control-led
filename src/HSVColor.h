@@ -1,5 +1,8 @@
 #pragma once
 
+#include <math.h>
+#include <algorithm>
+
 #ifndef MICRO_CONTROLLER
 #include <yaml-cpp/yaml.h>
 #include <sstream>
