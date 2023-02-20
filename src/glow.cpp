@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 
 void process_args(int argc, char **argv)
 {
-  cxxopts::Options options("glow", "Glow: light pattern designer");
+  cxxopts::Options options("glow-compose", "Glow Composer: light pattern animator");
 
   options.add_options()                                                   //
       ("p,path", "Path to data",                                          //

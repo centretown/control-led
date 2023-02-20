@@ -11,6 +11,11 @@ project(
 # add_definitions("-std=c++17" "-DDATA_DIR=\"${PROJECT_SOURCE_DIR}/test_data\"")
 add_definitions("-std=c++11" "-DMICRO_CONTROLLER")
 
+include_directories(
+  ../generated
+  ../src
+)
+
 add_library(PlayerLib
 
   # src/esphome/components/light/esp_hsv_color.cpp
@@ -31,21 +36,22 @@ add_library(PlayerLib
   ../src/Layer.cpp
   ../src/Frame.h
   ../src/Frame.cpp
-  ../src/PaletteColor.h
-  ../src/PaletteColor.cpp
-  ../src/Palette.h
-  ../src/Palette.cpp
   ../src/DisplayANSI.h
   ../src/HostLight.h
 )
 
-add_executable(player
-  player.cpp
-  library.h
-  library.cpp
+add_executable(glow-play
+  play.cpp
+  ../generated/library.h
+  ../generated/library.cpp
 )
 
-target_link_libraries(player
+include_directories(
+  ../generated
+)
+
+target_link_libraries(glow-play
+  cxxopts::cxxopts
   PlayerLib
 )
 

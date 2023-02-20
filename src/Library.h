@@ -25,39 +25,53 @@ namespace glow
     std::string caution = "// CAUTION GENERATED FILE\n";
 
     header << caution;
-    source << caution;
-
     header << "#pragma once\n"
            << "#include \"Frame.h\"\n"
               "namespace glow {\n";
 
     header << "enum LIBRARY_INDEX : uint8_t {\n";
-
-    source << "#include \"" << name << ".h\"\n"
-           << "namespace glow {\n";
-
-    source << "Frame library[FRAME_COUNT] = {\n";
-
-    uint index = 0;
     for (auto pair : items)
     {
       header << make_constant_name(pair.first) << ",\n";
-      source
-          << pair.second.make_code() << ",\n";
-      ++index;
     }
 
     // terminate enum
     header << "FRAME_COUNT,\n";
     header << "};\n";
+    header << "extern const char *library_names[FRAME_COUNT];";
     header << "extern Frame library[FRAME_COUNT];\n";
-    header << "extern Frame &from_library(LIBRARY_INDEX index);\n"
-           << "} // namespace glow\n";
+    header << "extern Frame &from_library(LIBRARY_INDEX index);\n";
+    header << "extern const char *library_name(LIBRARY_INDEX index);\n";
+
+    header << "} // namespace glow\n";
+
+    source << caution;
+
+    source << "#include \"" << name << ".h\"\n"
+           << "namespace glow {\n";
+
+    source << "const char *library_names[FRAME_COUNT] = {\n";
+    for (auto pair : items)
+    {
+      source << "\"" << pair.first << "\",\n";
+    }
+    source << "};\n";
+
+    source << "Frame library[FRAME_COUNT]= {\n";
+    for (auto pair : items)
+    {
+      source << pair.second.make_code() << ",\n";
+    }
 
     // terminate array
-    source << "};\n"
-           << "Frame &from_library(LIBRARY_INDEX index){return library[index%FRAME_COUNT];}\n"
-           << "} // namespace glow\n";
+    source << "};\n";
+
+    // create functions
+    source << "Frame &from_library(LIBRARY_INDEX index){return library[index%FRAME_COUNT];}\n";
+    source << "const char *library_name(LIBRARY_INDEX index){return library_names[index%FRAME_COUNT];}\n";
+
+    // terminate namespace
+    source << "} // namespace glow\n";
 
     return true;
   }

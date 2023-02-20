@@ -58,24 +58,13 @@ add_executable(glow
   src/palette_builder.cpp
 )
 
-# method 1 conan.cmake generator
-# include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-# conan_basic_setup()
-# if(TARGET yaml-cpp)
-# target_link_libraries(glow ${yaml-cpp_LIBRARIES} GlowLib)
-
-# if(TARGET Catch2)
-# add_subdirectory(test)
-# endif()
-# endif()
-
-# method 2 conan.cmake_find_package generator
+# conan.cmake_find_package generator
 find_package(yaml-cpp)
 find_package(Catch2)
 find_package(nlohmann_json)
 find_package(cxxopts)
 
-# find_package(cxxopts)
+# assume packages found
 include_directories(
   ${yaml-cpp_INCLUDE_DIRS}
   ${nlohmann_json_INCLUDE_DIRS}
@@ -91,4 +80,4 @@ target_link_libraries(glow
 )
 
 add_subdirectory(test)
-add_subdirectory(player)
+add_subdirectory(glow-play)
