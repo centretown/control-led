@@ -5,19 +5,19 @@
 
 #ifndef MICRO_CONTROLLER
 #include <yaml-cpp/yaml.h>
+#include "Palette.h"
 #include "Filer.h"
 #endif
 
 #include "base.h"
 #include "HSVColor.h"
-#include "Palette.h"
 
 namespace glow
 {
   const HSVColor source_default = {0, 0, 0};
   const HSVColor target_default = {0, 0, 0};
-  const Color rgb_source_default = {0};
-  const Color rgb_target_default = {0};
+  const Color rgb_source_default = {0, 0, 0};
+  const Color rgb_target_default = {0, 0, 0};
 
   class Chroma
   {
@@ -121,7 +121,7 @@ namespace glow
     {
       return load_yaml(file_name, palette);
     }
-    
+
     std::string make_code();
 
     // private:

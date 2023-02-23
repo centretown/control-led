@@ -14,14 +14,31 @@ namespace glow
   const std::string chromas = "chromas";
   const std::string grids = "grids";
   const std::string base = "base";
-  const std::string custom = "custom";
   const std::string derived = "derived";
   const std::string extension = ".yaml";
   const std::string palette_name = "palette";
 
+  const std::string catalog = "catalog";
+  const std::string generated = "generated";
+  const std::string header_name = "library.h";
+  const std::string source_name = "library.cpp";
+
   const std::string extend(const std::string name)
   {
     return name + extension;
+  }
+
+  const std::string catalog_file(const std::string name)
+  {
+    return data_directory / catalog / extend(name);
+  }
+  const std::string source_file()
+  {
+    return data_directory / generated / source_name;
+  }
+  const std::string header_file()
+  {
+    return data_directory / generated / header_name;
   }
 
   const std::string palette_file()
@@ -41,7 +58,7 @@ namespace glow
 
   const std::string custom_frame(const std::string name)
   {
-    return data_directory / frames / custom / extend(name);
+    return data_directory / frames / extend(name);
   }
 
   const std::string derived_layer(const std::string name)
@@ -51,7 +68,7 @@ namespace glow
 
   const std::string custom_layer(const std::string name)
   {
-    return data_directory / layers / custom / extend(name);
+    return data_directory / layers / extend(name);
   }
 
   const std::string derived_chroma(const std::string name)
@@ -61,7 +78,7 @@ namespace glow
 
   const std::string custom_chroma(const std::string name)
   {
-    return data_directory / chromas / custom / extend(name);
+    return data_directory / chromas / extend(name);
   }
 
   const std::string derived_grid(const std::string name)
@@ -71,7 +88,7 @@ namespace glow
 
   const std::string custom_grid(const std::string name)
   {
-    return data_directory / grids / custom / extend(name);
+    return data_directory / grids / extend(name);
   }
 
   bool create_directory(std::string directory_name)
@@ -102,14 +119,12 @@ namespace glow
     };
 
     create(data_directory / palettes);
-    create(data_directory / frames / custom);
     create(data_directory / frames / derived);
-    create(data_directory / layers / custom);
     create(data_directory / layers / derived);
-    create(data_directory / grids / custom);
     create(data_directory / grids / derived);
-    create(data_directory / chromas / custom);
     create(data_directory / chromas / derived);
+    create(data_directory / catalog);
+    create(data_directory / generated);
 
     return true;
   }

@@ -36,14 +36,15 @@ add_library(PlayerLib
   ../src/Layer.cpp
   ../src/Frame.h
   ../src/Frame.cpp
-  ../src/DisplayANSI.h
+  ../src/ansi_stream.h
+  ../src/ansi_stream.cpp
   ../src/HostLight.h
 )
 
 add_executable(glow-play
   play.cpp
-  ../generated/library.h
-  ../generated/library.cpp
+  ../generated/catalog.h
+  ../generated/catalog.cpp
 )
 
 include_directories(

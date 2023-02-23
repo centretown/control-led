@@ -7,6 +7,6 @@ FRAME,
 SALMON_STRAWBERRY,
 FRAME_COUNT,
 };
-extern Frame library[FRAME_COUNT];
-extern Frame &from_library(LIBRARY_INDEX index);
+extern Frame catalog[FRAME_COUNT];
+extern Frame &from_catalog(LIBRARY_INDEX index);
 } // namespace glow

@@ -28,13 +28,13 @@ void check_names()
 {
   REQUIRE("/home/dave/src/glow/test_data/palettes/palette.yaml" == palette_file());
   REQUIRE("/home/dave/src/glow/test_data/frames/derived/frame.yaml" == derived_frame(frame_name));
-  REQUIRE("/home/dave/src/glow/test_data/frames/custom/frame.yaml" == custom_frame(frame_name));
+  REQUIRE("/home/dave/src/glow/test_data/frames/frame.yaml" == custom_frame(frame_name));
   REQUIRE("/home/dave/src/glow/test_data/layers/derived/layer.yaml" == derived_layer(layer_name));
-  REQUIRE("/home/dave/src/glow/test_data/layers/custom/layer.yaml" == custom_layer(layer_name));
+  REQUIRE("/home/dave/src/glow/test_data/layers/layer.yaml" == custom_layer(layer_name));
   REQUIRE("/home/dave/src/glow/test_data/chromas/derived/chroma.yaml" == derived_chroma(chroma_name));
-  REQUIRE("/home/dave/src/glow/test_data/chromas/custom/chroma.yaml" == custom_chroma(chroma_name));
+  REQUIRE("/home/dave/src/glow/test_data/chromas/chroma.yaml" == custom_chroma(chroma_name));
   REQUIRE("/home/dave/src/glow/test_data/grids/derived/grid.yaml" == derived_grid(grid_name));
-  REQUIRE("/home/dave/src/glow/test_data/grids/custom/grid.yaml" == custom_grid(grid_name));
+  REQUIRE("/home/dave/src/glow/test_data/grids/grid.yaml" == custom_grid(grid_name));
 }
 
 TEST_CASE("Filer Basic", "filer_basic")

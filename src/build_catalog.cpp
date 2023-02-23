@@ -1,10 +1,10 @@
-#include "Library.h"
+#include "build_catalog.h"
 
 namespace glow
 {
   std::map<std::string, Frame> items;
 
-  void add_frame_to_library(std::string name, Frame &frame)
+  void add_frame_to_catalog(std::string name, Frame &frame)
   {
     items[name] = frame;
   }
@@ -30,7 +30,7 @@ namespace glow
     return upper;
   };
 
-  std::string make_code_from_library(std::string name)
+  std::string make_code_from_catalog(std::string name)
   {
     std::stringstream header;
     std::stringstream source;
@@ -39,7 +39,7 @@ namespace glow
     return header.str();
   }
 
-  bool make_files_from_library(std::string name)
+  bool make_files_from_catalog(std::string name)
   {
     std::fstream header, source;
     header.open(name + ".h", std::fstream::out);

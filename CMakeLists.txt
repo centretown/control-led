@@ -14,7 +14,7 @@ list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 # add_definitions("-std=c++14" "-DMICRO_CONTROLLER")
 
 # include yaml
-add_definitions("-std=c++17" "-DDATA_DIR=\"${PROJECT_SOURCE_DIR}/test_data\"")
+add_definitions("-std=c++20" "-DDATA_DIR=\"${PROJECT_SOURCE_DIR}/test_data\"")
 
 include(CTest)
 
@@ -46,10 +46,11 @@ add_library(GlowLib
   src/Palette.cpp
   src/Filer.h
   src/Filer.cpp
-  src/DisplayANSI.h
+  src/ansi_stream.h
+  src/ansi_stream.cpp
   src/HostLight.h
-  src/Library.h
-  src/Library.cpp
+  src/build_catalog.h
+  src/build_catalog.cpp
 )
 
 add_executable(glow

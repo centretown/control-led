@@ -1,8 +1,9 @@
 #pragma once
+#include <iostream>
 
 #include "base.h"
 #include "RGBColor.h"
-#include "DisplayANSI.h"
+#include "ansi_stream.h"
 
 namespace glow
 {
@@ -60,7 +61,7 @@ namespace glow
       for (uint16_t i = 0; i < length; i++)
       {
         div_t d = div(i, columns);
-        DisplayANSI::put_light(d.quot, d.rem, colors[i]);
+        ansi_put_light(d.quot, d.rem, colors[i], std::cout);
       }
     }
   };

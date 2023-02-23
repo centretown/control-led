@@ -23,8 +23,10 @@ namespace glow
   const std::string custom_chroma(std::string name);
   const std::string derived_grid(std::string name);
   const std::string custom_grid(std::string name);
-
   
+  const std::string catalog_file(const std::string name);
+  const std::string source_file();
+  const std::string header_file();
 
   template <typename GLOW_STRUCT>
   bool load_yaml(const std::string file_name, GLOW_STRUCT &glow_struct)

@@ -1,10 +1,12 @@
 #pragma once
+#ifndef MICRO_CONTROLLER
 
 #include <map>
+#include <vector>
 
-#ifndef MICRO_CONTROLLER
+#include <ostream>
 #include <yaml-cpp/yaml.h>
-#endif
+#include "ansi_stream.h"
 
 #include "PaletteColor.h"
 
@@ -36,12 +38,44 @@ namespace glow
       return blank;
     }
 
-    static std::string keys[KEY_COUNT];
-  };
+    void print(uint16_t columns, uint16_t width, std::ostream &stream);
+    void print_by_hue(uint16_t columns, uint16_t width, std::ostream &stream);
 
+    static std::string keys[KEY_COUNT];
+
+    template <typename ITERATOR>
+    void print_x(uint16_t columns,
+                 uint16_t column_width,
+                 ITERATOR begin,
+                 ITERATOR end,
+                 std::ostream &stream,
+                 void (*print_item)(ITERATOR &item, uint16_t column_width, std::ostream &stream))
+    {
+
+      std::vector<ITERATOR> items;
+      auto print_items = [&]()
+      {
+        for (auto item : items)
+        {
+          print_item(item, column_width, stream);
+          // ansi_print_fixed(column_width, item->first, item->second.rgb, stream);
+        }
+        stream << '\n';
+      };
+
+      for (auto item = begin; item != end; item++)
+      {
+        items.push_back(item);
+        if (items.size() == columns)
+        {
+          print_items();
+          items.clear();
+        }
+      }
+    }
+  };
 }
 
-#ifndef MICRO_CONTROLLER
 namespace YAML
 {
   using glow::Palette;
@@ -83,4 +117,5 @@ namespace YAML
     }
   };
 }
+
 #endif // MICRO_CONTROLLER

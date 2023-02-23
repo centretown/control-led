@@ -11,11 +11,11 @@ namespace glow
 {
   extern std::map<std::string, Frame> items;
 
-  extern void add_frame_to_library(std::string name, Frame &frame);
+  extern void add_frame_to_catalog(std::string name, Frame &frame);
 
-  extern std::string make_code_from_library(std::string name);
+  extern std::string make_code_from_catalog(std::string name);
 
-  extern bool make_files_from_library(std::string name);
+  extern bool make_files_from_catalog(std::string name);
 
   extern std::string make_constant_name(std::string src);
 
@@ -38,10 +38,10 @@ namespace glow
     // terminate enum
     header << "FRAME_COUNT,\n";
     header << "};\n";
-    header << "extern const char *library_names[FRAME_COUNT];";
-    header << "extern Frame library[FRAME_COUNT];\n";
-    header << "extern Frame &from_library(LIBRARY_INDEX index);\n";
-    header << "extern const char *library_name(LIBRARY_INDEX index);\n";
+    header << "extern const char *catalog_names[FRAME_COUNT];";
+    header << "extern Frame catalog[FRAME_COUNT];\n";
+    header << "extern Frame &from_catalog(LIBRARY_INDEX index);\n";
+    header << "extern const char *catalog_name(LIBRARY_INDEX index);\n";
 
     header << "} // namespace glow\n";
 
@@ -50,14 +50,14 @@ namespace glow
     source << "#include \"" << name << ".h\"\n"
            << "namespace glow {\n";
 
-    source << "const char *library_names[FRAME_COUNT] = {\n";
+    source << "const char *catalog_names[FRAME_COUNT] = {\n";
     for (auto pair : items)
     {
       source << "\"" << pair.first << "\",\n";
     }
     source << "};\n";
 
-    source << "Frame library[FRAME_COUNT]= {\n";
+    source << "Frame catalog[FRAME_COUNT]= {\n";
     for (auto pair : items)
     {
       source << pair.second.make_code() << ",\n";
@@ -67,8 +67,8 @@ namespace glow
     source << "};\n";
 
     // create functions
-    source << "Frame &from_library(LIBRARY_INDEX index){return library[index%FRAME_COUNT];}\n";
-    source << "const char *library_name(LIBRARY_INDEX index){return library_names[index%FRAME_COUNT];}\n";
+    source << "Frame &from_catalog(LIBRARY_INDEX index){return catalog[index%FRAME_COUNT];}\n";
+    source << "const char *catalog_name(LIBRARY_INDEX index){return catalog_names[index%FRAME_COUNT];}\n";
 
     // terminate namespace
     source << "} // namespace glow\n";

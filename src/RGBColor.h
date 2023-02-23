@@ -18,7 +18,9 @@ namespace glow
     uint8_t blue = 0;
     uint8_t white = 0;
 
-    Color(uint8_t p_red = 0, uint8_t p_green = 0, uint8_t p_blue = 0) ALWAYS_INLINE
+    Color() = default;
+
+    Color(uint8_t p_red, uint8_t p_green, uint8_t p_blue) ALWAYS_INLINE
     {
       red = p_red;
       green = p_green;

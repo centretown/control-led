@@ -4,10 +4,11 @@
 #include <string>
 
 #include "../src/Filer.h"
-#include "../src/Library.h"
+#include "../src/build_catalog.h"
+
 using namespace glow;
 
-TEST_CASE("Library Code", "[library_make_code]")
+TEST_CASE("Library Code", "[catalog_make_code]")
 {
   REQUIRE(Chroma::load_palette(palette_file()));
 
@@ -19,9 +20,9 @@ TEST_CASE("Library Code", "[library_make_code]")
   Frame salmon;
   REQUIRE(load_yaml(custom_frame(salmon_name), salmon));
 
-  add_frame_to_library(frame_name, frame);
-  add_frame_to_library(salmon_name, salmon);
+  add_frame_to_catalog(frame_name, frame);
+  add_frame_to_catalog(salmon_name, salmon);
 
-  std::cout << make_code_from_library("library");
-  REQUIRE(make_files_from_library("library"));
+  std::cout << make_code_from_catalog("catalog");
+  REQUIRE(make_files_from_catalog("catalog"));
 }

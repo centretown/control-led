@@ -23,6 +23,15 @@ namespace glow
     HSVColor hsv;
     static std::string keys[KEY_COUNT];
   };
+
+  struct PaletteColorX
+  {
+    std::string name;
+    PaletteColor color;
+    PaletteColorX() = default;
+    
+    PaletteColorX(std::string p_name, PaletteColor p_color) : name(p_name), color(p_color) {}
+  };
 }
 
 #ifndef MICRO_CONTROLLER

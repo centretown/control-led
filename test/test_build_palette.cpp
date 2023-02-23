@@ -13,7 +13,7 @@
 #include "test_yaml.h"
 #include "check_palette_detail.h"
 
-#include "../src/DisplayANSI.h"
+#include "ansi_stream.h"
 
 using namespace glow;
 
@@ -21,7 +21,6 @@ void check_detail(const Palette &original, const Palette &derived)
 {
   check_palette_detail(original, derived);
 }
-
 
 #ifdef BUILD_PALETTE
 const std::string test_file_name = "build_palette";
@@ -58,14 +57,13 @@ TEST_CASE("Build Palette From File", "[build_palette_from_file]")
 {
   Palette palette;
   REQUIRE(load_yaml(palette_file(), palette));
-  DisplayANSI display;
 
   for (auto item : palette.colors)
   {
     YAML::Node node = YAML::convert<PaletteColor>::encode(item.second);
     YAML::Emitter out;
     out << node;
-    display.print_line(out.c_str(), item.second.rgb);
+    ansi_print_line(out.c_str(), item.second.rgb, std::cout);
   }
 
   REQUIRE(save_yaml(save_file_name, palette));

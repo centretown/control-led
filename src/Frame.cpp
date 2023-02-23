@@ -3,7 +3,6 @@
 namespace glow
 {
 #ifndef MICRO_CONTROLLER
-  
   std::string Frame::make_code()
   {
     std::stringstream s;

@@ -8,7 +8,7 @@
 #include "test_yaml.h"
 #include "check_layer_detail.h"
 
-#include "DisplayANSI.h"
+#include "ansi_stream.h"
 #include "HostLight.h"
 
 TEST_CASE("Lights Basic", "layer_basic")
@@ -39,16 +39,16 @@ TEST_CASE("Layer Lights", "layer_lights")
   REQUIRE(load_yaml(custom_layer(strawberry), layer));
   REQUIRE(save_yaml(derived_layer(strawberry), layer));
 
-  DisplayANSI::at(0, 0);
-  DisplayANSI::clear_from_cursor();
-  DisplayANSI::hide_cursor();
+  ansi_at(0, 0, std::cout);
+  ansi_clear_from_cursor(std::cout);
+  ansi_hide_cursor(std::cout);
 
   HostLight light;
   light.setup(layer.get_length(), layer.get_grid().get_rows());
   layer.spin(&light);
 
-  DisplayANSI::at(layer.get_grid().get_rows() + 1, 0);
-  DisplayANSI::show_cursor();
+  ansi_at(layer.get_grid().get_rows() + 1, 0, std::cout);
+  ansi_show_cursor(std::cout);
 
   YAML::Node node = YAML::convert<Layer>::encode(layer);
   YAML::Emitter out;

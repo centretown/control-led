@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <array>
 #include <string>
 #include <signal.h>
@@ -13,19 +14,10 @@
 #include "Palette.h"
 #include "Frame.h"
 #include "Filer.h"
-#include "DisplayANSI.h"
+#include "ansi_stream.h"
 #include "HostLight.h"
 
 using namespace glow;
-
-const std::array<std::string, 6> search_colors = {
-    "sunset orange",
-    "salmon",
-    "antique brass",
-    "aquamarine",
-    "blue-violet",
-    "brick red",
-};
 
 void process_args(int argc, char **argv);
 void load_palette();
@@ -35,44 +27,72 @@ void display_summary();
 void sigintHandler(int sig_num);
 void show_lights();
 
-std::string frame_name;
-Frame frame;
+struct Selected
+{
+  std::string frame_name;
+  Frame frame;
+  uint16_t length = 36;
+  uint16_t rows = 4;
+  uint32_t interval = 48;
+  bool catalog = false;
+} selected;
+
+cxxopts::ParseResult selections;
 
 int main(int argc, char **argv)
 {
   signal(SIGINT, sigintHandler);
 
   process_args(argc, argv);
-
   load_palette();
-  display_colors();
+  
+  if (selections.count("palette"))
+  {
+    display_colors();
+    exit(0);
+  }
 
-  load_frame(frame_name, frame);
+  selected.frame_name = selections["show"].as<std::string>();
+  selected.length = selections["length"].as<uint16_t>();
+  selected.rows = selections["rows"].as<uint16_t>();
+  selected.interval = selections["interval"].as<uint32_t>();
+
+  load_frame(selected.frame_name, selected.frame);
   show_lights();
   exit(0);
 }
 
 void process_args(int argc, char **argv)
 {
-  cxxopts::Options options("glow-compose", "Glow Composer: light pattern animator");
+  cxxopts::Options options("glow", "Glow: create and animate led light strips");
 
-  options.add_options()                                                   //
-      ("p,path", "Path to data",                                          //
-       cxxopts::value<std::string>()->default_value(data_path()))         //
-      ("f,frame", "Frame to show",                                        //
-       cxxopts::value<std::string>()->default_value("glow")) //
-      ("h,help", "Print usage");                                          //
+  options.add_options()                                           //
+      ("d,data", "Data location",                                 //
+       cxxopts::value<std::string>()->default_value(data_path())) //
+      ("s,show", "Show frame by name",                            //
+       cxxopts::value<std::string>()->default_value("glow"))      //
+      ("l,length", "Length of led strip",                         //
+       cxxopts::value<uint16_t>()->default_value("36"))           //
+      ("r,rows", "Rows in led strip",                             //
+       cxxopts::value<uint16_t>()->default_value("4"))            //
+      ("i,interval", "Interval in ms",                            //
+       cxxopts::value<uint32_t>()->default_value("48"))           //
+      ("c,catalog", "Print catalog")                              //
+      ("a,add", "Add to catalog",                                 //
+       cxxopts::value<std::string>()->default_value(""))          //
+      ("b,build", "Build catalog")                                //
+      ("p,palette", "Print current palette")                      //
+      ("h,help", "Print usage");                                  //
 
-  auto selected = options.parse(argc, argv);
+  selections = options.parse(argc, argv);
 
-  if (selected.count("help"))
+  if (selections.count("help"))
   {
     std::cout << options.help() << std::endl;
     exit(0);
   }
 
-  set_data_path(selected["path"].as<std::string>());
-  frame_name = selected["frame"].as<std::string>();
+  set_data_path(selections["data"].as<std::string>());
 
   if (!file_system_exists())
   {
@@ -84,6 +104,7 @@ void process_args(int argc, char **argv)
     std::cout << "File system created at " << '"' << data_path() << '"' << ".\n";
     exit(0);
   }
+
 }
 
 void load_palette()
@@ -106,15 +127,13 @@ void load_frame(std::string frame_name, Frame &frame)
 
 void display_colors()
 {
-  for (auto item : Chroma::palette.colors)
-  {
-    DisplayANSI::print_line(item.first, item.second.rgb);
-  }
+  // Chroma::palette.print(5, 26, std::cout);
+  Chroma::palette.print_by_hue(5, 26, std::cout);
 }
 
 void display_summary()
 {
-  YAML::Node node_out = YAML::convert<Frame>::encode(frame);
+  YAML::Node node_out = YAML::convert<Frame>::encode(selected.frame);
   YAML::Emitter out;
   out << node_out;
   std::cout << out.c_str() << '\n';
@@ -123,29 +142,31 @@ void display_summary()
 
 void sigintHandler(int sig_num)
 {
-  DisplayANSI::at(12, 0);
-  DisplayANSI::show_cursor();
+  ansi_at(12, 0, std::cout);
+  ansi_show_cursor(std::cout);
   display_summary();
   exit(0);
 };
 
 void show_lights()
 {
-  DisplayANSI::at(0, 0);
-  DisplayANSI::clear_from_cursor();
-  DisplayANSI::hide_cursor();
+  ansi_at(0, 0, std::cout);
+  ansi_clear_from_cursor(std::cout);
+  ansi_hide_cursor(std::cout);
 
   HostLight light;
-  if (light.setup(frame.get_length(), frame.get_rows()) == false)
+  if (light.setup(selected.length, selected.rows) == false)
   {
-    std::cout << "Unable setup light. length: " << frame.get_length()
-              << " ,rows: " << frame.get_rows() << '\n';
+    std::cout << "Unable setup light. length: " << selected.frame.get_length()
+              << " ,rows: " << selected.frame.get_rows() << '\n';
     exit(1);
   }
 
+  selected.frame.setup(selected.length, selected.rows, selected.interval);
+
   for (;;)
   {
-    frame.spin(&light);
-    std::this_thread::sleep_for(std::chrono::milliseconds(frame.get_interval()));
+    selected.frame.spin(&light);
+    std::this_thread::sleep_for(std::chrono::milliseconds(selected.frame.get_interval()));
   }
 }

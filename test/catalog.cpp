@@ -1,7 +1,7 @@
 // CAUTION GENERATED FILE
-#include "library.h"
+#include "catalog.h"
 namespace glow {
-Frame library[FRAME_COUNT] = {
+Frame catalog[FRAME_COUNT] = {
 {20,4,48,//
 {{20,4,5,15,{20,4,0,1},{20,{790,91,232},{1487,109,255},-1},0},
 {20,4,5,15,{20,4,0,1},{20,{1402,204,255},{807,124,234},-1},5},
@@ -12,5 +12,5 @@ Frame library[FRAME_COUNT] = {
 {540,9,0,0,{540,9,2,1},{540,{93,124,198},{93,124,198},1},5},
 }},
 };
-Frame &from_library(LIBRARY_INDEX index){return library[index%FRAME_COUNT];}
+Frame &from_catalog(LIBRARY_INDEX index){return catalog[index%FRAME_COUNT];}
 } // namespace glow

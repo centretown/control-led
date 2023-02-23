@@ -3,10 +3,10 @@
 
 #include <cxxopts.hpp>
 
-#include "DisplayANSI.h"
+#include "ansi_stream.h"
 #include "HostLight.h"
 
-#include "library.h"
+#include "catalog.h"
 
 using namespace glow;
 
@@ -19,6 +19,7 @@ uint16_t selected_item = 0;
 uint16_t selected_length = 36;
 uint16_t selected_rows = 4;
 uint32_t selected_interval = 48;
+bool selected_catalog = false;
 
 int main(int argc, char **argv)
 {
@@ -30,33 +31,30 @@ int main(int argc, char **argv)
 
 void process_args(int argc, char **argv)
 {
-  cxxopts::Options options("glow-play", "Glow Player: light pattern player");
+  cxxopts::Options options("glow-play", "Glow Player: led pattern player");
 
   options.add_options()                                 //
-      ("f,frame", "Frame to play",                      //
+      ("f,frame", "Frame id to play",                   //
        cxxopts::value<uint16_t>()->default_value("0"))  //
-      ("l,length", "Length of light string",            //
+      ("l,length", "Length of led strip",               //
        cxxopts::value<uint16_t>()->default_value("36")) //
-      ("r,rows", "Rows in light string",                //
+      ("r,rows", "Rows in light strip",                 //
        cxxopts::value<uint16_t>()->default_value("4"))  //
-      ("i,interval", "Interval in ms",                        //
+      ("i,interval", "Interval in ms",                  //
        cxxopts::value<uint32_t>()->default_value("48")) //
       ("c,catalog", "Print catalog")                    //
       ("h,help", "Print usage");                        //
 
   auto selected = options.parse(argc, argv);
 
-  if (selected.count("catalog"))
-  {
-    print_catalog();
-  }
+  selected_catalog = selected.count("catalog");
 
   if (selected.count("help"))
   {
     std::cout << options.help() << std::endl;
+    print_catalog();
     exit(0);
   }
-
 
   selected_item = selected["frame"].as<uint16_t>();
   selected_length = selected["length"].as<uint16_t>();
@@ -66,19 +64,23 @@ void process_args(int argc, char **argv)
 
 void sigintHandler(int sig_num)
 {
-  DisplayANSI::at(24, 0);
-  DisplayANSI::show_cursor();
+  ansi_at(selected_rows + 1, 0, std::cout);
+  ansi_show_cursor(std::cout);
+  if (selected_catalog)
+  {
+    print_catalog();
+  }
   exit(0);
 };
 
 void show_lights()
 {
-  DisplayANSI::at(0, 0);
-  DisplayANSI::clear_from_cursor();
-  DisplayANSI::hide_cursor();
+  ansi_at(0, 0, std::cout);
+  ansi_clear_from_cursor(std::cout);
+  ansi_hide_cursor(std::cout);
 
   HostLight light;
-  Frame frame = from_library((LIBRARY_INDEX)selected_item);
+  Frame frame = from_catalog((LIBRARY_INDEX)selected_item);
   frame.setup(selected_length, selected_rows, selected_interval);
 
   light.setup(selected_length, selected_rows);
@@ -92,9 +94,10 @@ void show_lights()
 
 void print_catalog()
 {
-  std::cout << "Current Catalog:\n";
+  std::cout << "\nFrame Catalog:\n";
   for (auto i = 0; i < FRAME_COUNT; i++)
   {
-    std::cout << i << " - " << library_name((LIBRARY_INDEX)i) << "\n";
+    std::cout << "  id: (" << i << ")  name: " << catalog_name((LIBRARY_INDEX)i) << "\n";
   }
+  std::cout << "\n\n";
 }
