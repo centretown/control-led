@@ -66,6 +66,10 @@
     "condition_variable": "cpp",
     "unordered_set": "cpp",
     "regex": "cpp",
-    "shared_mutex": "cpp"
+    "shared_mutex": "cpp",
+    "concepts": "cpp",
+    "compare": "cpp",
+    "ranges": "cpp",
+    "stop_token": "cpp"
   }
 }

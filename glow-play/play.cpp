@@ -12,7 +12,7 @@ using namespace glow;
 
 void show_lights();
 void sigintHandler(int sig_num);
-void process_args(int argc, char **argv);
+void process_command_line(int argc, char **argv);
 void print_catalog();
 
 uint16_t selected_item = 0;
@@ -23,13 +23,13 @@ bool selected_catalog = false;
 
 int main(int argc, char **argv)
 {
-  process_args(argc, argv);
+  process_command_line(argc, argv);
   signal(SIGINT, sigintHandler);
   show_lights();
   exit(0);
 }
 
-void process_args(int argc, char **argv)
+void process_command_line(int argc, char **argv)
 {
   cxxopts::Options options("glow-play", "Glow Player: led pattern player");
 

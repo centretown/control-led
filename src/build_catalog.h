@@ -6,6 +6,7 @@
 #include <map>
 
 #include "Frame.h"
+#include "Filer.h"
 
 namespace glow
 {
@@ -15,16 +16,13 @@ namespace glow
 
   extern std::string make_code_from_catalog(std::string name);
 
-  extern bool make_files_from_catalog(std::string name);
+  extern bool make_files_from_catalog();
 
   extern std::string make_constant_name(std::string src);
 
   template <typename STREAM_OUT>
-  bool generate_code_to_streams(std::string name, STREAM_OUT &header, STREAM_OUT &source)
+  void generate_header(STREAM_OUT &header)
   {
-    std::string caution = "// CAUTION GENERATED FILE\n";
-
-    header << caution;
     header << "#pragma once\n"
            << "#include \"Frame.h\"\n"
               "namespace glow {\n";
@@ -38,16 +36,18 @@ namespace glow
     // terminate enum
     header << "FRAME_COUNT,\n";
     header << "};\n";
-    header << "extern const char *catalog_names[FRAME_COUNT];";
+    header << "extern const char *catalog_names[FRAME_COUNT];\n";
     header << "extern Frame catalog[FRAME_COUNT];\n";
     header << "extern Frame &from_catalog(LIBRARY_INDEX index);\n";
     header << "extern const char *catalog_name(LIBRARY_INDEX index);\n";
 
     header << "} // namespace glow\n";
+  }
 
-    source << caution;
-
-    source << "#include \"" << name << ".h\"\n"
+  template <typename STREAM_OUT>
+  void generate_source(STREAM_OUT &source)
+  {
+    source << "#include \"catalog.h\"\n"
            << "namespace glow {\n";
 
     source << "const char *catalog_names[FRAME_COUNT] = {\n";
@@ -72,6 +72,18 @@ namespace glow
 
     // terminate namespace
     source << "} // namespace glow\n";
+  }
+
+  template <typename STREAM_OUT>
+  bool generate_code_to_streams(STREAM_OUT &header, STREAM_OUT &source)
+  {
+    std::string caution = "// CAUTION GENERATED FILE\n";
+
+    header << caution;
+    generate_header(header);
+
+    source << caution;
+    generate_source(source);
 
     return true;
   }

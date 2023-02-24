@@ -24,5 +24,5 @@ TEST_CASE("Library Code", "[catalog_make_code]")
   add_frame_to_catalog(salmon_name, salmon);
 
   std::cout << make_code_from_catalog("catalog");
-  REQUIRE(make_files_from_catalog("catalog"));
+  REQUIRE(make_files_from_catalog());
 }

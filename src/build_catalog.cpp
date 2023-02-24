@@ -34,26 +34,26 @@ namespace glow
   {
     std::stringstream header;
     std::stringstream source;
-    generate_code_to_streams(name, header, source);
+    generate_code_to_streams(header, source);
     header << source.str();
     return header.str();
   }
 
-  bool make_files_from_catalog(std::string name)
+  bool make_files_from_catalog()
   {
     std::fstream header, source;
-    header.open(name + ".h", std::fstream::out);
+    header.open(header_file(), std::fstream::out);
     if (header.bad())
     {
       return false;
     }
-    source.open(name + ".cpp", std::fstream::out);
+    source.open(source_file(), std::fstream::out);
     if (source.bad())
     {
       return false;
     }
 
-    generate_code_to_streams(name, header, source);
+    generate_code_to_streams(header, source);
 
     header.close();
     source.close();

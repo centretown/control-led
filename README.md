@@ -4,15 +4,29 @@ An led strip application.
 ---
 ## Building
 ---
-### Prerequisites:
+### Environment:
 #### C++ build environment
+- Micro Controller Code uses C++11/C++14
+- Command line utility uses C++20
+
 https://linuxhint.com/install-build-essential-ubuntu/
+
+https://linuxconfig.org/how-to-switch-between-multiple-gcc-and-g-compiler-versions-on-ubuntu-20-04-lts-focal-fossa
 ```sh
-# gcc 9.4.0: (Ubuntu 9.4.0-1ubuntu1~20.04.1)
 sudo apt install build-essential
 gcc --version
+# gcc (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0
+sudo apt install gcc-10
+sudo apt install g++-10
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 9
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 9
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
+gcc --version
+# gcc (Ubuntu 10.3.0-1ubuntu1~20.04) 10.3.0
+
 ```
-#### cmake version 3.25.2 
+#### Cmake version 3.25.2 
 https://cmake.org/download/
 ```sh
 cmake --version
@@ -45,6 +59,9 @@ ctest -V
 
 #### Run:
 ```sh
+# command line utility
 build/glow
+# micro-controller emulator
+build/glow-play/glow-play
 ```
 ---

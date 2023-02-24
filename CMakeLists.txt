@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.25)
 
 project(
   Glow
-  VERSION 0.3
+  VERSION 0.4
   LANGUAGES CXX)
 
 configure_file(GlowConfig.h.in ${PROJECT_SOURCE_DIR}/src/GlowConfig.h)
@@ -55,8 +55,10 @@ add_library(GlowLib
 
 add_executable(glow
   src/glow.cpp
-  src/palette_builder.h
-  src/palette_builder.cpp
+  src/glow_show.h
+  src/glow_show.cpp
+  src/glow_file.h
+  src/glow_file.cpp
 )
 
 # conan.cmake_find_package generator

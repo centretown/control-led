@@ -1,4 +1,5 @@
 #include "Filer.h"
+#include <ranges>
 
 namespace glow
 {
@@ -20,8 +21,8 @@ namespace glow
 
   const std::string catalog = "catalog";
   const std::string generated = "generated";
-  const std::string header_name = "library.h";
-  const std::string source_name = "library.cpp";
+  const std::string header_name = "catalog.h";
+  const std::string source_name = "catalog.cpp";
 
   const std::string extend(const std::string name)
   {
@@ -32,6 +33,17 @@ namespace glow
   {
     return data_directory / catalog / extend(name);
   }
+
+  const std::string catalog_directory()
+  {
+    return data_directory / catalog;
+  }
+  
+  const std::string generated_directory()
+  {
+    return data_directory / generated;
+  }
+  
   const std::string source_file()
   {
     return data_directory / generated / source_name;
@@ -91,30 +103,52 @@ namespace glow
     return data_directory / grids / extend(name);
   }
 
-  bool create_directory(std::string directory_name)
+  bool catalog_copy(std::vector<std::string> frame_names, std::string &message)
   {
-    if (!std::filesystem::exists(data_path()))
+    bool status = true;
+    std::stringstream s;
+
+    std::filesystem::copy_options options =
+        std::filesystem::copy_options::overwrite_existing;
+
+    std::error_code err;
+
+    for (auto frame_name : frame_names)
     {
-      std::error_code err;
-      bool status = std::filesystem::create_directory(data_path(), err);
-      if (status == false)
+      if (std::filesystem::copy_file(custom_frame(frame_name),
+                                     catalog_file(frame_name),
+                                     options, err) ==
+          false)
       {
-        return false;
+        s << "Failed to copy " << '"' << frame_name << '"' << ": ";
+        s << err.message() << "! ";
+        status = false;
+      }
+      else
+      {
+        s << "Copied " << '"' << frame_name << '"' << ". ";
       }
     }
-    return true;
+
+    message = s.str();
+    return status;
   }
 
-  bool make_file_system()
+  bool file_system_create(std::string path, std::string &message)
   {
+    bool status = true;
+    std::stringstream s;
+    set_data_path(path);
     std::error_code err;
     auto create = [&](std::string name)
     {
       if (std::filesystem::create_directories(name, err) == false)
       {
-        std::cout << "Filer::Unable to create_directory "
-                  << name << '\n'
-                  << err.message() << '\n';
+        s << "Failed to create_directory "
+          << '"' << name << '"' << "! "
+          << err.message() << ". ";
+        message = s.str();
+        status = false;
       }
     };
 
@@ -126,12 +160,12 @@ namespace glow
     create(data_directory / catalog);
     create(data_directory / generated);
 
-    return true;
+    return status;
   }
 
-  bool file_system_exists()
+  bool file_system_exists(std::string path)
   {
-    return std::filesystem::exists(data_path());
+    return std::filesystem::exists(path);
   }
 
   const std::string data_path()
