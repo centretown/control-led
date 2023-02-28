@@ -12,7 +12,6 @@ struct Selections
 {
   std::string data_path;
   std::string show_frame;
-  std::vector<std::string> frames_to_add;
 
   uint16_t length = 36;
   uint16_t rows = 4;
@@ -22,6 +21,8 @@ struct Selections
   uint16_t show_columns = 5;
   uint16_t show_column_width = 26;
 
+  bool add_catalog = false;
+  std::vector<std::string> frames_to_add;
   bool show_catalog = false;
   bool build_catalog = false;
   bool help = false;
@@ -46,7 +47,7 @@ void process_command_line(int argc, char **argv, Selections &selections)
   cxxopts::Options options("glow", "colorize and animate addressable LED's");
 
   options.add_options()                                                  //
-      ("d,data", "Set pcpath to data",                                   //
+      ("d,data", "Set path to data",                                     //
        cxxopts::value<std::string>()->default_value(file_system_path())) //
       ("s,show", "Show frame by name (Ctrl-c to exit)",                  //
        cxxopts::value<std::string>()->default_value("glow"))             //
@@ -60,7 +61,7 @@ void process_command_line(int argc, char **argv, Selections &selections)
       ("p,palette", "Print current palette")            //
       ("n,columns", "Columns to print",                 //
        cxxopts::value<uint16_t>()->default_value("5"))  //
-      ("w,column-width", "Column Width to print",       //
+      ("w,column_width", "Column Width to print",       //
        cxxopts::value<uint16_t>()->default_value("26")) //
 
       ("c,catalog", "Print catalog")                                  //
@@ -78,19 +79,21 @@ void process_command_line(int argc, char **argv, Selections &selections)
   selections.rows = parsed["rows"].as<uint16_t>();
   selections.interval = parsed["interval"].as<uint32_t>();
   selections.show_columns = parsed["columns"].as<uint16_t>();
-  selections.show_column_width = parsed["column-width"].as<uint16_t>();
+  selections.show_column_width = parsed["column_width"].as<uint16_t>();
   selections.show_catalog = parsed.count("catalog");
   selections.show_palette = parsed.count("palette");
   selections.build_catalog = parsed.count("build_catalog");
   selections.frames_to_add = parsed["add"].as<std::vector<std::string>>();
   selections.help = parsed.count("help");
+  selections.add_catalog = (selections.frames_to_add.size() > 0 &&
+                            selections.frames_to_add[0].size() > 0);
 
-  cxxopts::PositionalList unmatched = parsed.unmatched();
-  if (unmatched.size() > 0)
+  cxxopts::PositionalList unrecognized = parsed.unmatched();
+  if (unrecognized.size() > 0)
   {
-    for (auto &x : unmatched)
+    for (auto &option : unrecognized)
     {
-      std::cout << "Unrecogized option: " << x.c_str() << '\n';
+      std::cout << "Unrecognized option: " << option.c_str() << '\n';
     }
     selections.help = true;
   }
@@ -149,6 +152,60 @@ int build_catalog()
   return EXIT_SUCCESS;
 }
 
+int display_lights(Selections &selections)
+{
+  std::string message;
+
+  static uint16_t row_count = selections.rows;
+
+  signal(SIGINT, [](int)
+         {show_normal(row_count+2);exit(EXIT_SUCCESS); });
+
+  if (show_lights(selections.length, selections.rows, selections.interval,
+                  selections.show_frame, message) ==
+      false)
+  {
+    std::cout << message << '\n';
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int process_catalog(Selections &selections)
+{
+  int add_status = EXIT_SUCCESS;
+
+  if (selections.frames_to_add.size() > 0 &&
+      selections.frames_to_add[0].size() > 0)
+  {
+    add_status = add_frames_to_catalog(selections.frames_to_add);
+  }
+
+  int show_status = EXIT_SUCCESS;
+
+  if (selections.show_catalog)
+  {
+    show_status = display_catalog();
+  }
+
+  int build_status = EXIT_SUCCESS;
+
+  if (selections.build_catalog)
+  {
+    build_status = build_catalog();
+  }
+
+  if (build_status == EXIT_FAILURE ||
+      add_status == EXIT_FAILURE ||
+      show_status == EXIT_FAILURE)
+  {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int process_selections(Selections &selections)
 {
   if (selections.help)
@@ -162,28 +219,12 @@ int process_selections(Selections &selections)
     return create_file_system(selections.data_path);
   }
 
-  if (selections.frames_to_add.size() > 0 &&
-      selections.frames_to_add[0].size() > 0)
-  {
-    return add_frames_to_catalog(selections.frames_to_add);
-  }
-
-  if (selections.show_catalog)
-  {
-    return display_catalog();
-  }
-
   std::string message;
   if (file_load_palette(message) ==
       false)
   {
     std::cout << message << '\n';
     return EXIT_FAILURE;
-  }
-
-  if (selections.build_catalog)
-  {
-    return build_catalog();
   }
 
   if (selections.show_palette ==
@@ -193,16 +234,12 @@ int process_selections(Selections &selections)
     return EXIT_SUCCESS;
   }
 
-  signal(SIGINT, [](int)
-         {show_normal();exit(EXIT_SUCCESS); });
-
-  if (show_lights(selections.length, selections.rows, selections.interval,
-                  selections.show_frame, message) ==
-      false)
+  if (selections.build_catalog ||
+      selections.show_catalog ||
+      selections.add_catalog)
   {
-    std::cout << message << '\n';
-    return EXIT_FAILURE;
+    return process_catalog(selections);
   }
 
-  return EXIT_SUCCESS;
+  return display_lights(selections);
 }

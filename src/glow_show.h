@@ -14,4 +14,4 @@ bool show_lights(uint16_t length, uint16_t rows, uint32_t interval,
                  std::string frame_name, std::string &message);
 void show_palette(uint16_t columns = 5, uint16_t column_width = 26, bool by_hue = true);
 void show_frame(glow::Frame &frame);
-void show_normal();
+void show_normal(uint16_t row = 12);

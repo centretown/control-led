@@ -15,7 +15,7 @@ layers:
       orientation: 2
     chroma:
       length: 20
-      delta: -1
+      hue_shift: -1
       source:
         hue: 0
         saturation: 100

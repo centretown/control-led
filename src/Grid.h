@@ -13,8 +13,6 @@
 
 namespace glow
 {
-  struct Library;
-
   enum : uint16_t
   {
     TopLeft,
@@ -82,6 +80,7 @@ namespace glow
       return setup();
     }
 
+    uint16_t adjust_bounds(float bound);
     uint16_t get_length() const ALWAYS_INLINE { return length; }
     uint16_t get_rows() const ALWAYS_INLINE { return rows; }
     uint16_t get_origin() const ALWAYS_INLINE { return origin; }

@@ -3,10 +3,13 @@
 #include "Frame.h"
 namespace glow {
 enum LIBRARY_INDEX : uint8_t {
-FRAME,
-GLOW,
+DOUBLE_SCANNER,
 SALMON_STRAWBERRY,
-SALMON_STRAWBERRY_COPY,
+SKY_BLUE_SCAN,
+SPLIT_IN_THREE,
+SPLIT_IN_TWO,
+SPOTLIGHT,
+STRAWBERRY,
 FRAME_COUNT,
 };
 extern const char *catalog_names[FRAME_COUNT];

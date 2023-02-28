@@ -1,8 +1,8 @@
 #include "glow_show.h"
 
-void show_normal()
+void show_normal(uint16_t row)
 {
-  glow::ansi_at(12, 0, std::cout);
+  glow::ansi_at(row, 0, std::cout);
   glow::ansi_show_cursor(std::cout);
 }
 

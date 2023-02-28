@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <algorithm>
 
 #ifndef MICRO_CONTROLLER
 #include <yaml-cpp/yaml.h>
@@ -15,35 +16,35 @@ namespace glow
 {
   class Layer
   {
-  public:
-    enum : uint16_t
-    {
-      Relative = 0x8000, // horizontal
-      Bounds = Relative,
-    };
-
   private:
+    // required
     uint16_t length = 0;
     uint16_t rows = 0;
-    uint16_t begin = 0;
-    uint16_t end = 0;
     Grid grid;
     Chroma chroma;
+    // optional
+    int16_t hue_shift = 0;
     uint16_t scan = 0;
+    uint16_t begin = 0;
+    uint16_t end = 100;
+    // derived
     uint16_t position = 0;
+    uint16_t first = 0;
+    uint16_t last = 0;
 
   public:
     Layer() = default;
 
     Layer(uint16_t p_length,
           uint16_t p_rows,
-          uint16_t p_begin,
-          uint16_t p_end,
           const Grid &p_grid,
           const Chroma &p_chroma,
-          uint16_t p_scan = 0)
+          int16_t p_hue_shift = 0,
+          uint16_t p_scan = 0,
+          uint16_t p_begin = 0,
+          uint16_t p_end = 100)
     {
-      setup(p_length, p_rows, p_begin, p_end, p_grid, p_chroma, p_scan);
+      setup(p_length, p_rows, p_grid, p_chroma, p_hue_shift, p_scan, p_begin, p_end);
     }
 
     uint16_t get_length() const ALWAYS_INLINE { return length; }
@@ -52,7 +53,10 @@ namespace glow
     uint16_t get_end() const ALWAYS_INLINE { return end; }
     const Grid &get_grid() const ALWAYS_INLINE { return grid; }
     const Chroma get_chroma() const ALWAYS_INLINE { return chroma; }
+    int16_t get_hue_shift() const ALWAYS_INLINE { return hue_shift; }
     uint16_t get_scan() const ALWAYS_INLINE { return scan; }
+    uint16_t get_first() const ALWAYS_INLINE { return first; }
+    uint16_t get_last() const ALWAYS_INLINE { return last; }
 
     bool setup()
     {
@@ -71,29 +75,47 @@ namespace glow
         return false;
       }
 
-      if (chroma.setup_length(length) == false)
+      if (chroma.setup_length(length, hue_shift) == false)
       {
         return false;
       }
 
+      set_bounds();
+
       return true;
     }
 
+    void set_bounds()
+    {
+      first = calculate_bounds(begin);
+      last = calculate_bounds(end);
+
+      if (last < first)
+      {
+        std::swap(first, last);
+      }
+    }
+
+    uint16_t calculate_bounds(uint16_t bound);
+    uint16_t adjust_bounds(uint16_t bound);
+
     bool setup(uint16_t p_length,
                uint16_t p_rows,
-               uint16_t p_begin,
-               uint16_t p_end,
                const Grid &p_grid,
                const Chroma &p_chroma,
-               uint16_t p_scan = 0)
+               int16_t p_hue_shift = 0,
+               uint16_t p_scan = 0,
+               uint16_t p_begin = 0,
+               uint16_t p_end = 100)
     {
       length = p_length;
       rows = p_rows;
-      begin = p_begin;
-      end = p_end;
       grid = p_grid;
       chroma = p_chroma;
+      hue_shift = p_hue_shift;
       scan = p_scan;
+      begin = p_begin;
+      end = p_end;
       return setup();
     }
 
@@ -104,32 +126,30 @@ namespace glow
       return setup();
     }
 
-    void get_position(uint16_t &first, uint16_t &last) ALWAYS_INLINE
+    void update_position(uint16_t &start_at, uint16_t &end_at) ALWAYS_INLINE
     {
-      if (scan > 0)
+      start_at = position;
+      end_at = position + scan;
+
+      position++;
+      if (position >= last)
       {
-        first = position;
-        last = position + scan;
-
-        position++;
-        if (position >= length)
-        {
-          position = 0;
-        }
-        return;
+        position = first;
       }
-
-      first = begin;
-      last = length - end;
     }
 
     template <typename LIGHT>
     void spin(LIGHT *light)
     {
-      uint16_t first, last;
-      get_position(first, last);
+      uint16_t start_at{first};
+      uint16_t end_at{last};
 
-      for (uint16_t i = first; i < last; ++i)
+      if (scan > 0)
+      {
+        update_position(start_at, end_at);
+      }
+
+      for (uint16_t i = start_at; i < end_at; ++i)
       {
         light->put(grid.map(i), chroma.map(i));
         // light->get(grid.map(i)) = chroma.map(i);
@@ -143,11 +163,12 @@ namespace glow
     {
       LENGTH,
       ROWS,
-      BEGIN,
-      END,
       GRID,
       CHROMA,
+      HUE_SHIFT,
       SCAN,
+      BEGIN,
+      END,
       KEY_COUNT,
     };
 
@@ -203,11 +224,12 @@ namespace YAML
       Node node;
       node[Layer::keys[Layer::LENGTH]] = layer.length;
       node[Layer::keys[Layer::ROWS]] = layer.rows;
-      node[Layer::keys[Layer::BEGIN]] = layer.begin;
-      node[Layer::keys[Layer::END]] = layer.end;
       node[Layer::keys[Layer::GRID]] = layer.grid;
       node[Layer::keys[Layer::CHROMA]] = layer.chroma;
+      node[Layer::keys[Layer::HUE_SHIFT]] = layer.hue_shift;
       node[Layer::keys[Layer::SCAN]] = layer.scan;
+      node[Layer::keys[Layer::BEGIN]] = layer.begin;
+      node[Layer::keys[Layer::END]] = layer.end;
       return node;
     }
 
@@ -235,20 +257,23 @@ namespace YAML
         case Layer::ROWS:
           layer.rows = item.as<uint16_t>();
           break;
-        case Layer::BEGIN:
-          layer.begin = item.as<uint16_t>();
-          break;
-        case Layer::END:
-          layer.end = item.as<uint16_t>();
-          break;
         case Layer::GRID:
           lookup(item, layer.grid);
           break;
         case Layer::CHROMA:
           lookup(item, layer.chroma);
           break;
+        case Layer::HUE_SHIFT:
+          layer.hue_shift = item.as<int16_t>();
+          break;
         case Layer::SCAN:
           layer.scan = item.as<uint16_t>();
+          break;
+        case Layer::BEGIN:
+          layer.begin = item.as<uint16_t>();
+          break;
+        case Layer::END:
+          layer.end = item.as<uint16_t>();
           break;
         }
       }

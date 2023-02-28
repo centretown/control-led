@@ -9,7 +9,7 @@ namespace glow
     s << "{" << length << ","
       << hsv_source.make_code() << ","
       << hsv_target.make_code() << ","
-      << delta << "}";
+      << hue_shift << "}";
     return s.str();
   }
 
@@ -17,18 +17,18 @@ namespace glow
       "length",
       "source",
       "target",
-      "delta",
+      "hue_shift",
   };
   Palette Chroma::palette{};
 #endif
 
   // bool Chroma::setup(uint16_t p_length,
-  //                    int16_t p_delta,
+  //                    int16_t p_hue_shift,
   //                    Color p_source,
   //                    Color p_target)
   // {
   //   length = p_length;
-  //   delta = p_delta;
+  //   hue_shift = p_hue_shift;
   //   hsv_source.from_rgb(p_source);
   //   hsv_target.from_rgb(p_target);
   //   return setup();
@@ -37,10 +37,10 @@ namespace glow
   bool Chroma::setup(uint16_t p_length,
                      HSVColor p_source,
                      HSVColor p_target,
-                     int16_t p_delta)
+                     int16_t p_hue_shift)
   {
     length = p_length;
-    delta = p_delta;
+    hue_shift = p_hue_shift;
     hsv_source = p_source;
     hsv_target = p_target;
     return setup();
@@ -49,10 +49,10 @@ namespace glow
   bool Chroma::setup(uint16_t p_length,
                      Color p_source,
                      HSVColor p_target,
-                     int16_t p_delta)
+                     int16_t p_hue_shift)
   {
     length = p_length;
-    delta = p_delta;
+    hue_shift = p_hue_shift;
     hsv_source.from_rgb(p_source);
     hsv_target = p_target;
     return setup();
@@ -74,15 +74,15 @@ namespace glow
   
   void Chroma::update()
   {
-    if (delta == 0)
+    if (hue_shift == 0)
       return;
 
     auto update_hue = [&](HSVColor &hsv, Color &rgb)
     {
-      hsv.hue += delta;
+      hsv.hue += hue_shift;
       if (hsv.hue > hue_limit)
       {
-        hsv.hue = (delta < 0) ? hue_limit : 0;
+        hsv.hue = (hue_shift < 0) ? hue_limit : 0;
       }
       rgb = hsv.to_rgb();
     };

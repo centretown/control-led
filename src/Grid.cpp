@@ -1,4 +1,5 @@
 #include "Grid.h"
+#include <math.h>
 
 namespace glow
 {
@@ -48,6 +49,21 @@ namespace glow
   };
 
 #endif
+  uint16_t Grid::adjust_bounds(float bound)
+  {
+    uint16_t scaled = static_cast<uint16_t>(round(bound));
+    if (orientation == Horizontal)
+    {
+      return (scaled / columns) * columns;
+    }
+
+    if (orientation == Vertical)
+    {
+      return (scaled / rows) * rows;
+    }
+
+    return (scaled / rows) * rows;
+  }
 
   bool Grid::setup()
   {

@@ -8,7 +8,8 @@
 
 #include "catalog.h"
 
-using namespace glow;
+// using namespace glow;
+// using glow::HostLight;
 
 void show_lights();
 void sigintHandler(int sig_num);
@@ -64,8 +65,8 @@ void process_command_line(int argc, char **argv)
 
 void sigintHandler(int sig_num)
 {
-  ansi_at(selected_rows + 1, 0, std::cout);
-  ansi_show_cursor(std::cout);
+  glow::ansi_at(selected_rows + 1, 0, std::cout);
+  glow::ansi_show_cursor(std::cout);
   if (selected_catalog)
   {
     print_catalog();
@@ -75,12 +76,12 @@ void sigintHandler(int sig_num)
 
 void show_lights()
 {
-  ansi_at(0, 0, std::cout);
-  ansi_clear_from_cursor(std::cout);
-  ansi_hide_cursor(std::cout);
+  glow::ansi_at(0, 0, std::cout);
+  glow::ansi_clear_from_cursor(std::cout);
+  glow::ansi_hide_cursor(std::cout);
 
-  HostLight light;
-  Frame frame = from_catalog((LIBRARY_INDEX)selected_item);
+  glow::HostLight light;
+  glow::Frame frame = glow::from_catalog((glow::LIBRARY_INDEX)selected_item);
   frame.setup(selected_length, selected_rows, selected_interval);
 
   light.setup(selected_length, selected_rows);
@@ -95,9 +96,10 @@ void show_lights()
 void print_catalog()
 {
   std::cout << "\nFrame Catalog:\n";
-  for (auto i = 0; i < FRAME_COUNT; i++)
+  for (auto i = 0; i < glow::FRAME_COUNT; i++)
   {
-    std::cout << "  id: (" << i << ")  name: " << catalog_name((LIBRARY_INDEX)i) << "\n";
+    std::cout << "  id: (" << i << ")  name: "
+              << glow::catalog_name((glow::LIBRARY_INDEX)i) << '\n';
   }
   std::cout << "\n\n";
 }

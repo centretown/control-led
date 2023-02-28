@@ -25,7 +25,7 @@ namespace glow
     uint16_t length = 0;
     HSVColor hsv_source = source_default;
     HSVColor hsv_target = target_default;
-    int16_t delta = 0;
+    int16_t hue_shift = 0;
 
     Color rgb_source = rgb_source_default;
     Color rgb_target = rgb_target_default;
@@ -37,40 +37,41 @@ namespace glow
     Chroma(uint16_t p_length,
            HSVColor p_source = source_default,
            HSVColor p_target = target_default,
-           int16_t p_delta = 0)
+           int16_t p_hue_shift = 0)
     {
-      setup(p_length, p_source, p_target, p_delta);
+      setup(p_length, p_source, p_target, p_hue_shift);
     }
 
     bool setup(uint16_t p_length,
                HSVColor p_source = source_default,
                HSVColor p_target = target_default,
-               int16_t p_delta = 0);
+               int16_t p_hue_shift = 0);
 
     bool setup(uint16_t p_length,
                Color p_source,
                HSVColor p_target = target_default,
-               int16_t p_delta = 0);
+               int16_t p_hue_shift = 0);
 
     bool setup();
 
-    bool setup_length(uint16_t p_length)
+    bool setup_length(uint16_t p_length, int16_t p_hue_shift = 0)
     {
       length = p_length;
+      hue_shift = p_hue_shift;
       return setup();
     }
 
     uint16_t get_length() const ALWAYS_INLINE { return length; }
-    int16_t get_delta() const ALWAYS_INLINE { return delta; }
+    int16_t get_hue_shift() const ALWAYS_INLINE { return hue_shift; }
     HSVColor get_hsv_source() const ALWAYS_INLINE { return hsv_source; }
     HSVColor get_hsv_target() const ALWAYS_INLINE { return hsv_target; }
     Color get_rgb_source() const ALWAYS_INLINE { return rgb_source; }
     Color get_rgb_target() const ALWAYS_INLINE { return rgb_target; }
     float get_gradient_amount() const ALWAYS_INLINE { return gradient_amount; }
 
-    void set_delta(int16_t a_delta)
+    void set_hue_shift(int16_t a_hue_shift)
     {
-      delta = a_delta;
+      hue_shift = a_hue_shift;
     }
 
     Color map(uint16_t index)
@@ -158,7 +159,7 @@ namespace YAML
     {
       Node node;
       node[Chroma::keys[Chroma::LENGTH]] = chroma.length;
-      node[Chroma::keys[Chroma::DELTA]] = chroma.delta;
+      node[Chroma::keys[Chroma::DELTA]] = chroma.hue_shift;
       node[Chroma::keys[Chroma::SOURCE]] = chroma.hsv_source;
       node[Chroma::keys[Chroma::TARGET]] = chroma.hsv_target;
       return node;
@@ -186,7 +187,7 @@ namespace YAML
           chroma.length = item.as<uint16_t>();
           break;
         case Chroma::DELTA:
-          chroma.delta = item.as<int16_t>();
+          chroma.hue_shift = item.as<int16_t>();
           break;
         case Chroma::SOURCE:
           lookup(item, chroma.hsv_source);

@@ -12,7 +12,7 @@ bool file_load_frame(std::string frame_name, glow::Frame &frame, std::string &me
     message = s.str();
     return false;
   }
-  
+
   s << "Loaded frame " << frame_file;
   message = s.str();
   return true;
@@ -22,7 +22,7 @@ bool file_load_palette(std::string &message)
 {
   std::stringstream s;
   std::string palette_file = glow::palette_file();
-  
+
   if (glow::Chroma::load_palette(palette_file) == false)
   {
     s << "Unable to load " << palette_file;
@@ -83,9 +83,9 @@ void file_catalog_build(std::string &message)
   std::vector<std::string> frame_names;
   file_catalog_list(frame_names);
 
-  glow::Frame frame;
   for (auto &frame_name : frame_names)
   {
+    glow::Frame frame;
     load_yaml(glow::catalog_file(frame_name), frame);
     add_frame_to_catalog(frame_name, frame);
   }

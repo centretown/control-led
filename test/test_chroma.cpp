@@ -49,7 +49,7 @@ TEST_CASE("Chroma Basic", "chroma_basic")
   REQUIRE(chroma.setup(20, a, b, -1));
   std::string input =
       "length: 20\n"
-      "delta: -1\n" // out of order
+      "hue_shift: -1\n" // out of order
       "source:\n"
       "  hue: 0\n"
       "  saturation: 100\n"
@@ -82,7 +82,7 @@ TEST_CASE("Chroma Palette", "chroma_palette")
       "length: 20\n"
       "source: brick red\n"
       "target: canary\n"
-      "delta: 5\n";
+      "hue_shift: 5\n";
 
   test_yaml_from_input(chroma, input, check_detail);
 
@@ -99,7 +99,7 @@ TEST_CASE("Chroma Operations", "chroma_operations")
   Chroma chroma;
   REQUIRE(load_yaml(custom_chroma(chroma_name), chroma));
 
-  chroma.set_delta(1);
+  chroma.set_hue_shift(1);
   show_chroma(chroma);
   Chroma backup = chroma;
 

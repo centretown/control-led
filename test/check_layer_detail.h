@@ -18,6 +18,7 @@ void check_layer_detail(const Layer &original, const Layer &derived)
   REQUIRE(original.get_rows() == derived.get_rows());
   REQUIRE(original.get_begin() == derived.get_begin());
   REQUIRE(original.get_end() == derived.get_end());
+  REQUIRE(original.get_hue_shift() == derived.get_hue_shift());
   REQUIRE(original.get_scan() == derived.get_scan());
 
   check_grid_detail(original.get_grid(), derived.get_grid());
