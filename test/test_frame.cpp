@@ -119,3 +119,14 @@ TEST_CASE("Frame Code", "[frame_make_code]")
        }},
   };
 }
+
+TEST_CASE("Frame Copy", "[frame_copy]")
+{
+  REQUIRE(Chroma::load_palette(palette_file()));
+  Frame frame;
+  REQUIRE(load_yaml(custom_frame(frame_name), frame));
+
+  Frame copy;
+  copy.copy(frame);
+  check_detail(frame, copy);
+}

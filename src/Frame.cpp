@@ -27,4 +27,15 @@ namespace glow
       "layers",
   };
 #endif
+
+  void Frame::copy(const Frame &frame)
+  {
+    length = frame.length;
+    rows = frame.rows;
+    interval = frame.interval;
+    for (auto lay : frame.layers)
+    {
+      layers.push_back(lay);
+    }
+  }
 }

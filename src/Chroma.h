@@ -3,13 +3,13 @@
 #include <stdint.h>
 #include <string>
 
+#include "base.h"
 #ifndef MICRO_CONTROLLER
 #include <yaml-cpp/yaml.h>
 #include "Palette.h"
 #include "Filer.h"
 #endif
 
-#include "base.h"
 #include "HSVColor.h"
 
 namespace glow

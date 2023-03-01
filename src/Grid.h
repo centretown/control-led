@@ -4,12 +4,12 @@
 #include <string>
 #include <unordered_map>
 
+#include "base.h"
 #ifndef MICRO_CONTROLLER
 #include <yaml-cpp/yaml.h>
 #include <sstream>
 #endif
 
-#include "base.h"
 
 namespace glow
 {

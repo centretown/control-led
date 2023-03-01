@@ -1,11 +1,15 @@
 #pragma once
 #include <list>
 
+#include "base.h"
 #ifndef MICRO_CONTROLLER
 #include <yaml-cpp/yaml.h>
 #endif
 
-#include "base.h"
+#ifdef ESPHOME_CONTROLLER
+#include "esphome.h"
+#endif
+
 #include "Layer.h"
 
 namespace glow
@@ -16,6 +20,7 @@ namespace glow
     uint16_t length = 0;
     uint16_t rows = 0;
     uint32_t interval = 16;
+    uint32_t next = 0;
 
   public:
     std::list<Layer> layers;
@@ -32,6 +37,11 @@ namespace glow
       rows = p_rows;
       interval = p_interval;
       layers = p_layers;
+    }
+
+    Frame(const Frame &frame)
+    {
+      copy(frame);
     }
 
     bool setup()
@@ -61,14 +71,18 @@ namespace glow
       return setup();
     }
 
+    void copy(const Frame &frame);
+
     template <typename LIGHT>
-    void spin(LIGHT *light)
+    void spin(LIGHT &light)
     {
       for (auto &layer : layers)
       {
         layer.spin(light);
       }
-      light->update();
+#ifndef ESPHOME_CONTROLLER
+      light.update();
+#endif
     }
 
     uint16_t get_length() const ALWAYS_INLINE { return length; }
@@ -79,6 +93,21 @@ namespace glow
     std::list<Layer>::const_iterator begin() const ALWAYS_INLINE { return layers.begin(); }
     std::list<Layer>::const_iterator end() const ALWAYS_INLINE { return layers.end(); }
     void push_back(Layer layer) ALWAYS_INLINE { layers.push_back(layer); }
+
+#ifdef ESPHOME_CONTROLLER
+    bool is_ready() ALWAYS_INLINE
+    {
+#define millis() esphome::millis()
+      const uint32_t now = millis();
+
+      if (next - now > interval)
+      {
+        next = now + interval;
+        return true;
+      }
+      return false;
+    }
+#endif
 
 #ifndef MICRO_CONTROLLER
     enum : uint8_t

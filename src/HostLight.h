@@ -1,4 +1,6 @@
 #pragma once
+#ifndef ESPHOME_CONTROLLER
+
 #include <iostream>
 
 #include "base.h"
@@ -36,25 +38,10 @@ namespace glow
       return true;
     }
 
-    void put(uint16_t index, Color color) ALWAYS_INLINE
+    Color &get(uint16_t index) ALWAYS_INLINE
     {
-      if (index > MAX_LIGHT_SIZE)
-      {
-        return;
-      }
-      index = index % length;
-      colors[index] = color;
+      return colors[index % MAX_LIGHT_SIZE];
     }
-
-    // Color &get(uint16_t index) ALWAYS_INLINE
-    // {
-    //   // uint16_t row, column;
-    //   // put(index, colors[index % MAX_LIGHT_SIZE]);
-    //   // row_col(index, row, column);
-    //   Color &color = colors[index % MAX_LIGHT_SIZE];
-    //   put(index, color);
-    //   return color;
-    // }
 
     void update()
     {
@@ -67,3 +54,4 @@ namespace glow
   };
 
 } // namespace glow
+#endif

@@ -88,7 +88,7 @@ void show_lights()
 
   for (;;)
   {
-    frame.spin(&light);
+    frame.spin(light);
     std::this_thread::sleep_for(std::chrono::milliseconds(frame.get_interval()));
   }
 }

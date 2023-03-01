@@ -3,12 +3,13 @@
 #include <string>
 #include <algorithm>
 
+#include "base.h"
+
 #ifndef MICRO_CONTROLLER
 #include <yaml-cpp/yaml.h>
 #include "Filer.h"
 #endif
 
-#include "base.h"
 #include "Grid.h"
 #include "Chroma.h"
 
@@ -17,17 +18,17 @@ namespace glow
   class Layer
   {
   private:
-    // required
     uint16_t length = 0;
     uint16_t rows = 0;
     Grid grid;
     Chroma chroma;
-    // optional
+
     int16_t hue_shift = 0;
     uint16_t scan = 0;
     uint16_t begin = 0;
     uint16_t end = 100;
-    // derived
+
+    // variant
     uint16_t position = 0;
     uint16_t first = 0;
     uint16_t last = 0;
@@ -139,7 +140,7 @@ namespace glow
     }
 
     template <typename LIGHT>
-    void spin(LIGHT *light)
+    void spin(LIGHT &light)
     {
       uint16_t start_at{first};
       uint16_t end_at{last};
@@ -151,12 +152,10 @@ namespace glow
 
       for (uint16_t i = start_at; i < end_at; ++i)
       {
-        light->put(grid.map(i), chroma.map(i));
-        // light->get(grid.map(i)) = chroma.map(i);
+        light.get(grid.map(i)) = chroma.map(i).get();
       }
       chroma.update();
     }
-    // friend Library;
 
 #ifndef MICRO_CONTROLLER
     enum : uint8_t

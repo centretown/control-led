@@ -2,11 +2,16 @@
 
 #include <string>
 
+#include "base.h"
 #ifndef MICRO_CONTROLLER
 #include <yaml-cpp/yaml.h>
 #endif
 
-#include "base.h"
+#ifdef ESPHOME_CONTROLLER
+#include "esphome.h"
+#include "../esphome/core/color.h"
+#endif
+
 #include "stdint.h"
 
 namespace glow
@@ -44,6 +49,19 @@ namespace glow
               blue == color.blue);
     }
 
+#ifdef ESPHOME_CONTROLLER
+    esphome::Color get() ALWAYS_INLINE
+    {
+      return esphome::Color{red, green, blue};
+    }
+#else
+    Color get() ALWAYS_INLINE
+    {
+      return Color{red, green, blue};
+    }
+#endif
+
+#ifndef MICRO_CONTROLLER
     enum : uint8_t
     {
       RED,
@@ -53,6 +71,7 @@ namespace glow
     };
 
     static std::string keys[KEY_COUNT];
+#endif
   };
 
 } // namespace glow

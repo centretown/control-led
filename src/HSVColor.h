@@ -3,12 +3,12 @@
 #include <math.h>
 #include <algorithm>
 
+#include "base.h"
 #ifndef MICRO_CONTROLLER
 #include <yaml-cpp/yaml.h>
 #include <sstream>
 #endif
 
-#include "base.h"
 #include "RGBColor.h"
 
 // #include "esphome/core/color.h"
@@ -47,7 +47,7 @@ namespace glow
 
     HSVColor() = default;
 
-    HSVColor(u_int16_t hue, uint8_t saturation, uint8_t value)
+    HSVColor(uint16_t hue, uint8_t saturation, uint8_t value)
         : hue(hue), saturation(saturation), value(value) {}
 
     bool setup()

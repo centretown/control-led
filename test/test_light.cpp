@@ -21,13 +21,13 @@ TEST_CASE("Lights Basic", "layer_basic")
   Color red(255, 0, 0);
   for (uint16_t i = 0; i < light.length / 2; i++)
   {
-    light.put(i, red);
+    light.get(i) = red;
   }
 
   Color blue(0, 0, 255);
   for (uint16_t i = light.length / 2; i < light.length; i++)
   {
-    light.put(i, blue);
+    light.get(i) = blue;
   }
 }
 
@@ -45,7 +45,7 @@ TEST_CASE("Layer Lights", "layer_lights")
 
   HostLight light;
   light.setup(layer.get_length(), layer.get_grid().get_rows());
-  layer.spin(&light);
+  layer.spin(light);
 
   ansi_at(layer.get_grid().get_rows() + 1, 0, std::cout);
   ansi_show_cursor(std::cout);
