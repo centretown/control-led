@@ -4,11 +4,18 @@
 #include <map>
 #include <vector>
 
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 #include <ostream>
 #include <yaml-cpp/yaml.h>
+
 #include "ansi_stream.h"
 
 #include "PaletteColor.h"
+
+#include "Filer.h"
 
 namespace glow
 {

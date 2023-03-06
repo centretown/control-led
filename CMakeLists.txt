@@ -21,12 +21,6 @@ include(CTest)
 include_directories(src)
 
 add_library(GlowLib
-
-  # src/esphome/components/light/esp_hsv_color.cpp
-  # src/esphome/components/light/esp_hsv_color.h
-  # src/esphome/core/color.h
-  # src/esphome/core/helpers.h
-  # src/esphome/core/optional.h
   src/base.h
   src/RGBColor.h
   src/RGBColor.cpp

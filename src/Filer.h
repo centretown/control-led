@@ -29,6 +29,7 @@ namespace glow
   const std::string catalog_directory();
   const std::string source_file();
   const std::string header_file();
+  const std::string effect_file(std::string name);
 
   const std::string generated_directory();
 

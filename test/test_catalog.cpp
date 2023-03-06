@@ -8,7 +8,7 @@
 
 using namespace glow;
 
-TEST_CASE("Library Code", "[catalog_make_code]")
+TEST_CASE("Catalog Code", "[catalog_make_code]")
 {
   REQUIRE(Chroma::load_palette(palette_file()));
 
@@ -23,6 +23,13 @@ TEST_CASE("Library Code", "[catalog_make_code]")
   add_frame_to_catalog(frame_name, frame);
   add_frame_to_catalog(salmon_name, salmon);
 
-  std::cout << make_code_from_catalog("catalog");
-  REQUIRE(make_files_from_catalog());
+  REQUIRE(make_catalog_code());
+}
+
+TEST_CASE("Catalog Effects", "[catalog_make_effects]")
+{
+  std::string strip_name = "strip.yml";
+  std::string grid_name = "grid.yml";
+  make_catalog_effects(strip_name, 1, 48);
+  make_catalog_effects(grid_name, 4, 48);
 }

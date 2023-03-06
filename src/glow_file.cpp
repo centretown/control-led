@@ -90,6 +90,13 @@ void file_catalog_build(std::string &message)
     add_frame_to_catalog(frame_name, frame);
   }
 
-  glow::make_files_from_catalog();
+  glow::make_catalog_code();
+
+  std::string strip_name = "strip_effects.yml";
+  std::string grid_name = "grid_effects.yml";
+
+  glow::make_catalog_effects(glow::effect_file(strip_name), 1, 48);
+  glow::make_catalog_effects(glow::effect_file(grid_name), 4, 48);
+
   message = "Source code in " + glow::generated_directory();
 }

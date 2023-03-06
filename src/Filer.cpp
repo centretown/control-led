@@ -48,9 +48,15 @@ namespace glow
   {
     return data_directory / generated / source_name;
   }
+  
   const std::string header_file()
   {
     return data_directory / generated / header_name;
+  }
+
+  const std::string effect_file(std::string name)
+  {
+    return data_directory / generated / name;
   }
 
   const std::string palette_file()
