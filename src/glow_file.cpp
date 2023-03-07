@@ -78,6 +78,34 @@ void file_catalog_list(std::vector<std::string> &frame_names)
   }
 }
 
+std::vector<std::string> source_files = {
+    "base.h",
+    "catalog.cpp",
+    "catalog.h",
+    "Chroma.cpp",
+    "Chroma.h",
+    "Frame.cpp",
+    "Frame.h",
+    "Grid.cpp",
+    "Grid.h",
+    "HSVColor.cpp",
+    "HSVColor.h",
+    "Layer.cpp",
+    "Layer.h",
+    "Light.h",
+    "RGBColor.cpp",
+    "RGBColor.h",
+};
+
+std::vector<glow_config> config_files = {
+    {"strip_effects.yml", 1, 48},
+    {"grid_effects.yml", 4, 48},
+};
+
+// void file_catalog_build(
+//     std::string code_path,
+//     std::string target_path,
+//     std::string &message)
 void file_catalog_build(std::string &message)
 {
   std::vector<std::string> frame_names;
@@ -92,11 +120,11 @@ void file_catalog_build(std::string &message)
 
   glow::make_catalog_code();
 
-  std::string strip_name = "strip_effects.yml";
-  std::string grid_name = "grid_effects.yml";
-
-  glow::make_catalog_effects(glow::effect_file(strip_name), 1, 48);
-  glow::make_catalog_effects(glow::effect_file(grid_name), 4, 48);
+  for (auto &c : config_files)
+  {
+    glow::make_catalog_effects(
+        glow::effect_file(c.file_name), c.rows, c.interval);
+  }
 
   message = "Source code in " + glow::generated_directory();
 }

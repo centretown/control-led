@@ -115,13 +115,13 @@ namespace glow
 
     for (auto catalog_item : catalog_items)
     {
-      std::string id_name = make_constant_name(catalog_item.first);
       effects << "- addressable_lambda: " << '\n';
       effects << "    name: \"" << catalog_item.first << "\"" << '\n';
       effects << "    update_interval: 48ms" << '\n';
       effects << "    lambda: |-" << '\n';
       effects << "      #include \"glow/catalog.h\"" << '\n';
-      effects << "      static glow::Frame frame(glow::from_catalog(glow::" << id_name << "));" << '\n';
+      effects << "      static glow::Frame frame(glow::from_catalog(glow::"
+              << make_constant_name(catalog_item.first) << "));" << '\n';
       effects << "      if (initial_run) {" << '\n';
       effects << "        frame.setup(it.size(), " << rows << ", " << interval << ");" << '\n';
       effects << "      }" << '\n';

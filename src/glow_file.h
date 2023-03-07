@@ -7,6 +7,13 @@
 #include "Chroma.h"
 #include "Frame.h"
 
+struct glow_config
+{
+  std::string file_name;
+  uint16_t rows{};
+  uint32_t interval{};
+};
+
 bool file_load_frame(std::string frame_name, glow::Frame &frame, std::string &message);
 bool file_load_palette(std::string &message);
 const std::string file_system_path();
