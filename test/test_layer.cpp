@@ -29,6 +29,9 @@ void set_apricot_beaver(HSVColor &source, HSVColor &target)
 
 TEST_CASE("Layer Basic", "layer_basic")
 {
+#ifdef TEST_DATA_DIR
+  glow::set_data_path(TEST_DATA_DIR);
+#endif
   std::string input =
       "length: 20\n"
       "rows: 4\n"
@@ -72,6 +75,9 @@ TEST_CASE("Layer Basic", "layer_basic")
 
 TEST_CASE("Layer Palette", "layer_palette")
 {
+#ifdef TEST_DATA_DIR
+  glow::set_data_path(TEST_DATA_DIR);
+#endif
   REQUIRE(Chroma::load_palette(palette_file()));
 
   std::string input =
@@ -118,6 +124,9 @@ TEST_CASE("Layer Palette", "layer_palette")
 
 TEST_CASE("Layer Code", "[layer_make_code]")
 {
+#ifdef TEST_DATA_DIR
+  glow::set_data_path(TEST_DATA_DIR);
+#endif
   REQUIRE(Chroma::load_palette(palette_file()));
 
   Layer layer;
@@ -130,6 +139,9 @@ TEST_CASE("Layer Code", "[layer_make_code]")
 
 TEST_CASE("Layer Bounds", "[layer_check_bounds]")
 {
+#ifdef TEST_DATA_DIR
+  glow::set_data_path(TEST_DATA_DIR);
+#endif
   Layer layer;
   Grid grid;
   Chroma chroma;

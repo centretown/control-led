@@ -42,6 +42,9 @@ void show_chroma(Chroma &chroma)
 
 TEST_CASE("Chroma Basic", "chroma_basic")
 {
+#ifdef TEST_DATA_DIR
+  glow::set_data_path(TEST_DATA_DIR);
+#endif
   Chroma chroma;
   HSVColor a, b;
   a.from_color_wheel(float(0), float(100), float(100));
@@ -69,6 +72,9 @@ TEST_CASE("Chroma Basic", "chroma_basic")
 
 TEST_CASE("Chroma Palette", "chroma_palette")
 {
+#ifdef TEST_DATA_DIR
+  glow::set_data_path(TEST_DATA_DIR);
+#endif
   REQUIRE(Chroma::load_palette(palette_file()));
   Chroma chroma;
   HSVColor source, target;
@@ -95,6 +101,9 @@ TEST_CASE("Chroma Palette", "chroma_palette")
 
 TEST_CASE("Chroma Operations", "chroma_operations")
 {
+#ifdef TEST_DATA_DIR
+  glow::set_data_path(TEST_DATA_DIR);
+#endif
   REQUIRE(Chroma::load_palette(palette_file()));
   Chroma chroma;
   REQUIRE(load_yaml(custom_chroma(chroma_name), chroma));
@@ -117,6 +126,9 @@ TEST_CASE("Chroma Operations", "chroma_operations")
 
 TEST_CASE("Chroma Code", "[chroma_make_code]")
 {
+#ifdef TEST_DATA_DIR
+  glow::set_data_path(TEST_DATA_DIR);
+#endif
   Chroma chroma;
   HSVColor source, target;
   // brick red

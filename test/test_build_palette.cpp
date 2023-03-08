@@ -55,6 +55,10 @@ const std::string save_file_name = "save_palette";
 
 TEST_CASE("Build Palette From File", "[build_palette_from_file]")
 {
+#ifdef TEST_DATA_DIR
+  glow::set_data_path(TEST_DATA_DIR);
+#endif
+
   Palette palette;
   REQUIRE(load_yaml(palette_file(), palette));
 

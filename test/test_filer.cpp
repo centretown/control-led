@@ -39,8 +39,9 @@ void check_names()
 
 TEST_CASE("Filer Basic", "filer_basic")
 {
-  // set_data_path("/home/dave/src/glow/test_data");
-  // REQUIRE("/home/dave/src/glow/test_data/" == data_path());
+#ifdef TEST_DATA_DIR
+  glow::set_data_path(TEST_DATA_DIR);
+#endif
 
   std::string path = data_path();
   std::cout << path << '\n';

@@ -33,6 +33,10 @@ TEST_CASE("Lights Basic", "layer_basic")
 
 TEST_CASE("Layer Lights", "layer_lights")
 {
+#ifdef TEST_DATA_DIR
+  glow::set_data_path(TEST_DATA_DIR);
+#endif
+
   REQUIRE(Chroma::load_palette(palette_file()));
   Layer layer;
   std::string strawberry = "strawberry";

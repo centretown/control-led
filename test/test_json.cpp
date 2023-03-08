@@ -41,6 +41,10 @@ TEST_CASE("JSON Basic", "json_basic")
 
 TEST_CASE("JSON Palette", "json_palette")
 {
+#ifdef TEST_DATA_DIR
+  glow::set_data_path(TEST_DATA_DIR);
+#endif
+
   Palette palette;
   REQUIRE(load_yaml(palette_file(), palette));
 

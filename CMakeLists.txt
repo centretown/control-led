@@ -5,7 +5,8 @@ project(
   VERSION 0.4
   LANGUAGES CXX)
 
-set(DATA_DIR "\"${PROJECT_SOURCE_DIR}/test_data\"")
+set(DATA_DIR "\"${PROJECT_SOURCE_DIR}/data\"")
+set(TEST_DATA_DIR "\"${PROJECT_SOURCE_DIR}/test_data\"")
 
 configure_file(GlowConfig.h.in ${PROJECT_SOURCE_DIR}/src/GlowConfig.h)
 
@@ -16,7 +17,7 @@ list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 # add_definitions("-std=c++14" "-DMICRO_CONTROLLER")
 
 # include yaml
-add_definitions("-std=c++20" "-DDATA_DIR=${DATA_DIR}")
+add_definitions("-std=c++20" "-DDATA_DIR=${DATA_DIR}" "-DTEST_DATA_DIR=${TEST_DATA_DIR}")
 
 include(CTest)
 

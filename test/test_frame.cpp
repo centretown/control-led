@@ -22,6 +22,10 @@ void check_detail(const Frame &original, const Frame &derived)
 
 TEST_CASE("Frame Basic", "frame_basic")
 {
+#ifdef TEST_DATA_DIR
+  glow::set_data_path(TEST_DATA_DIR);
+#endif
+
   Frame frame;
   frame.setup(20, 4, 48);
 
@@ -64,6 +68,10 @@ TEST_CASE("Frame Basic", "frame_basic")
 
 TEST_CASE("Frame Custom", "frame_custom")
 {
+#ifdef TEST_DATA_DIR
+  glow::set_data_path(TEST_DATA_DIR);
+#endif
+
   REQUIRE(Chroma::load_palette(palette_file()));
   Frame custom;
 
@@ -77,6 +85,10 @@ TEST_CASE("Frame Custom", "frame_custom")
 
 TEST_CASE("Frame Salmon-Strawberry", "frame_salmon_strawberry")
 {
+#ifdef TEST_DATA_DIR
+  glow::set_data_path(TEST_DATA_DIR);
+#endif
+
   REQUIRE(Chroma::load_palette(palette_file()));
   Frame custom;
 
@@ -92,6 +104,10 @@ TEST_CASE("Frame Salmon-Strawberry", "frame_salmon_strawberry")
 
 TEST_CASE("Frame Code", "[frame_make_code]")
 {
+#ifdef TEST_DATA_DIR
+  glow::set_data_path(TEST_DATA_DIR);
+#endif
+
   REQUIRE(Chroma::load_palette(palette_file()));
   Frame frame;
   REQUIRE(load_yaml(custom_frame(frame_name), frame));
@@ -122,6 +138,10 @@ TEST_CASE("Frame Code", "[frame_make_code]")
 
 TEST_CASE("Frame Copy", "[frame_copy]")
 {
+#ifdef TEST_DATA_DIR
+  glow::set_data_path(TEST_DATA_DIR);
+#endif
+
   REQUIRE(Chroma::load_palette(palette_file()));
   Frame frame;
   REQUIRE(load_yaml(custom_frame(frame_name), frame));
