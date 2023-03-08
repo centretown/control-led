@@ -7,8 +7,8 @@
 
 #include <yaml-cpp/yaml.h>
 #include "Filer.h"
-#include "../src/Palette.h"
-#include "../src/palette_builder.h"
+#include "Palette.h"
+#include "palette_builder.h"
 
 #include "test_yaml.h"
 #include "check_palette_detail.h"

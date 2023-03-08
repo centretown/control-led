@@ -4,7 +4,7 @@
 #include <catch2/catch_all.hpp>
 
 #include "test_yaml.h"
-#include "../src/Grid.h"
+#include "Grid.h"
 #include "check_grid_detail.h"
 
 using namespace glow;

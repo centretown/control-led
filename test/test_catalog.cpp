@@ -3,8 +3,8 @@
 #include <iostream>
 #include <string>
 
-#include "../src/Filer.h"
-#include "../src/build_catalog.h"
+#include "Filer.h"
+#include "build_catalog.h"
 
 using namespace glow;
 

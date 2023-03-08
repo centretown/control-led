@@ -6,7 +6,7 @@
 
 #include <yaml-cpp/yaml.h>
 
-#include "../src/HSVColor.h"
+#include "HSVColor.h"
 
 using namespace glow;
 

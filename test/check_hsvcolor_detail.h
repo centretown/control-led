@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-#include "../src/HSVColor.h"
+#include "HSVColor.h"
 using glow::HSVColor;
 
 void check_hsvcolor_detail(const HSVColor &original, const HSVColor &derived)

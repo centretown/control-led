@@ -5,8 +5,8 @@
 
 #include "test_yaml.h"
 #include "check_chroma_detail.h"
-#include "../src/Chroma.h"
-#include "../src/Filer.h"
+#include "Chroma.h"
+#include "Filer.h"
 
 using namespace glow;
 

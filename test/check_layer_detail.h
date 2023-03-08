@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-#include "../src/Layer.h"
+#include "Layer.h"
 
 #include "check_chroma_detail.h"
 #include "check_grid_detail.h"

@@ -7,9 +7,9 @@
 #include <nlohmann/json.hpp>
 
 #include "Filer.h"
-#include "../src/RGBColor.h"
-#include "../src/PaletteColor.h"
-#include "../src/Palette.h"
+#include "RGBColor.h"
+#include "PaletteColor.h"
+#include "Palette.h"
 
 using namespace glow;
 

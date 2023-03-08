@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.25)
 
 project(
   Glow
-  VERSION 0.4
+  VERSION 0.5
   LANGUAGES CXX)
 
 set(DATA_DIR "\"${PROJECT_SOURCE_DIR}/data\"")
@@ -12,9 +12,6 @@ configure_file(GlowConfig.h.in ${PROJECT_SOURCE_DIR}/src/GlowConfig.h)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
-
-# remove yaml for micro controllers
-# add_definitions("-std=c++14" "-DMICRO_CONTROLLER")
 
 # include yaml
 add_definitions("-std=c++20" "-DDATA_DIR=${DATA_DIR}" "-DTEST_DATA_DIR=${TEST_DATA_DIR}")

@@ -4,8 +4,8 @@
 #include <string>
 #include <array>
 
-#include "../src/Frame.h"
-#include "../src/Filer.h"
+#include "Frame.h"
+#include "Filer.h"
 
 using namespace glow;
 

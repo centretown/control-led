@@ -3,7 +3,7 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch_all.hpp>
 
-#include "../src/Chroma.h"
+#include "Chroma.h"
 #include "check_hsvcolor_detail.h"
 #include "check_rgbcolor_detail.h"
 

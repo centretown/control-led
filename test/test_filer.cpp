@@ -2,7 +2,7 @@
 #include <catch2/catch_all.hpp>
 #include <iostream>
 
-#include "../src/Filer.h"
+#include "Filer.h"
 
 using namespace glow;
 

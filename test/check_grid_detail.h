@@ -5,7 +5,7 @@
 #include <string>
 #include <catch2/catch_all.hpp>
 
-#include "../src/Grid.h"
+#include "Grid.h"
 using namespace glow;
 
 void check_grid_detail(const Grid &original, const Grid &derived)
