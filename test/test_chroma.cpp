@@ -139,3 +139,63 @@ TEST_CASE("Chroma Code", "[chroma_make_code]")
 
   std::cout << chroma.make_code() << '\n';
 }
+
+TEST_CASE("Chroma Colors", "chroma_colors")
+{
+#ifdef TEST_DATA_DIR
+  glow::set_data_path(TEST_DATA_DIR);
+#endif
+  REQUIRE(Chroma::load_palette(palette_file()));
+
+  std::initializer_list<HSVColor> p_colors = {
+      {790, 91, 232}, // aquamarine
+      {187, 73, 249},  // banana mania
+      {1496, 196, 198}, // brick red
+      {255, 102, 255}, // canary
+  };
+
+  Chroma chroma(36, p_colors, 2);
+
+  REQUIRE(36 == chroma.get_length());
+  REQUIRE(2 == chroma.get_hue_shift());
+  REQUIRE(4 == chroma.colors.size());
+
+  auto first = p_colors.begin();
+  for (auto &color : chroma.colors)
+  {
+    REQUIRE(first->hue == color.hue);
+    REQUIRE(first->saturation == color.saturation);
+    REQUIRE(first->value == color.value);
+    first++;
+  }
+
+  std::string input =
+      "length: 36\n"
+      "colors: \n"
+      "  - hue: 186\n"
+      "    saturation: 36\n"
+      "    value: 91\n"
+      "  - hue: 44\n"
+      "    saturation: 29\n"
+      "    value: 98\n"
+      "  - hue: 352\n"
+      "    saturation: 77\n"
+      "    value: 78\n"
+      "  - hue: 60\n"
+      "    saturation: 40\n"
+      "    value: 100\n"
+      "hue_shift: 2\n";
+
+  test_yaml_from_input(chroma, input, check_detail);
+
+  std::string input_using_palette =
+      "length: 36\n"
+      "colors: \n"
+      "  - aquamarine\n"
+      "  - banana mania\n"
+      "  - brick red\n"
+      "  - canary\n"
+      "hue_shift: 2\n";
+
+  test_yaml_from_input(chroma, input_using_palette, check_detail);
+}

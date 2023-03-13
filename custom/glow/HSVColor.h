@@ -53,6 +53,14 @@ namespace glow
 
     void from_rgb(Color color);
 
+    HSVColor to_gradient(HSVColor target, uint16_t index, uint16_t length) ALWAYS_INLINE
+    {
+      uint16_t h = (hue - target.hue) * index / length % hue_limit;
+      uint16_t s = (saturation - target.saturation) * index / length;
+      uint16_t v = (value - target.value) * index / length;
+      return HSVColor{h, (uint8_t)s, (uint8_t)v};
+    }
+
     void to_color_wheel(float &f_hue, float &f_saturation, float &f_value) const
     {
       f_hue = round(static_cast<float>(hue) * 360.0f /
