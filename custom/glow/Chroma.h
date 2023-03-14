@@ -16,10 +16,6 @@
 namespace glow
 {
   const HSVColor color_default = {0, 0, 255};
-  // const HSVColor target_default = {0, 0, 0};
-  // const Color rgb_source_default = {0, 0, 0};
-  // const Color rgb_target_default = {0, 0, 0};
-
   struct Gradient
   {
     HSVColor target{};
@@ -30,19 +26,9 @@ namespace glow
   {
   private:
     uint16_t length = 0;
-    // HSVColor hsv_source = color_default;
-    // HSVColor hsv_target = color_default;
     int16_t hue_shift = 0;
-
-    // Color rgb_source = rgb_source_default;
-    // Color rgb_target = rgb_target_default;
-
-    // std::list<Color> rgb_colors;
-    // float gradient_amount = 0.0;
-
   public:
     std::vector<HSVColor> colors;
-
     uint16_t segment_size{0};
     Color quick_color{0, 0, 0};
 
@@ -92,12 +78,11 @@ namespace glow
     HSVColor get_hsv_target() const ALWAYS_INLINE
     {
       if (colors.size() > 1)
-        return colors[0];
-      return colors[1];
+        return colors[1];
+      return colors[0];
     }
     Color get_rgb_source() const ALWAYS_INLINE { return get_hsv_source().to_rgb(); }
     Color get_rgb_target() const ALWAYS_INLINE { return get_hsv_target().to_rgb(); }
-    // float get_gradient_amount() const ALWAYS_INLINE { return gradient_amount; }
 
     void set_hue_shift(int16_t a_hue_shift)
     {
@@ -108,32 +93,7 @@ namespace glow
 
     void update();
 
-    // Color step_gradient(float shift_amount) ALWAYS_INLINE
-    // {
-    //   return Color{red_shift(shift_amount),
-    //                green_shift(shift_amount),
-    //                blue_shift(shift_amount)};
-    // }
-
-  private:
-    // uint8_t red_shift(float shift_amount) ALWAYS_INLINE
-    // {
-    //   shift_amount *= static_cast<float>(rgb_target.red - rgb_source.red);
-    //   return rgb_source.red + static_cast<uint8_t>(shift_amount);
-    // }
-    // uint8_t green_shift(float shift_amount) ALWAYS_INLINE
-    // {
-    //   shift_amount *= static_cast<float>(rgb_target.green - rgb_source.green);
-    //   return rgb_source.green + static_cast<uint8_t>(shift_amount);
-    // }
-    // uint8_t blue_shift(float shift_amount) ALWAYS_INLINE
-    // {
-    //   shift_amount *= static_cast<float>(rgb_target.blue - rgb_source.blue);
-    //   return rgb_source.blue + static_cast<uint8_t>(shift_amount);
-    // }
-
 #ifndef MICRO_CONTROLLER
-  public:
     enum : uint8_t
     {
       LENGTH,
@@ -200,8 +160,6 @@ namespace YAML
     {
       Node node;
       node[Chroma::keys[Chroma::LENGTH]] = chroma.length;
-      // node[Chroma::keys[Chroma::SOURCE]] = chroma.hsv_source;
-      // node[Chroma::keys[Chroma::TARGET]] = chroma.hsv_target;
       node[Chroma::keys[Chroma::HUE_SHIFT]] = chroma.hue_shift;
       Node list;
       for (auto color : chroma.colors)

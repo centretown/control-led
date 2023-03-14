@@ -73,12 +73,12 @@ namespace glow
     }
 
     uint16_t size = colors.size();
-    if (size == 0)
+    for (; size < 2; size++)
     {
       colors.push_back(color_default);
     }
 
-    quick_color = colors.begin()->to_rgb();
+    quick_color = colors[0].to_rgb();
     // rgb_source = hsv_source.to_rgb();
     // rgb_target = hsv_target.to_rgb();
     // gradient_amount = (static_cast<float>(byte_limit) /

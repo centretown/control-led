@@ -64,9 +64,10 @@ TEST_CASE("Chroma Basic", "chroma_basic")
   test_yaml(chroma, input, check_detail);
 
   Chroma chroma_length_only;
-  REQUIRE(chroma_length_only.setup(20));
+  REQUIRE(chroma_length_only.setup_length(20));
   std::string input_length_only =
       "length: 20\n";
+
   test_yaml(chroma_length_only, input_length_only, check_detail);
 }
 
@@ -148,10 +149,10 @@ TEST_CASE("Chroma Colors", "chroma_colors")
   REQUIRE(Chroma::load_palette(palette_file()));
 
   std::initializer_list<HSVColor> p_colors = {
-      {790, 91, 232}, // aquamarine
-      {187, 73, 249},  // banana mania
+      {790, 91, 232},   // aquamarine
+      {187, 73, 249},   // banana mania
       {1496, 196, 198}, // brick red
-      {255, 102, 255}, // canary
+      {255, 102, 255},  // canary
   };
 
   Chroma chroma(36, p_colors, 2);

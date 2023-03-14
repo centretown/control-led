@@ -84,7 +84,6 @@ target_link_libraries(test_light PRIVATE
 enable_testing()
 
 add_test(NAME FILER COMMAND test_filer)
-add_test(NAME HSVCOLOR COMMAND test_hsvcolor)
 add_test(NAME PALETTE COMMAND test_build_palette)
 add_test(NAME JSON COMMAND test_json)
 add_test(NAME LIGHT COMMAND test_light)
@@ -93,3 +92,4 @@ add_test(NAME LIBRARY COMMAND test_catalog)
 add_test(NAME LAYER COMMAND test_layer)
 add_test(NAME FRAME COMMAND test_frame)
 add_test(NAME CHROMA COMMAND test_chroma)
+add_test(NAME HSVCOLOR COMMAND test_hsvcolor)
