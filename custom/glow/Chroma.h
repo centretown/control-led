@@ -16,11 +16,6 @@
 namespace glow
 {
   const HSVColor color_default = {0, 0, 255};
-  struct Gradient
-  {
-    HSVColor target{};
-    bool counter{false};
-  };
 
   class Chroma
   {

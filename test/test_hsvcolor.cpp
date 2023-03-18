@@ -28,15 +28,15 @@ void test_yaml(HSVColor &hsv, std::string input)
   out_a << node_a;
   std::cout << out.c_str() << '\n';
 
-   std::cout << "\tHSV: (" << hsv.hue << ", "
-              << (uint16_t)hsv.saturation << ", "
-              << (uint16_t)hsv.value << ")"
-              << '\n';
+  std::cout << "\tHSV: (" << hsv.hue << ", "
+            << (uint16_t)hsv.saturation << ", "
+            << (uint16_t)hsv.value << ")"
+            << '\n';
 
-   std::cout << "\tHSV: (" << hsv_from_node.hue << ", "
-              << (uint16_t)hsv_from_node.saturation << ", "
-              << (uint16_t)hsv_from_node.value << ")"
-              << '\n';
+  std::cout << "\tHSV: (" << hsv_from_node.hue << ", "
+            << (uint16_t)hsv_from_node.saturation << ", "
+            << (uint16_t)hsv_from_node.value << ")"
+            << '\n';
 
   // REQUIRE((hue_diff >= -1 && hue_diff <= 1));
   // REQUIRE((sat_diff >= -1 && sat_diff <= 1));
@@ -165,7 +165,6 @@ TEST_CASE("HSVColor YAML", "[hsvcolor_yaml]")
   test_yaml(hsv, input);
 }
 
-
 TEST_CASE("HSVColor Code", "[hsvcolor_make_code]")
 {
   HSVColor hsv;
@@ -175,4 +174,21 @@ TEST_CASE("HSVColor Code", "[hsvcolor_make_code]")
   std::cout << hsv.make_code();
   hsv.from_color_wheel(60.0, 50.0, 100.0);
   std::cout << hsv.make_code() << '\n';
+}
+
+TEST_CASE("HSVColor Gradient", "[hsvcolor_gradient]")
+{
+  HSVColor base{0, 255, 255};
+  HSVColor first{100, 100, 100};
+
+  HSVColor result = base.to_gradient(first, 5, 10);
+
+  std::cout << base.make_code() << '\n';
+  std::cout << first.make_code() << '\n';
+  std::cout << result.make_code() << '\n';
+
+  result = first.to_gradient(base, 5, 10);
+  std::cout << first.make_code() << '\n';
+  std::cout << base.make_code() << '\n';
+  std::cout << result.make_code() << '\n';
 }

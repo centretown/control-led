@@ -6,13 +6,15 @@ namespace glow
   std::string Chroma::make_code()
   {
     std::stringstream s;
-    s << "{" << length << ",";
+    s << "{" << length << "," << '\n';
     // << hsv_source.make_code() << ","
     // << hsv_target.make_code() << ","
+    s << "{" << '\n';
     for (auto &color : colors)
     {
-      s << color.make_code() << ",";
+      s << color.make_code() << "," << '\n';
     }
+    s << "}," << '\n';
     s << hue_shift << "}";
     return s.str();
   }

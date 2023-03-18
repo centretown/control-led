@@ -11,26 +11,6 @@
 #include "ansi_stream.h"
 #include "HostLight.h"
 
-TEST_CASE("Lights Basic", "layer_basic")
-{
-  HostLight light;
-  REQUIRE(light.setup(40, 4));
-  REQUIRE(light.length == 40);
-  REQUIRE(light.rows == 4);
-  REQUIRE(light.columns == 10);
-  Color red(255, 0, 0);
-  for (uint16_t i = 0; i < light.length / 2; i++)
-  {
-    light.get(i) = red;
-  }
-
-  Color blue(0, 0, 255);
-  for (uint16_t i = light.length / 2; i < light.length; i++)
-  {
-    light.get(i) = blue;
-  }
-}
-
 TEST_CASE("Layer Lights", "layer_lights")
 {
 #ifdef TEST_DATA_DIR
@@ -62,3 +42,24 @@ TEST_CASE("Layer Lights", "layer_lights")
   std::cout << custom_layer(strawberry) << std::endl;
   std::cout << derived_layer(strawberry) << std::endl;
 }
+
+TEST_CASE("Lights Basic", "layer_basic")
+{
+  HostLight light;
+  REQUIRE(light.setup(40, 4));
+  REQUIRE(light.length == 40);
+  REQUIRE(light.rows == 4);
+  REQUIRE(light.columns == 10);
+  Color red(255, 0, 0);
+  for (uint16_t i = 0; i < light.length / 2; i++)
+  {
+    light.get(i) = red;
+  }
+
+  Color blue(0, 0, 255);
+  for (uint16_t i = light.length / 2; i < light.length; i++)
+  {
+    light.get(i) = blue;
+  }
+}
+

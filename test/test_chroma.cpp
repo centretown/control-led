@@ -125,22 +125,6 @@ TEST_CASE("Chroma Operations", "chroma_operations")
   }
 }
 
-TEST_CASE("Chroma Code", "[chroma_make_code]")
-{
-#ifdef TEST_DATA_DIR
-  glow::set_data_path(TEST_DATA_DIR);
-#endif
-  Chroma chroma;
-  HSVColor source, target;
-  // brick red
-  source.from_color_wheel(float(352), float(77), float(78));
-  // canary
-  target.from_color_wheel(float(60), float(40), float(100));
-  REQUIRE(chroma.setup(20, source, target, 5));
-
-  std::cout << chroma.make_code() << '\n';
-}
-
 TEST_CASE("Chroma Colors", "chroma_colors")
 {
 #ifdef TEST_DATA_DIR
@@ -199,4 +183,20 @@ TEST_CASE("Chroma Colors", "chroma_colors")
       "hue_shift: 2\n";
 
   test_yaml_from_input(chroma, input_using_palette, check_detail);
+}
+
+TEST_CASE("Chroma Code", "[chroma_make_code]")
+{
+#ifdef TEST_DATA_DIR
+  glow::set_data_path(TEST_DATA_DIR);
+#endif
+  Chroma chroma;
+  HSVColor source, target;
+  // brick red
+  source.from_color_wheel(float(352), float(77), float(78));
+  // canary
+  target.from_color_wheel(float(60), float(40), float(100));
+  REQUIRE(chroma.setup(20, source, target, 5));
+
+  std::cout << chroma.make_code() << '\n';
 }
