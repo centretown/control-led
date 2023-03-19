@@ -1,0 +1,7 @@
+{
+  "name": "C++ Launch",
+  "type": "cppdbg",
+  "request": "launch",
+  "program": "${workspaceFolder}/build/glow",
+  "cwd": "${workspaceFolder}"
+}

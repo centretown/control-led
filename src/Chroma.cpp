@@ -113,7 +113,7 @@ namespace glow
     div_t d = div(index, segment_size);
     HSVColor first = colors[d.quot];
     HSVColor last = colors[d.quot + 1];
-    return first.to_gradient(last, d.rem, d.quot).to_rgb();
+    return first.to_gradient(last, d.rem, segment_size).to_rgb();
   }
 
   void Chroma::update()
