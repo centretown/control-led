@@ -74,19 +74,14 @@ namespace glow
       return false;
     }
 
-    uint16_t size = colors.size();
-    for (; size < 2; size++)
+    if (colors.size() < 1)
     {
       colors.push_back(color_default);
     }
 
     quick_color = colors[0].to_rgb();
-    // rgb_source = hsv_source.to_rgb();
-    // rgb_target = hsv_target.to_rgb();
-    // gradient_amount = (static_cast<float>(byte_limit) /
-    //                    static_cast<float>(length)) /
-    //                   static_cast<float>(byte_limit);
-    segment_size = length / size;
+    uint16_t size = colors.size() - 1;
+    segment_size = (size < 2) ? length : length / size;
     return true;
   }
 
