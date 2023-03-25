@@ -1,0 +1,9 @@
+length: 20
+hue_shift: 5
+colors:
+  - hue: 352
+    saturation: 77
+    value: 78
+  - hue: 60
+    saturation: 40
+    value: 100

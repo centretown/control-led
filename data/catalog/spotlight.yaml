@@ -1,0 +1,16 @@
+length: 540
+rows: 9
+interval: 48
+layers:
+  - grid:
+      origin: top left
+      orientation: horizontal
+    chroma:
+      source:
+        hue: 0
+        saturation: 0
+        value: 100
+      target:
+        hue: 0
+        saturation: 0
+        value: 100

@@ -1,0 +1,10 @@
+grid: bottom-right-diagonal
+chroma:
+  colors: 
+    - hue: 101
+      saturation: 100
+      value: 100
+    - hue: 100
+      saturation: 100
+      value: 100
+scan: 12

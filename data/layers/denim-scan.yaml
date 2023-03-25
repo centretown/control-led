@@ -1,0 +1,7 @@
+grid: top-left-vertical
+chroma:
+  source: denim
+  target: periwinkle
+scan: 3
+begin: 50
+end: 100

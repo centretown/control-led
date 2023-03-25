@@ -1,0 +1,15 @@
+length: 20
+rows: 4
+begin: 0
+end: 100
+hue_shift: 0
+grid:
+  length: 20
+  rows: 4
+  origin: top right
+  orientation: vertical
+chroma:
+  length: 20
+  source: brick red
+  target: brick red
+scan: 5

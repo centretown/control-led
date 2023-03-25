@@ -1,0 +1,8 @@
+grid:
+  origin: top left
+  orientation: vertical
+chroma:
+  length: 20
+  source: salmon
+  target: salmon
+scan: 5

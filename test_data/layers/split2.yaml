@@ -1,0 +1,9 @@
+grid: 
+  origin: top left
+  orientation: vertical
+chroma:
+  source: wild strawberry
+  target: maximum yellow
+begin: 50
+end: 100
+hue_shift: 1

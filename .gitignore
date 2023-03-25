@@ -1,12 +1,3 @@
 build
-recreate
-esphome
-esphome.h
 cmake-build-release
 CMakeFiles
-data
-base_data
-abc
-test_data
-GCC10.cmake
-notes.txt

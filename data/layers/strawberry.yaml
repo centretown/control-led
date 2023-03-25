@@ -1,0 +1,6 @@
+grid:
+  origin: top left
+  orientation: diagonal
+chroma:
+  source: wild strawberry
+  target: wild strawberry
