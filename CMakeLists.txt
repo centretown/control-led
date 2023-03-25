@@ -77,7 +77,6 @@ target_link_libraries(glow
 )
 
 add_subdirectory(test)
-add_subdirectory(glow-play)
 
 add_custom_command(
   TARGET glow POST_BUILD
@@ -109,3 +108,5 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E copy
   ${DATA_DIR}/generated/*.yml
   ${CMAKE_CURRENT_SOURCE_DIR}/custom/)
+
+add_subdirectory(glow-play)
