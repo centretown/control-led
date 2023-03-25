@@ -55,7 +55,7 @@ add_executable(glow
   src/glow_file.cpp
 )
 
-# conan.cmake_find_package generator
+# conan.CMakeDeps
 find_package(yaml-cpp)
 find_package(Catch2)
 find_package(nlohmann_json)
@@ -68,7 +68,6 @@ include_directories(
   ${cxxopts_INCLUDE_DIRS}
 )
 
-# target_link_libraries(${PROJECT_NAME} ${yaml-cpp_LIBRARIES} ${cxxopts_LIBRARIES} GlowLib)
 target_link_libraries(glow
   ${yaml-cpp_LIBRARIES}
   nlohmann_json::nlohmann_json

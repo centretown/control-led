@@ -11,27 +11,19 @@ An led strip application.
 
 https://linuxhint.com/install-build-essential-ubuntu/
 
-https://linuxconfig.org/how-to-switch-between-multiple-gcc-and-g-compiler-versions-on-ubuntu-20-04-lts-focal-fossa
 ```sh
 sudo apt install build-essential
 gcc --version
 # gcc (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0
-sudo apt install gcc-10
-sudo apt install g++-10
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 9
-sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 9
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
-sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
-gcc --version
-# gcc (Ubuntu 10.3.0-1ubuntu1~20.04) 10.3.0
 
 ```
-#### Cmake version 3.25.2 
+#### Cmake version 3.26.1
 https://cmake.org/download/
 ```sh
 cmake --version
+# cmake version 3.26.1
 ```
-#### Conan package manager version 1.58.0
+#### Conan package manager version 2.0.2
 https://conan.io/downloads.html
 ```sh
 conan --version
@@ -41,10 +33,9 @@ conan --version
 ```sh
 git clone https://github.com/centretown/glow.git
 cd glow
-mkdir build
+conan install . --output-folder=build --build=missing
 cd build
-conan install ..
-cmake ..
+cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
 ```
 #### Build:
 ```sh
