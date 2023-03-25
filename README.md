@@ -14,7 +14,7 @@ https://linuxhint.com/install-build-essential-ubuntu/
 ```sh
 sudo apt install build-essential
 gcc --version
-# gcc (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0
+# gcc (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
 
 ```
 #### Cmake version 3.26.1
@@ -27,6 +27,7 @@ cmake --version
 https://conan.io/downloads.html
 ```sh
 conan --version
+# Conan version 2.0.2
 ```
 
 #### Install:

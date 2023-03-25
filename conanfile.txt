@@ -1,9 +1,0 @@
-[requires]
-yaml-cpp/0.7.0
-catch2/3.3.2
-nlohmann_json/3.11.2
-cxxopts/3.0.0
-
-[generators]
-CMakeDeps
-CMakeToolchain
