@@ -55,24 +55,17 @@ namespace glow
 
     HSVColor to_gradient(HSVColor target, uint16_t index, uint16_t length) ALWAYS_INLINE
     {
-      uint16_t gradient_hue = target.hue;
-      if (gradient_hue < hue)
+      if (hue > target.hue)
       {
-        gradient_hue += hue_limit;
+        target.hue += hue_limit;
       }
-      gradient_hue -= hue;
-      gradient_hue *= index;
-      gradient_hue /= length;
+      uint16_t gradient_hue = hue + ((target.hue - hue) * index) / length;
       gradient_hue %= hue_limit;
-
-      uint16_t gradient_saturation = target.saturation + saturation;
-      gradient_saturation *= index;
-      gradient_saturation /= length;
-
-      uint16_t gradient_value = target.value + value;
-      gradient_value *= index;
-      gradient_value /= length;
-      return HSVColor{gradient_hue, (uint8_t)gradient_saturation, (uint8_t)gradient_value};
+      int16_t gradient_saturation = saturation + ((target.saturation - saturation) * index) / length;
+      int16_t gradient_value = value + ((target.value - value) * index) / length;
+      return HSVColor{static_cast<uint16_t>(gradient_hue),
+                      static_cast<uint8_t>(gradient_saturation),
+                      static_cast<uint8_t>(gradient_value)};
     }
 
     void to_color_wheel(float &f_hue, float &f_saturation, float &f_value) const

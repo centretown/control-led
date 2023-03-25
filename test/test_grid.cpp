@@ -85,7 +85,7 @@ TEST_CASE("Grid 3x4 TopLeft Diagonal", "[grid_3x4_topleft_diagonal]")
   REQUIRE(2 == grid.map(3));
   REQUIRE(5 == grid.map(4));
   REQUIRE(8 == grid.map(5));
-  bool setup();
+  
   REQUIRE(3 == grid.map(6));
   REQUIRE(6 == grid.map(7));
   REQUIRE(9 == grid.map(8));

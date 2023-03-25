@@ -22,62 +22,62 @@ include_directories(
 
 target_link_libraries(test_catalog PRIVATE
   ${yaml-cpp_LIBRARIES}
-  ${catch2_LIBRARIES}
+  Catch2::Catch2WithMain
   GlowLib
 )
 
 target_link_libraries(test_filer PRIVATE
   ${yaml-cpp_LIBRARIES}
-  ${catch2_LIBRARIES}
+  Catch2::Catch2WithMain
   GlowLib
 )
 
 target_link_libraries(test_grid PRIVATE
   ${yaml-cpp_LIBRARIES}
-  ${catch2_LIBRARIES}
+  Catch2::Catch2WithMain
   GlowLib
 )
 
 target_link_libraries(test_hsvcolor PRIVATE
   ${yaml-cpp_LIBRARIES}
-  ${catch2_LIBRARIES}
+  Catch2::Catch2WithMain
   GlowLib
 )
 
 target_link_libraries(test_layer PRIVATE
   ${yaml-cpp_LIBRARIES}
-  ${catch2_LIBRARIES}
+  Catch2::Catch2WithMain
   GlowLib
 )
 
 target_link_libraries(test_frame PRIVATE
   ${yaml-cpp_LIBRARIES}
-  ${catch2_LIBRARIES}
+  Catch2::Catch2WithMain
   GlowLib
 )
 
 target_link_libraries(test_chroma PRIVATE
   ${yaml-cpp_LIBRARIES}
-  ${catch2_LIBRARIES}
+  Catch2::Catch2WithMain
   GlowLib
 )
 
 target_link_libraries(test_build_palette PRIVATE
   ${yaml-cpp_LIBRARIES}
-  ${catch2_LIBRARIES}
+  Catch2::Catch2WithMain
   GlowLib
 )
 
 target_link_libraries(test_json PRIVATE
   ${yaml-cpp_LIBRARIES}
-  ${catch2_LIBRARIES}
+  Catch2::Catch2WithMain
   nlohmann_json::nlohmann_json
   GlowLib
 )
 
 target_link_libraries(test_light PRIVATE
   ${yaml-cpp_LIBRARIES}
-  ${catch2_LIBRARIES}
+  Catch2::Catch2WithMain
   GlowLib
 )
 

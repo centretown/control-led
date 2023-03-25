@@ -77,35 +77,6 @@ target_link_libraries(glow
 )
 
 add_subdirectory(test)
-add_subdirectory(glow-play)
+# add_subdirectory(glow-play)
 
-add_custom_command(
-  TARGET glow POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/base.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/RGBColor.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/RGBColor.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/HSVColor.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/HSVColor.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/Chroma.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/Chroma.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/Grid.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/Grid.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/Layer.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/Layer.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/Frame.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/Frame.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/custom/glow/)
 
-add_custom_command(
-  TARGET glow POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy
-  ${DATA_DIR}/generated/catalog.cpp
-  ${DATA_DIR}/generated/catalog.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/custom/glow/)
-
-add_custom_command(
-  TARGET glow POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy
-  ${DATA_DIR}/generated/*.yml
-  ${CMAKE_CURRENT_SOURCE_DIR}/custom/)
