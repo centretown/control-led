@@ -1,16 +1,29 @@
-length: 540
-rows: 9
-interval: 48
 layers:
-  - grid:
-      origin: top left
-      orientation: horizontal
+  - chroma:
+      colors:
+        - hue: 0
+          saturation: 100
+          value: 100
+        - hue: 359
+          saturation: 100
+          value: 100
+    grid:
+      origin: bottom right
+      orientation: diagonal
+  - scan: 30
+    grid:
+      orientation: diagonal
     chroma:
-      source:
-        hue: 0
-        saturation: 0
-        value: 100
-      target:
-        hue: 0
-        saturation: 0
-        value: 100
+      colors:
+        - hue: 0
+          saturation: 0
+          value: 0
+  - scan: 30
+    grid:
+      origin: bottom right
+      orientation: diagonal
+    chroma:
+      colors:
+        - hue: 0
+          saturation: 0
+          value: 100

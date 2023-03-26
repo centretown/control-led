@@ -95,13 +95,20 @@ add_custom_command(
   ${CMAKE_CURRENT_SOURCE_DIR}/src/Frame.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/custom/glow/)
 
-add_custom_command(
-  TARGET glow POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy
-  ${DATA_DIR}/generated/catalog.cpp
-  ${DATA_DIR}/generated/catalog.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/custom/glow/)
-
+  add_custom_command(
+    TARGET glow POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    ${DATA_DIR}/generated/catalog.cpp
+    ${DATA_DIR}/generated/catalog.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/custom/glow/)
+  
+  add_custom_command(
+    TARGET glow POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    ${DATA_DIR}/generated/catalog.cpp
+    ${DATA_DIR}/generated/catalog.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/generated/)
+    
 add_custom_command(
   TARGET glow POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy

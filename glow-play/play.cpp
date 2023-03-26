@@ -81,7 +81,7 @@ void show_lights()
   glow::ansi_hide_cursor(std::cout);
 
   glow::HostLight light;
-  glow::Frame frame = glow::from_catalog((glow::LIBRARY_INDEX)selected_item);
+  glow::Frame frame = glow::from_catalog((glow::CATALOG_INDEX)selected_item);
   frame.setup(selected_length, selected_rows, selected_interval);
 
   light.setup(selected_length, selected_rows);
@@ -99,7 +99,7 @@ void print_catalog()
   for (auto i = 0; i < glow::FRAME_COUNT; i++)
   {
     std::cout << "  id: (" << i << ")  name: "
-              << glow::catalog_name((glow::LIBRARY_INDEX)i) << '\n';
+              << glow::catalog_name((glow::CATALOG_INDEX)i) << '\n';
   }
   std::cout << "\n\n";
 }
