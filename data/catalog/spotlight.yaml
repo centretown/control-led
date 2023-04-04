@@ -2,28 +2,5 @@ layers:
   - chroma:
       colors:
         - hue: 0
-          saturation: 100
-          value: 100
-        - hue: 359
-          saturation: 100
-          value: 100
-    grid:
-      origin: bottom right
-      orientation: diagonal
-  - scan: 30
-    grid:
-      orientation: diagonal
-    chroma:
-      colors:
-        - hue: 0
-          saturation: 0
-          value: 0
-  - scan: 30
-    grid:
-      origin: bottom right
-      orientation: diagonal
-    chroma:
-      colors:
-        - hue: 0
           saturation: 0
           value: 100

@@ -19,10 +19,6 @@ void test_yaml(HSVColor &hsv, std::string input)
 
   HSVColor hsv_from_node;
   YAML::convert<HSVColor>::decode(node, hsv_from_node);
-  int16_t hue_diff = hsv_from_node.hue - hsv.hue;
-  int16_t sat_diff = hsv_from_node.saturation - hsv.saturation;
-  int16_t val_diff = hsv_from_node.value - hsv.value;
-
   YAML::Emitter out_a;
   YAML::Node node_a = YAML::convert<HSVColor>::encode(hsv_from_node);
   out_a << node_a;
@@ -38,21 +34,10 @@ void test_yaml(HSVColor &hsv, std::string input)
             << (uint16_t)hsv_from_node.value << ")"
             << '\n';
 
-  // REQUIRE((hue_diff >= -1 && hue_diff <= 1));
-  // REQUIRE((sat_diff >= -1 && sat_diff <= 1));
-  // REQUIRE((val_diff >= -1 && val_diff <= 1));
-
   YAML::Node input_node = YAML::Load(input);
   HSVColor hsv_from_input;
   YAML::convert<HSVColor>::decode(input_node, hsv_from_input);
 
-  hue_diff = hsv_from_node.hue - hsv_from_input.hue;
-  sat_diff = hsv_from_node.saturation - hsv_from_input.saturation;
-  val_diff = hsv_from_node.value - hsv_from_input.value;
-
-  // REQUIRE((hue_diff >= -1 && hue_diff <= 1));
-  // REQUIRE((sat_diff >= -1 && sat_diff <= 1));
-  // REQUIRE((val_diff >= -1 && val_diff <= 1));
 }
 
 void test_yaml(Color &color, std::string input)
@@ -64,12 +49,16 @@ void test_yaml(Color &color, std::string input)
 
   Color color_from_node;
   YAML::convert<Color>::decode(node, color_from_node);
-  REQUIRE(color == color_from_node);
+  REQUIRE(color.red == color_from_node.red);
+  REQUIRE(color.green == color_from_node.green);
+  REQUIRE(color.blue == color_from_node.blue);
 
   YAML::Node input_node = YAML::Load(input);
   Color color_from_input;
   YAML::convert<Color>::decode(input_node, color_from_input);
-  REQUIRE(color == color_from_input);
+  REQUIRE(color.red == color_from_input.red);
+  REQUIRE(color.green == color_from_input.green);
+  REQUIRE(color.blue == color_from_input.blue);
 }
 
 Color rgbColors[] = {
@@ -134,7 +123,9 @@ TEST_CASE("HSVColor Basic", "[hsvcolor_basic]")
               << (uint16_t)hsv.value << ")"
               << '\n';
 
-    REQUIRE(color == derived);
+    REQUIRE(color.red == derived.red);
+    REQUIRE(color.green == derived.green);
+    REQUIRE(color.blue == derived.blue);
   }
 }
 

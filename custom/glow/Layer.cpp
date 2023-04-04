@@ -28,16 +28,24 @@ namespace glow
       "end",
   };
 #endif
-  uint16_t Layer::calculate_bounds(uint16_t bound)
-  {
-    if (bound > 100)
-    {
-      bound %= 100;
-    }
 
-    float amt = static_cast<float>(bound) / 100.0f *
-                static_cast<float>(length);
-    return grid.adjust_bounds(amt);
+  void Layer::set_bounds()
+  {
+    auto ratio = [](uint16_t offset, uint16_t length)
+    {
+      if (offset > 100)
+        offset %= 100;
+      return static_cast<float>(offset) / 100.0f *
+             static_cast<float>(length);
+    };
+
+    first = grid.adjust_bounds(ratio(begin, length));
+    last = grid.adjust_bounds(ratio(end, length));
+
+    if (last < first)
+    {
+      std::swap(first, last);
+    }
   }
 
 }

@@ -40,26 +40,24 @@ namespace glow
       "horizontal",
       "vertical",
       "diagonal",
+      "centred",
   };
 
   std::unordered_map<std::string, uint16_t> Grid::orientation_map = {
       {orientation_keys[Horizontal], Horizontal},
       {orientation_keys[Vertical], Vertical},
       {orientation_keys[Diagonal], Diagonal},
+      {orientation_keys[Centred], Centred},
   };
 
 #endif
+
   uint16_t Grid::adjust_bounds(float bound)
   {
     uint16_t scaled = static_cast<uint16_t>(round(bound));
     if (orientation == Horizontal)
     {
       return (scaled / columns) * columns;
-    }
-
-    if (orientation == Vertical)
-    {
-      return (scaled / rows) * rows;
     }
 
     return (scaled / rows) * rows;
@@ -78,20 +76,16 @@ namespace glow
     }
 
     columns = length / rows;
-    uint16_t lesser = (rows > columns) ? columns : rows;
 
-    pivot.first = 0;
-    pivot.last = 0;
-    pivot.offset = 0;
-
-    for (uint16_t i = 0; i < lesser; i++)
+    if (orientation == Centred)
     {
-      pivot.first += i;
+      pivot.setup_centred(rows, columns);
     }
-
-    pivot.offset = lesser - 1;
-    pivot.last = pivot.first +
-                 (columns - lesser) * rows + rows - 1;
+    else
+    {
+      pivot.setup_diagonal(rows, columns);
+    }
+    centre = (rows - 1) / 2 * columns + (columns - 1) / 2;
     return true;
   }
 
@@ -113,7 +107,11 @@ namespace glow
     }
     else if (orientation == Vertical)
     {
-      offset = map_columns(index, point);
+      offset = map_columns(index);
+    }
+    else if (orientation == Centred)
+    {
+      offset = map_centred(index);
     }
     return map_to_origin(offset);
   }
@@ -187,7 +185,10 @@ namespace glow
       return length - offset - 1;
     }
 
-    point = div(offset, columns);
+    div_t point = div(offset, columns);
+
+    // point.quot = row
+    // point.rem = col
 
     if (origin == BottomLeft)
     {
@@ -200,8 +201,53 @@ namespace glow
       return point.quot * columns +
              (columns - point.rem - 1);
     }
-
     return offset;
+  }
+
+  uint16_t Grid::map_centred(uint16_t index)
+  {
+    if (index == 0)
+    {
+      return centre;
+    }
+
+    uint16_t ring = 1;
+    int16_t ring_start = 1;
+    int16_t ring_length = 8;
+    for (;;)
+    {
+      if (ring_start + ring_length > index)
+      {
+        break;
+      }
+      ring++;
+      ring_start += ring_length;
+      ring_length += 8;
+    }
+
+    index -= ring_start;
+    uint16_t side = index * 4 / ring_length;
+    if (side == 0)
+    {
+      return centre + ring +
+             (index - ring + 1) * columns;
+    }
+
+    index -= side * ring_length / 4;
+    if (side == 1)
+    {
+      return centre + ring - 1 - index +
+             ring * columns;
+    }
+
+    if (side == 2)
+    {
+      return centre - ring -
+             (index - ring + 1) * columns;
+    }
+
+    return centre - ring + 1 + index -
+           ring * columns;
   }
 
 } // namespace glow

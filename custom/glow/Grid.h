@@ -10,6 +10,8 @@
 #include <sstream>
 #endif
 
+#include "Pivot.h"
+
 namespace glow
 {
   enum : uint16_t
@@ -26,20 +28,8 @@ namespace glow
     Horizontal,
     Vertical,
     Diagonal,
+    Centred,
     ORIENTATION_COUNT,
-  };
-
-  struct Pivot
-  {
-    uint16_t first = 0;
-    uint16_t last = 0;
-    uint16_t offset = 0;
-  };
-
-  struct Coordinates
-  {
-    uint16_t row;
-    uint16_t column;
   };
 
   class Grid
@@ -51,8 +41,8 @@ namespace glow
     uint16_t orientation = Horizontal;
 
     uint16_t columns = 0;
+    uint16_t centre = 0;
     Pivot pivot;
-    div_t point{0, 0};
 
   public:
     Grid() = default;
@@ -88,14 +78,7 @@ namespace glow
     uint16_t get_first() const ALWAYS_INLINE { return pivot.first; }
     uint16_t get_offset() const ALWAYS_INLINE { return pivot.offset; }
     uint16_t get_last() const ALWAYS_INLINE { return pivot.last; }
-
-    Coordinates map_coordinates(uint16_t offset)
-    {
-      Coordinates coord{0, 0};
-      div_t result = div(offset, columns);
-      return Coordinates{static_cast<uint16_t>(result.quot),
-                         static_cast<uint16_t>(result.rem)};
-    }
+    uint16_t get_centre() const ALWAYS_INLINE { return centre; }
 
     uint16_t map(uint16_t index);
     uint16_t map_diagonal(uint16_t index);
@@ -103,17 +86,19 @@ namespace glow
     uint16_t map_diagonal_bottom(uint16_t index);
     uint16_t map_to_origin(uint16_t offset);
 
-    uint16_t map_columns(uint16_t i, div_t &point) ALWAYS_INLINE
+    uint16_t map_centred(uint16_t index);
+
+    uint16_t map_columns(uint16_t index) ALWAYS_INLINE
     {
-      point = div(i, rows);
+      div_t point = div(index, rows);
       return (uint16_t)(point.rem * columns + point.quot);
     }
 
     uint16_t map_diagonal_middle(uint16_t index) ALWAYS_INLINE
     {
-      div_t p = div(index - pivot.first, rows);
-      return pivot.offset + p.quot +
-             p.rem * (columns - 1);
+      div_t point = div(index - pivot.first, rows);
+      return pivot.offset + point.quot +
+             point.rem * (columns - 1);
     }
 
 #ifndef MICRO_CONTROLLER

@@ -1,8 +1,8 @@
-length: 540
-rows: 9
-interval: 16
 layers:
   - hue_shift: -1
+    grid:
+      origin: top left
+      orientation: diagonal
     chroma:
       colors:
         - hue: 1

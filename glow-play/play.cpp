@@ -57,6 +57,12 @@ void process_command_line(int argc, char **argv)
     exit(0);
   }
 
+  if (selected_catalog)
+  {
+    print_catalog();
+    exit(0);
+  }
+
   selected_item = selected["frame"].as<uint16_t>();
   selected_length = selected["length"].as<uint16_t>();
   selected_rows = selected["rows"].as<uint16_t>();
@@ -67,10 +73,6 @@ void sigintHandler(int sig_num)
 {
   glow::ansi_at(selected_rows + 1, 0, std::cout);
   glow::ansi_show_cursor(std::cout);
-  if (selected_catalog)
-  {
-    print_catalog();
-  }
   exit(0);
 };
 

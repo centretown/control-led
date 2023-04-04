@@ -85,7 +85,7 @@ TEST_CASE("Grid 3x4 TopLeft Diagonal", "[grid_3x4_topleft_diagonal]")
   REQUIRE(2 == grid.map(3));
   REQUIRE(5 == grid.map(4));
   REQUIRE(8 == grid.map(5));
-  
+
   REQUIRE(3 == grid.map(6));
   REQUIRE(6 == grid.map(7));
   REQUIRE(9 == grid.map(8));
@@ -403,4 +403,81 @@ TEST_CASE("Grid Code", "[grid_make_code]")
   std::cout << grid.make_code() << '\n';
   REQUIRE(grid.setup(66, 1, BottomRight, Diagonal));
   std::cout << grid.make_code() << '\n';
+}
+
+TEST_CASE("Grid Centred", "[grid_centred]")
+{
+  Grid grid;
+  REQUIRE(grid.setup(50, 5, TopLeft, Centred));
+  REQUIRE(grid.get_centre() == 24);
+  REQUIRE(grid.setup(36, 3, TopLeft, Centred));
+  REQUIRE(grid.get_centre() == 17);
+  REQUIRE(grid.map(0) == 17);
+  REQUIRE(grid.setup(36, 4, TopLeft, Centred));
+  REQUIRE(grid.get_centre() == 13);
+  REQUIRE(grid.map(0) == 13);
+  REQUIRE(grid.setup(100, 10, TopLeft, Centred));
+  REQUIRE(grid.get_centre() == 44);
+  
+  REQUIRE(grid.map(0) == 44);
+
+  REQUIRE(grid.map(1) == 45);
+  REQUIRE(grid.map(2) == 55);
+  
+  REQUIRE(grid.map(3) == 54);
+  REQUIRE(grid.map(4) == 53);
+
+  REQUIRE(grid.map(5) == 43);
+  REQUIRE(grid.map(6) == 33);
+
+  REQUIRE(grid.map(7) == 34);
+  REQUIRE(grid.map(8) == 35);
+
+  REQUIRE(grid.map(9) == 36);
+  REQUIRE(grid.map(10) == 46);
+  REQUIRE(grid.map(11) == 56);
+  REQUIRE(grid.map(12) == 66);
+
+  REQUIRE(grid.map(13) == 65);
+  REQUIRE(grid.map(14) == 64);
+  REQUIRE(grid.map(15) == 63);
+  REQUIRE(grid.map(16) == 62);
+
+  REQUIRE(grid.map(17) == 52);
+  REQUIRE(grid.map(18) == 42);
+  REQUIRE(grid.map(19) == 32);
+  REQUIRE(grid.map(20) == 22);
+
+  REQUIRE(grid.map(21) == 23);
+  REQUIRE(grid.map(22) == 24);
+  REQUIRE(grid.map(23) == 25);
+  REQUIRE(grid.map(24) == 26);
+
+  REQUIRE(grid.map(25) == 27);
+  REQUIRE(grid.map(26) == 37);
+  REQUIRE(grid.map(27) == 47);
+  REQUIRE(grid.map(28) == 57);
+  REQUIRE(grid.map(29) == 67);
+  REQUIRE(grid.map(30) == 77);
+
+  REQUIRE(grid.map(31) == 76);
+  REQUIRE(grid.map(32) == 75);
+  REQUIRE(grid.map(33) == 74);
+  REQUIRE(grid.map(34) == 73);
+  REQUIRE(grid.map(35) == 72);
+  REQUIRE(grid.map(36) == 71);
+
+  REQUIRE(grid.map(37) == 61);
+  REQUIRE(grid.map(38) == 51);
+  REQUIRE(grid.map(39) == 41);
+  REQUIRE(grid.map(40) == 31);
+  REQUIRE(grid.map(41) == 21);
+  REQUIRE(grid.map(42) == 11);
+
+  REQUIRE(grid.map(43) == 12);
+  REQUIRE(grid.map(44) == 13);
+  REQUIRE(grid.map(45) == 14);
+  REQUIRE(grid.map(46) == 15);
+  REQUIRE(grid.map(47) == 16);
+  REQUIRE(grid.map(48) == 17);
 }

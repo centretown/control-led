@@ -81,24 +81,17 @@ namespace glow
         return false;
       }
 
+      if (scan > length)
+      {
+        scan = length;
+      }
+
       set_bounds();
 
       return true;
     }
 
-    void set_bounds()
-    {
-      first = calculate_bounds(begin);
-      last = calculate_bounds(end);
-
-      if (last < first)
-      {
-        std::swap(first, last);
-      }
-    }
-
-    uint16_t calculate_bounds(uint16_t bound);
-    uint16_t adjust_bounds(uint16_t bound);
+    void set_bounds();
 
     bool setup(uint16_t p_length,
                uint16_t p_rows,

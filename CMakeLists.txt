@@ -14,7 +14,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 
 # include yaml
-add_definitions("-std=c++20" "-DDATA_DIR=${DATA_DIR}" "-DTEST_DATA_DIR=${TEST_DATA_DIR}")
+add_definitions("-DDATA_DIR=${DATA_DIR}" "-DTEST_DATA_DIR=${TEST_DATA_DIR}")
 
 include(CTest)
 
@@ -28,6 +28,8 @@ add_library(GlowLib
   src/HSVColor.cpp
   src/Chroma.h
   src/Chroma.cpp
+  src/Pivot.h
+  src/Pivot.cpp
   src/Grid.h
   src/Grid.cpp
   src/Layer.h
@@ -75,7 +77,11 @@ target_link_libraries(glow
   GlowLib
 )
 
+target_compile_features(glow PUBLIC cxx_std_20)
+
 add_subdirectory(test)
+
+add_custom_target(generate_code) 
 
 add_custom_command(
   TARGET glow POST_BUILD
@@ -95,19 +101,19 @@ add_custom_command(
   ${CMAKE_CURRENT_SOURCE_DIR}/src/Frame.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/custom/glow/)
 
-  add_custom_command(
-    TARGET glow POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
-    ${DATA_DIR}/generated/catalog.cpp
-    ${DATA_DIR}/generated/catalog.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/custom/glow/)
-  
-  add_custom_command(
-    TARGET glow POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
-    ${DATA_DIR}/generated/catalog.cpp
-    ${DATA_DIR}/generated/catalog.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/generated/)
+add_custom_command(
+  TARGET glow POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy
+  ${DATA_DIR}/generated/catalog.cpp
+  ${DATA_DIR}/generated/catalog.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/custom/glow/)
+
+add_custom_command(
+  TARGET glow POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy
+  ${DATA_DIR}/generated/catalog.cpp
+  ${DATA_DIR}/generated/catalog.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/generated/)
     
 add_custom_command(
   TARGET glow POST_BUILD

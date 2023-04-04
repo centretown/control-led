@@ -1,0 +1,21 @@
+interval: 16
+layers:
+  - hue_shift: 1
+    grid:
+      origin: bottom right
+      orientation: centred
+    chroma:
+      colors:
+        - hue: 0
+          saturation: 100
+          value: 100
+  - chroma:
+      colors:
+        - hue: 270
+          saturation: 100
+          value: 100
+    grid:
+      origin: bottom right
+      orientation: centred
+    scan: 12
+    hue_shift: 1

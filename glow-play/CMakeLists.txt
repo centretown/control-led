@@ -6,10 +6,7 @@ project(
   LANGUAGES CXX)
 
 # remove yaml for micro controllers
-
-# include yaml
-# add_definitions("-std=c++17" "-DDATA_DIR=\"${PROJECT_SOURCE_DIR}/test_data\"")
-add_definitions("-std=c++11" "-DMICRO_CONTROLLER")
+add_definitions("-DMICRO_CONTROLLER")
 
 include_directories(
   ../generated
@@ -17,12 +14,6 @@ include_directories(
 )
 
 add_library(PlayerLib
-
-  # src/esphome/components/light/esp_hsv_color.cpp
-  # src/esphome/components/light/esp_hsv_color.h
-  # src/esphome/core/color.h
-  # src/esphome/core/helpers.h
-  # src/esphome/core/optional.h
   ../src/base.h
   ../src/RGBColor.h
   ../src/RGBColor.cpp
@@ -30,6 +21,8 @@ add_library(PlayerLib
   ../src/HSVColor.cpp
   ../src/Chroma.h
   ../src/Chroma.cpp
+  ../src/Pivot.h
+  ../src/Pivot.cpp
   ../src/Grid.h
   ../src/Grid.cpp
   ../src/Layer.h
@@ -56,3 +49,4 @@ target_link_libraries(glow-play
   PlayerLib
 )
 
+target_compile_features(glow-play PRIVATE cxx_std_11)
