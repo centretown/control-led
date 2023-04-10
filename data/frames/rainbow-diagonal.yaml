@@ -11,11 +11,11 @@ layers:
           value: 100
   - chroma:
       colors:
-        - hue: 270
+        - hue: 180
           saturation: 100
           value: 100
     grid:
       origin: bottom right
       orientation: centred
-    scan: 12
+    scan: 1
     hue_shift: 1

@@ -405,25 +405,17 @@ TEST_CASE("Grid Code", "[grid_make_code]")
   std::cout << grid.make_code() << '\n';
 }
 
-TEST_CASE("Grid Centred", "[grid_centred]")
+TEST_CASE("Square Grid Centred", "[square_grid_centred]")
 {
   Grid grid;
-  REQUIRE(grid.setup(50, 5, TopLeft, Centred));
-  REQUIRE(grid.get_centre() == 24);
-  REQUIRE(grid.setup(36, 3, TopLeft, Centred));
-  REQUIRE(grid.get_centre() == 17);
-  REQUIRE(grid.map(0) == 17);
-  REQUIRE(grid.setup(36, 4, TopLeft, Centred));
-  REQUIRE(grid.get_centre() == 13);
-  REQUIRE(grid.map(0) == 13);
   REQUIRE(grid.setup(100, 10, TopLeft, Centred));
   REQUIRE(grid.get_centre() == 44);
-  
+
   REQUIRE(grid.map(0) == 44);
 
   REQUIRE(grid.map(1) == 45);
   REQUIRE(grid.map(2) == 55);
-  
+
   REQUIRE(grid.map(3) == 54);
   REQUIRE(grid.map(4) == 53);
 
@@ -480,4 +472,39 @@ TEST_CASE("Grid Centred", "[grid_centred]")
   REQUIRE(grid.map(46) == 15);
   REQUIRE(grid.map(47) == 16);
   REQUIRE(grid.map(48) == 17);
+}
+
+TEST_CASE("Grid Centred", "[grid_centred]")
+{
+  Grid grid;
+  // 3 x 12
+  REQUIRE(grid.setup(36, 3, TopLeft, Centred));
+  REQUIRE(grid.get_centre() == 17);
+  REQUIRE(grid.get_stop() == 25);
+  REQUIRE(grid.map(0) == 17);
+  REQUIRE(grid.get_status() == PIVOT_COLUMNS);
+  REQUIRE(grid.get_ring_count() == 1);
+  REQUIRE(grid.get_ring_count_high() == 1);
+
+  // 4 x 9
+  REQUIRE(grid.setup(36, 4, TopLeft, Centred));
+  REQUIRE(grid.get_centre() == 13);
+  REQUIRE(grid.map(0) == 13);
+  REQUIRE(grid.get_status() == (PIVOT_COLUMNS | PIVOT_UNEVEN));
+  REQUIRE(grid.get_ring_count() == 1);
+  REQUIRE(grid.get_ring_count_high() == 2);
+
+  // 10 x 10
+  REQUIRE(grid.setup(100, 10, TopLeft, Centred));
+  REQUIRE(grid.get_centre() == 44);
+  // REQUIRE(grid.get_direction() == 0);
+  // REQUIRE(grid.get_low() == 5);
+  // REQUIRE(grid.get_high() == 5);
+
+  // 5 x 10
+  REQUIRE(grid.setup(50, 5, TopLeft, Centred));
+  REQUIRE(grid.get_centre() == 24);
+  // REQUIRE(grid.get_direction() == 0);
+  // REQUIRE(grid.get_low() == 2);
+  // REQUIRE(grid.get_high() == 2);
 }

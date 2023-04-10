@@ -28,8 +28,6 @@ add_library(GlowLib
   src/HSVColor.cpp
   src/Chroma.h
   src/Chroma.cpp
-  src/Pivot.h
-  src/Pivot.cpp
   src/Grid.h
   src/Grid.cpp
   src/Layer.h

@@ -79,13 +79,13 @@ namespace glow
 
     if (orientation == Centred)
     {
-      pivot.setup_centred(rows, columns);
+      setup_centred(rows, columns);
     }
     else
     {
-      pivot.setup_diagonal(rows, columns);
+      setup_diagonal(rows, columns);
     }
-    centre = (rows - 1) / 2 * columns + (columns - 1) / 2;
+
     return true;
   }
 
@@ -139,7 +139,7 @@ namespace glow
   uint16_t Grid::map_diagonal_bottom(uint16_t index)
   {
     uint16_t offset = 2 * columns - 1;
-    uint16_t start = pivot.last + 1;
+    uint16_t start = last + 1;
     uint16_t increment = rows;
     while (start < index)
     {
@@ -165,12 +165,12 @@ namespace glow
       return index;
     }
 
-    if (index < pivot.first)
+    if (index < first)
     {
       return map_diagonal_top(index);
     }
 
-    if (index <= pivot.last)
+    if (index <= last)
     {
       return map_diagonal_middle(index);
     }
@@ -208,46 +208,104 @@ namespace glow
   {
     if (index == 0)
     {
-      return centre;
+      return middle;
+    }
+
+    if (index > last)
+    {
+      return index;
     }
 
     uint16_t ring = 1;
     int16_t ring_start = 1;
     int16_t ring_length = 8;
-    for (;;)
+    while (ring_start + ring_length <= index)
     {
-      if (ring_start + ring_length > index)
-      {
-        break;
-      }
       ring++;
       ring_start += ring_length;
       ring_length += 8;
     }
 
-    index -= ring_start;
-    uint16_t side = index * 4 / ring_length;
-    if (side == 0)
-    {
-      return centre + ring +
-             (index - ring + 1) * columns;
-    }
+    int16_t offset = index - ring_start;
+    int16_t side = (offset << 2) / ring_length;
 
-    index -= side * ring_length / 4;
-    if (side == 1)
+    offset -= (side * ring_length) >> 2;
+
+    switch (side)
     {
-      return centre + ring - 1 - index +
+    case 0:
+      return middle + ring +
+             (offset - ring + 1) * columns;
+
+    case 1:
+      return middle + ring - 1 - offset +
+             ring * columns;
+
+    case 2:
+      return middle - ring -
+             (offset - ring + 1) * columns;
+
+    case 3:
+      return middle - ring + 1 + offset -
              ring * columns;
     }
+    return 0;
+  }
 
-    if (side == 2)
+  void Grid::setup_diagonal(uint16_t rows, uint16_t columns)
+  {
+    first = 0;
+    uint16_t lesser = std::min(rows, columns);
+    for (uint16_t i = 0; i < lesser; i++)
     {
-      return centre - ring -
-             (index - ring + 1) * columns;
+      first += i;
     }
 
-    return centre - ring + 1 + index -
-           ring * columns;
+    middle = lesser - 1;
+    last = first +
+           (columns - lesser) * rows +
+           rows - 1;
+  }
+
+  void Grid::setup_centred(uint16_t rows, uint16_t columns)
+  {
+    middle = ((rows - 1) >> 1) * columns + ((columns - 1) >> 1);
+
+    if (rows < columns)
+    {
+      ring_status = (rows & 1) ? PIVOT_COLUMNS
+                               : PIVOT_COLUMNS | PIVOT_UNEVEN;
+      ring_count = (rows - 1) >> 1;
+    }
+    else if (rows > columns)
+    {
+      ring_status = (columns & 1) ? PIVOT_ROWS
+                                  : PIVOT_ROWS | PIVOT_UNEVEN;
+      ring_count = (columns - 1) >> 1;
+    }
+    else
+    {
+      ring_status = PIVOT_SQUARE;
+      ring_count = rows >> 1;
+    }
+
+    last = get_ring_index(ring_count + 1);
+  }
+
+  uint16_t Grid::get_ring_index(uint8_t target_ring)
+  {
+    uint16_t index{1};
+    uint16_t ring{1};
+    uint16_t ring_length{8};
+
+    while (ring <= target_ring)
+    {
+      ring++;
+      index += ring_length;
+      ring_length += 8;
+    }
+
+    return index;
   }
 
 } // namespace glow

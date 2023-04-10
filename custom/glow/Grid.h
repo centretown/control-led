@@ -10,8 +10,6 @@
 #include <sstream>
 #endif
 
-#include "Pivot.h"
-
 namespace glow
 {
   enum : uint16_t
@@ -32,6 +30,14 @@ namespace glow
     ORIENTATION_COUNT,
   };
 
+  enum : uint8_t
+  {
+    PIVOT_SQUARE = 0,
+    PIVOT_COLUMNS = 1,
+    PIVOT_ROWS = 2,
+    PIVOT_UNEVEN = 4,
+  };
+
   class Grid
   {
   private:
@@ -41,8 +47,19 @@ namespace glow
     uint16_t orientation = Horizontal;
 
     uint16_t columns = 0;
-    uint16_t centre = 0;
-    Pivot pivot;
+    // Pivot pivot;
+
+    uint16_t first; // middle beginning
+    uint16_t middle;
+    uint16_t last; // middle end
+    uint16_t ring_count;
+
+    uint8_t ring_status; // =0x01,horz=0x01,uneven=0x02
+
+    uint16_t get_ring_index(uint8_t index);
+    uint16_t get_ring_offset(uint16_t index);
+    void setup_diagonal(uint16_t rows, uint16_t columns);
+    void setup_centred(uint16_t rows, uint16_t columns);
 
   public:
     Grid() = default;
@@ -74,11 +91,23 @@ namespace glow
     uint16_t get_rows() const ALWAYS_INLINE { return rows; }
     uint16_t get_origin() const ALWAYS_INLINE { return origin; }
     uint16_t get_orientation() const ALWAYS_INLINE { return orientation; }
+
     uint16_t get_columns() const ALWAYS_INLINE { return columns; }
-    uint16_t get_first() const ALWAYS_INLINE { return pivot.first; }
-    uint16_t get_offset() const ALWAYS_INLINE { return pivot.offset; }
-    uint16_t get_last() const ALWAYS_INLINE { return pivot.last; }
-    uint16_t get_centre() const ALWAYS_INLINE { return centre; }
+
+    uint16_t get_first() const ALWAYS_INLINE { return first; }
+    uint16_t get_offset() const ALWAYS_INLINE { return middle; }
+    uint16_t get_last() const ALWAYS_INLINE { return last; }
+
+    uint16_t get_centre() const ALWAYS_INLINE { return middle; }
+    uint16_t get_stop() const ALWAYS_INLINE { return last; }
+    uint16_t get_status() const ALWAYS_INLINE { return ring_status; }
+    uint16_t get_ring_count() const ALWAYS_INLINE { return ring_count; }
+    uint16_t get_ring_count_high() const ALWAYS_INLINE
+    {
+      if (ring_status & PIVOT_UNEVEN)
+        return ring_count + 1;
+      return ring_count;
+    }
 
     uint16_t map(uint16_t index);
     uint16_t map_diagonal(uint16_t index);
@@ -96,8 +125,8 @@ namespace glow
 
     uint16_t map_diagonal_middle(uint16_t index) ALWAYS_INLINE
     {
-      div_t point = div(index - pivot.first, rows);
-      return pivot.offset + point.quot +
+      div_t point = div(index - first, rows);
+      return middle + point.quot +
              point.rem * (columns - 1);
     }
 
