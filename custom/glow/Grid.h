@@ -41,23 +41,24 @@ namespace glow
   class Grid
   {
   private:
-    uint16_t length = 0;
-    uint16_t rows = 1;
-    uint16_t origin = TopLeft;
-    uint16_t orientation = Horizontal;
+    uint16_t length{0};
+    uint16_t rows{1};
+    uint16_t origin{TopLeft};
+    uint16_t orientation{Horizontal};
 
-    uint16_t columns = 0;
-    // Pivot pivot;
+// derived
+    uint16_t columns{0};
+    uint16_t first_edge{0};
+    uint16_t centre{0};
+    uint16_t last_edge{0};
+    uint16_t ring_count{0};
+    // uint16_t ring_length{0};
+    uint16_t first_offset{0};
+    uint16_t last_offset{0};
 
-    uint16_t first; // middle beginning
-    uint16_t middle;
-    uint16_t last; // middle end
-    uint16_t ring_count;
+    uint8_t ring_status{0}; // =0x01,horz=0x01,uneven=0x02
 
-    uint8_t ring_status; // =0x01,horz=0x01,uneven=0x02
-
-    uint16_t get_ring_index(uint8_t index);
-    uint16_t get_ring_offset(uint16_t index);
+    uint16_t map_centred_edge(uint16_t index);
     void setup_diagonal(uint16_t rows, uint16_t columns);
     void setup_centred(uint16_t rows, uint16_t columns);
 
@@ -94,13 +95,16 @@ namespace glow
 
     uint16_t get_columns() const ALWAYS_INLINE { return columns; }
 
-    uint16_t get_first() const ALWAYS_INLINE { return first; }
-    uint16_t get_offset() const ALWAYS_INLINE { return middle; }
-    uint16_t get_last() const ALWAYS_INLINE { return last; }
+    uint16_t get_first() const ALWAYS_INLINE { return first_edge; }
+    uint16_t get_offset() const ALWAYS_INLINE { return centre; }
+    uint16_t get_last() const ALWAYS_INLINE { return last_edge; }
 
-    uint16_t get_centre() const ALWAYS_INLINE { return middle; }
-    uint16_t get_stop() const ALWAYS_INLINE { return last; }
-    uint16_t get_status() const ALWAYS_INLINE { return ring_status; }
+    uint16_t get_centre() const ALWAYS_INLINE { return centre; }
+    uint16_t get_first_edge() const ALWAYS_INLINE { return first_edge; }
+    uint16_t get_first_offset() const ALWAYS_INLINE { return first_offset; }
+    uint16_t get_last_edge() const ALWAYS_INLINE { return last_edge; }
+    uint16_t get_last_offset() const ALWAYS_INLINE { return last_offset; }
+    uint16_t get_ring_status() const ALWAYS_INLINE { return ring_status; }
     uint16_t get_ring_count() const ALWAYS_INLINE { return ring_count; }
     uint16_t get_ring_count_high() const ALWAYS_INLINE
     {
@@ -108,6 +112,7 @@ namespace glow
         return ring_count + 1;
       return ring_count;
     }
+    // uint16_t get_ring_length() const ALWAYS_INLINE { return ring_length; }
 
     uint16_t map(uint16_t index);
     uint16_t map_diagonal(uint16_t index);
@@ -125,8 +130,8 @@ namespace glow
 
     uint16_t map_diagonal_middle(uint16_t index) ALWAYS_INLINE
     {
-      div_t point = div(index - first, rows);
-      return middle + point.quot +
+      div_t point = div(index - first_edge, rows);
+      return centre + point.quot +
              point.rem * (columns - 1);
     }
 

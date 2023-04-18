@@ -477,26 +477,12 @@ TEST_CASE("Square Grid Centred", "[square_grid_centred]")
 TEST_CASE("Grid Centred", "[grid_centred]")
 {
   Grid grid;
-  // 3 x 12
-  REQUIRE(grid.setup(36, 3, TopLeft, Centred));
-  REQUIRE(grid.get_centre() == 17);
-  REQUIRE(grid.get_stop() == 25);
-  REQUIRE(grid.map(0) == 17);
-  REQUIRE(grid.get_status() == PIVOT_COLUMNS);
-  REQUIRE(grid.get_ring_count() == 1);
-  REQUIRE(grid.get_ring_count_high() == 1);
-
-  // 4 x 9
-  REQUIRE(grid.setup(36, 4, TopLeft, Centred));
-  REQUIRE(grid.get_centre() == 13);
-  REQUIRE(grid.map(0) == 13);
-  REQUIRE(grid.get_status() == (PIVOT_COLUMNS | PIVOT_UNEVEN));
-  REQUIRE(grid.get_ring_count() == 1);
-  REQUIRE(grid.get_ring_count_high() == 2);
-
   // 10 x 10
   REQUIRE(grid.setup(100, 10, TopLeft, Centred));
   REQUIRE(grid.get_centre() == 44);
+  REQUIRE(grid.get_first_edge() == 100);
+  REQUIRE(grid.get_first_offset() == 100);
+  REQUIRE(grid.get_ring_status() == PIVOT_SQUARE);
   // REQUIRE(grid.get_direction() == 0);
   // REQUIRE(grid.get_low() == 5);
   // REQUIRE(grid.get_high() == 5);
@@ -507,4 +493,53 @@ TEST_CASE("Grid Centred", "[grid_centred]")
   // REQUIRE(grid.get_direction() == 0);
   // REQUIRE(grid.get_low() == 2);
   // REQUIRE(grid.get_high() == 2);
+  // 3 x 12
+
+  REQUIRE(grid.setup(36, 3, TopLeft, Centred));
+  REQUIRE(grid.get_centre() == 17);
+  REQUIRE(grid.get_first_edge() == 9);
+  REQUIRE(grid.get_first_offset() == 7);
+  REQUIRE(grid.map(0) == 17);
+  REQUIRE(grid.get_ring_status() == PIVOT_COLUMNS);
+  REQUIRE(grid.get_ring_count() == 1);
+  REQUIRE(grid.get_ring_count_high() == 1);
+
+  // 4 x 9
+  REQUIRE(grid.setup(36, 4, TopLeft, Centred));
+  REQUIRE(grid.get_centre() == 13);
+  REQUIRE(grid.get_first_edge() == 9);
+  REQUIRE(grid.get_first_offset() == 6);
+  REQUIRE(grid.get_ring_status() == (PIVOT_COLUMNS | PIVOT_UNEVEN));
+  REQUIRE(grid.get_ring_count() == 1);
+  REQUIRE(grid.get_ring_count_high() == 2);
+  REQUIRE(grid.get_last_offset() == 29);
+
+  REQUIRE(grid.map(0) == 13);
+  REQUIRE(grid.map(9) == 6);
+  REQUIRE(grid.map(10) == 15);
+  REQUIRE(grid.map(11) == 24);
+  REQUIRE(grid.map(12) == 33);
+  REQUIRE(grid.map(13) == 32);
+  REQUIRE(grid.map(14) == 31);
+  REQUIRE(grid.map(15) == 30);
+  REQUIRE(grid.map(16) == 29);
+  REQUIRE(grid.map(17) == 20);
+  REQUIRE(grid.map(18) == 11);
+  REQUIRE(grid.map(19) == 2);
+  REQUIRE(grid.map(20) == 7);
+  REQUIRE(grid.map(21) == 16);
+  REQUIRE(grid.map(22) == 25);
+  REQUIRE(grid.map(23) == 34);
+  REQUIRE(grid.map(24) == 28);
+  REQUIRE(grid.map(25) == 19);
+  REQUIRE(grid.map(26) == 10);
+  REQUIRE(grid.map(27) == 1);
+  REQUIRE(grid.map(28) == 8);
+  REQUIRE(grid.map(29) == 17);
+  REQUIRE(grid.map(30) == 26);
+  REQUIRE(grid.map(31) == 35);
+  REQUIRE(grid.map(32) == 27);
+  REQUIRE(grid.map(33) == 18);
+  REQUIRE(grid.map(34) == 9);
+  REQUIRE(grid.map(35) == 0);
 }

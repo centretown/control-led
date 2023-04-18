@@ -139,7 +139,7 @@ namespace glow
   uint16_t Grid::map_diagonal_bottom(uint16_t index)
   {
     uint16_t offset = 2 * columns - 1;
-    uint16_t start = last + 1;
+    uint16_t start = last_edge + 1;
     uint16_t increment = rows;
     while (start < index)
     {
@@ -165,12 +165,12 @@ namespace glow
       return index;
     }
 
-    if (index < first)
+    if (index < first_edge)
     {
       return map_diagonal_top(index);
     }
 
-    if (index <= last)
+    if (index <= last_edge)
     {
       return map_diagonal_middle(index);
     }
@@ -204,16 +204,115 @@ namespace glow
     return offset;
   }
 
+  void Grid::setup_diagonal(uint16_t rows, uint16_t columns)
+  {
+    first_edge = 0;
+    uint16_t lesser = std::min(rows, columns);
+    for (uint16_t i = 0; i < lesser; i++)
+    {
+      first_edge += i;
+    }
+
+    centre = lesser - 1;
+    last_edge = first_edge +
+                (columns - lesser) * rows +
+                rows - 1;
+  }
+
+  void Grid::setup_centred(uint16_t rows, uint16_t columns)
+  {
+    centre = ((rows - 1) >> 1) * columns + ((columns - 1) >> 1);
+    if (rows == columns)
+    {
+      ring_status = PIVOT_SQUARE;
+      ring_count = rows >> 1;
+      first_edge =
+          last_edge =
+              first_offset = length;
+      return;
+    }
+
+    if (rows < columns)
+    {
+      ring_status = (rows & 1) ? PIVOT_COLUMNS
+                               : PIVOT_COLUMNS | PIVOT_UNEVEN;
+      ring_count = (rows - 1) >> 1;
+    }
+    else if (rows > columns)
+    {
+      ring_status = (columns & 1) ? PIVOT_ROWS
+                                  : PIVOT_ROWS | PIVOT_UNEVEN;
+      ring_count = (columns - 1) >> 1;
+    }
+
+    last_edge = length;
+    first_edge = 1;
+    uint16_t ring_length = 8;
+    for (uint16_t i = 0; i < ring_count; i++)
+    {
+      first_edge += ring_length;
+      ring_length += 8;
+    }
+
+    first_offset = ((columns - 1) >> 1) + ring_count + 1;
+    last_offset = (rows - 1) * columns +
+                  ((columns - 1) >> 1) - ring_count - 1;
+  }
+
+  uint16_t Grid::map_centred_edge(uint16_t index)
+  {
+    index -= first_edge;
+    uint16_t offset = first_offset;
+    if (index < rows)
+    {
+      return offset + index * columns;
+    }
+
+    offset += (rows - 1) * columns;
+    index -= rows - 1;
+
+    if (ring_status & PIVOT_UNEVEN)
+    {
+      uint16_t side_width = (ring_count + 1) << 1;
+      if (index < side_width)
+      {
+        return offset - index;
+      }
+      index -= side_width;
+    }
+
+    if (index < rows)
+    {
+      offset = last_offset - index * columns;
+      return offset;
+    }
+
+    index -= rows;
+    uint16_t side = index / rows;
+    index -= side * rows;
+
+    if (side & 1)
+    {
+      side = side / 2 + 1;
+      offset = last_offset - side - columns * index;
+      return offset;
+    }
+
+    side = side / 2 + 1;
+    offset = first_offset + side + columns * index;
+    return offset;
+  }
+
   uint16_t Grid::map_centred(uint16_t index)
   {
     if (index == 0)
     {
-      return middle;
+      return centre;
     }
 
-    if (index > last)
+    if (index >= first_edge)
     {
-      return index;
+      return map_centred_edge(index);
     }
 
     uint16_t ring = 1;
@@ -234,78 +333,21 @@ namespace glow
     switch (side)
     {
     case 0:
-      return middle + ring +
+      return centre + ring +
              (offset - ring + 1) * columns;
 
     case 1:
-      return middle + ring - 1 - offset +
+      return centre + ring - 1 - offset +
              ring * columns;
 
     case 2:
-      return middle - ring -
+      return centre - ring -
              (offset - ring + 1) * columns;
 
     case 3:
-      return middle - ring + 1 + offset -
+      return centre - ring + 1 + offset -
              ring * columns;
     }
     return 0;
   }
-
-  void Grid::setup_diagonal(uint16_t rows, uint16_t columns)
-  {
-    first = 0;
-    uint16_t lesser = std::min(rows, columns);
-    for (uint16_t i = 0; i < lesser; i++)
-    {
-      first += i;
-    }
-
-    middle = lesser - 1;
-    last = first +
-           (columns - lesser) * rows +
-           rows - 1;
-  }
-
-  void Grid::setup_centred(uint16_t rows, uint16_t columns)
-  {
-    middle = ((rows - 1) >> 1) * columns + ((columns - 1) >> 1);
-
-    if (rows < columns)
-    {
-      ring_status = (rows & 1) ? PIVOT_COLUMNS
-                               : PIVOT_COLUMNS | PIVOT_UNEVEN;
-      ring_count = (rows - 1) >> 1;
-    }
-    else if (rows > columns)
-    {
-      ring_status = (columns & 1) ? PIVOT_ROWS
-                                  : PIVOT_ROWS | PIVOT_UNEVEN;
-      ring_count = (columns - 1) >> 1;
-    }
-    else
-    {
-      ring_status = PIVOT_SQUARE;
-      ring_count = rows >> 1;
-    }
-
-    last = get_ring_index(ring_count + 1);
-  }
-
-  uint16_t Grid::get_ring_index(uint8_t target_ring)
-  {
-    uint16_t index{1};
-    uint16_t ring{1};
-    uint16_t ring_length{8};
-
-    while (ring <= target_ring)
-    {
-      ring++;
-      index += ring_length;
-      ring_length += 8;
-    }
-
-    return index;
-  }
-
 } // namespace glow
