@@ -4,10 +4,10 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/home/dave/.conan/data/yaml-cpp/0.7.0/**",
-                "/home/dave/.conan/data/catch2/3.3.2/**",
-                "/home/dave/.conan/data/cxxopts/3.0.0/**",
-                "/home/dave/.conan/data/nlohmann_json/3.11.2/**"
+                "/home/dave/.conan2/p/yaml-58572ee41d50d/p/include",
+                "/home/dave/.conan2/p/catch35d916b8ddfba/p/include",
+                "/home/dave/.conan2/p/nlohm552351c8663ae/p/include",
+                "/home/dave/.conan2/p/cxxopef86bf58b200a/p/include",
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
